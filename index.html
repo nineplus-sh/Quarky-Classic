@@ -11,12 +11,14 @@
                 "yellow"
             ]
             function fetchData() {
+                new Audio("/assets/sfx/do.mp3").play();
                 document.querySelector("#text").innerHTML = "Obtaining token...";
                 fetch("https://lq.litdevs.org/v1/auth/token", {method: 'POST', body: JSON.stringify({"email": document.querySelector("#email").value, "password": document.querySelector("#password").value}), headers: {'Content-Type': 'application/json'}})   
                     .then(response => response.json())
                     .then(response => {
                         if(!response.request.success) {
                             document.querySelector("#text").innerText = `Oopsie poopsie ${response.response.message}!`
+                            new Audio("/assets/sfx/nah.mp3").play();
                         } else {
                             console.log(response)
                             document.querySelector("#text").innerHTML = "Fetching user data...";
@@ -25,6 +27,7 @@
                                 .then(response => {
                                     if(!response.request.success) {
                                         document.querySelector("#text").innerText = `Oopsie poopsie ${response.response.message}!`
+                                        new Audio("/assets/sfx/nah.mp3").play();
                                     } else {
                                         console.log(response)
                                         document.querySelector("#text").innerText = JSON.stringify(response.response.jwtData);
