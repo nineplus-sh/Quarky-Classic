@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>Quarky</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            let stars = [
+                "blue",
+                "green",
+                "purple",
+                "red",
+                "yellow"
+            ]
+            function fetchData() {
+                document.querySelector("#text").innerHTML = "Obtaining token...";
+                fetch("https://lq.litdevs.org/v1/auth/token", {method: 'POST', body: JSON.stringify({"email": document.querySelector("#email").value, "password": document.querySelector("#password").value}), headers: {'Content-Type': 'application/json'}})   
+                    .then(response => response.json())
+                    .then(response => {
+                        if(!response.request.success) {
+                            document.querySelector("#text").innerText = `Oopsie poopsie ${response.response.message}!`
+                        } else {
+                            console.log(response)
+                            document.querySelector("#text").innerHTML = "Fetching user data...";
+                            fetch("https://lq.litdevs.org/v1/user/me", {headers: {'Authorization': `Bearer ${response.response.access_token}`}})   
+                                .then(response => response.json())
+                                .then(response => {
+                                    if(!response.request.success) {
+                                        document.querySelector("#text").innerText = `Oopsie poopsie ${response.response.message}!`
+                                    } else {
+                                        console.log(response)
+                                        document.querySelector("#text").innerText = JSON.stringify(response.response.jwtData);
+                                        new Audio(`/assets/sfx/star${stars[Math.floor(Math.random() * stars.length)]}.mp3`).play();
+                                    }
+                                })
+                                .catch(error => console.log('error', error));
+                        }
+                    })
+                    .catch(error => console.log('error', error));
+            }
+        </script>
+        <style>
+            html {
+                background-image: url("assets/img/stars.gif")
+            }
+            body {
+                font-family: sans-serif;
+                color: white;
+            }
+            #planet {
+                position: fixed;
+                height: 120vh;
+                width: 98vw;
+                top: 70vh;
+                animation: rotate 50s infinite linear;
+                z-index: -999999;
+            }
+            #welcome {
+                text-align: center;
+                object-position: center;
+            }
+            #logoimg {
+                filter: drop-shadow(0 0 0.4rem white);
+            }
+            #logotext {
+                font-family: serif; 
+                display: inline-block;
+                vertical-align: 110%;
+                margin: 0;
+            }
+            @keyframes rotate {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="welcome">
+            <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
+            <p id="text"><i>Quarky</i> is a client for Lightquark, which allows you to <s>join Quarks and DM <a href="https://en.wikipedia.org/wiki/Luser">lusers</a></s> do nothing whatsoever.<br>Please enter your login information to continue to Quarky.</p>
+            <form id="credentials" onsubmit="fetchData(); return false;">
+                <input placeholder="Email" id="email">
+                <input placeholder="Password" id="password">
+                <br><br>
+                <button type="submit" form="credentials" >Done :)</button>
+            </form>
+        </div>
+        <img src="/assets/img/vukkyplanetdark.svg" id="planet">
+    </body>
+</html>
