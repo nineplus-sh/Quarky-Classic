@@ -30,7 +30,13 @@
                 let quarkCode = prompt("Enter the invite code for the Quark you want to join.")
                 fetch(`https://lq.litdevs.org/v1/quark/invite/${quarkCode}`, {headers: {"Authorization": `Bearer ${authToken}`}, method: "POST"})
                     .then(response => response.json())
-                    .then(result => {console.log(result)})
+                    .then(result => {
+                        if(!result.request.success) {
+                            alert(result.response.message);
+                        } else {
+                            document.location.reload();
+                        }
+                    })
             }
 
             function logOut() {
