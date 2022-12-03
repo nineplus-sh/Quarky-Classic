@@ -2,14 +2,18 @@
     <head>
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preload" href="/assets/sfx/loggedin.mp3" as="audio" />
         <script>
-            let stars = [
-                "blue",
-                "green",
-                "purple",
-                "red",
-                "yellow"
-            ]
+            function getCookie(key) {
+                var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+                return keyValue ? keyValue[2] : null;
+            }
+            if(getCookie("authToken")) document.location.pathname = "/client.html"
+            function setCookie(key, value, expiry) {
+                var expires = new Date();
+                expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+                document.cookie = key + '=' + value + ';path=/' + ';expires=' + expires.toUTCString();
+            }
             function fetchData() {
                 new Audio("/assets/sfx/do.mp3").play();
                 document.querySelector("#text").innerHTML = "Obtaining token...";
@@ -20,21 +24,13 @@
                             document.querySelector("#text").innerText = `Oopsie poopsie ${response.response.message}!`
                             new Audio("/assets/sfx/nah.mp3").play();
                         } else {
-                            console.log(response)
-                            document.querySelector("#text").innerHTML = "Fetching user data...";
-                            fetch("https://lq.litdevs.org/v1/user/me", {headers: {'Authorization': `Bearer ${response.response.access_token}`}})   
-                                .then(response => response.json())
-                                .then(response => {
-                                    if(!response.request.success) {
-                                        document.querySelector("#text").innerText = `Oopsie poopsie ${response.response.message}!`
-                                        new Audio("/assets/sfx/nah.mp3").play();
-                                    } else {
-                                        console.log(response)
-                                        document.querySelector("#text").innerText = JSON.stringify(response.response.jwtData);
-                                        new Audio(`/assets/sfx/star${stars[Math.floor(Math.random() * stars.length)]}.mp3`).play();
-                                    }
-                                })
-                                .catch(error => console.log('error', error));
+                            setCookie("authToken", response.response.access_token, 365);
+                            new Audio("/assets/sfx/loggedin.mp3").play();
+                            document.querySelector("#welcome").classList.add("bye");
+                            document.querySelector("#planet").classList.add("moveplanet");
+                            setTimeout(() => {
+                                document.location.pathname = "/client.html"
+                            }, 7000);
                         }
                     })
                     .catch(error => console.log('error', error));
@@ -76,6 +72,34 @@
                 to {
                     transform: rotate(360deg);
                 }
+            }
+            @keyframes hide {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+            @keyframes moveplanet {
+                from {
+                    height: 120vh;
+                    width: 98vw;
+                    top: 70vh;
+                    left: 0vw;
+                }
+                to {
+                    height: 80vh;
+                    width: 82vw;
+                    top: 10vh;
+                    left: 8vw;
+                }
+            }
+            .bye {
+                animation: hide 0.5s forwards;
+            }
+            .moveplanet {
+                animation: moveplanet 0.5s forwards !important;
             }
         </style>
     </head>
