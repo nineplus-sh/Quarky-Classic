@@ -32,6 +32,11 @@
                     .then(response => response.json())
                     .then(result => {console.log(result)})
             }
+
+            function logOut() {
+                document.cookie = "authToken=";
+                document.location.pathname = "/";
+            }
         </script>
         <style>
             body {
@@ -97,6 +102,9 @@
             .joiner {
                 background-color: #00a8f3;
             }
+            .logout {
+                background-color: #ff5252;
+            }
         </style>
     </head>
     <body>
@@ -106,6 +114,9 @@
         <div id="list">
             <div class="quark joiner" onclick="joinQuark();">
                 <span style="font-size: 2.88em; margin-left: 0.4em;">+</span>
+            </div>
+            <div class="quark logout" onclick="logOut();">
+                <span style="font-size: 2.4em; margin-left: 0.4em;">←</span>
             </div>
         </div>
     </body>
