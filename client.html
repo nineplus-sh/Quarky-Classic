@@ -21,7 +21,7 @@
                 .then(result => result.response.quarks.forEach(quark => {
                     console.log(quark);
                     document.querySelector("#list").innerHTML = `
-                    <div class="quark">
+                    <div class="quark" id="${quark._id}">
                         <img src="${quark.iconUri}">
                     </div>` + document.querySelector("#list").innerHTML;
                 }))
@@ -111,6 +111,9 @@
             .logout {
                 background-color: #ff5252;
             }
+            #messages {
+                padding-left: 4vw;
+            }
         </style>
     </head>
     <body>
@@ -124,6 +127,9 @@
             <div class="quark logout" onclick="logOut();">
                 <span style="font-size: 2.4em; margin-left: 0.4em;">←</span>
             </div>
+        </div>
+        <div id="messages">
+fart
         </div>
     </body>
 </html>
