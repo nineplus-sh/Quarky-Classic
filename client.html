@@ -5,50 +5,12 @@
         <link rel="preload" href="/assets/sfx/loggedin.mp3" as="audio" />
         <link rel="preload" href="/assets/img/stars.gif" as="image" />
         <link rel="preload" href="/assets/img/vukkyplanetdark.svg" as="image" />
-        <script>
-            setTimeout(() => {
-                document.querySelector("#loader").classList.add("bye");
-            }, 1000);
-            function getCookie(key) {
-                var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
-                return keyValue ? keyValue[2] : null;
-            }
-            window.authToken = getCookie("authToken");
-            if(!authToken) document.location.pathname = "/";
-
-            fetch("https://lq.litdevs.org/v1/quark/me", {headers: {"Authorization": `Bearer ${authToken}`}})
-                .then(response => response.json())
-                .then(result => result.response.quarks.forEach(quark => {
-                    console.log(quark);
-                    document.querySelector("#list").innerHTML = `
-                    <div class="quark" id="${quark._id}">
-                        <img src="${quark.iconUri}">
-                    </div>` + document.querySelector("#list").innerHTML;
-                }))
-
-            function joinQuark() {
-                let quarkCode = prompt("Enter the invite code for the Quark you want to join.")
-                fetch(`https://lq.litdevs.org/v1/quark/invite/${quarkCode}`, {headers: {"Authorization": `Bearer ${authToken}`}, method: "POST"})
-                    .then(response => response.json())
-                    .then(result => {
-                        if(!result.request.success) {
-                            alert(result.response.message);
-                        } else {
-                            document.location.reload();
-                        }
-                    })
-            }
-
-            function logOut() {
-                document.cookie = "authToken=";
-                document.location.pathname = "/";
-            }
-        </script>
         <style>
             body {
                 margin: 0;
-                background-color: #282b30;
+                background-color: #36393F;
                 color: white;
+                font-family: sans-serif;
             }
             #loader {
                 position: fixed;
@@ -71,7 +33,14 @@
                 position: fixed;
                 width: 4vw;
                 height: 100%;
-                background-color: #1e2124;
+                background-color: #202225;
+            }
+            #quarkdata {
+                position: fixed;
+                width: 12vw;
+                height: 100%;
+                background-color: #2F3136;
+                left: 4vw;
             }
             @keyframes rotate {
                 from {
@@ -114,6 +83,17 @@
             #messages {
                 padding-left: 4vw;
             }
+            #servername {
+                padding-left: 0.5em;
+                padding-top: 0.5em;
+                padding-bottom: 0.5em;
+                background-color: #2F3136;
+                filter: drop-shadow(0 0 0.1rem black);
+                font-weight: bold;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         </style>
     </head>
     <body>
@@ -128,8 +108,81 @@
                 <span style="font-size: 2.4em; margin-left: 0.4em;">←</span>
             </div>
         </div>
-        <div id="messages">
-fart
+        <div id="quarkdata">
+            <div id="servername">
+                Select a Quark
+            </div>
+            <span id="channels">
+
+            </span>
         </div>
+        <div id="messages">
+            
+        </div>
+
+        <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+        <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+        <script>
+            setTimeout(() => {
+                document.querySelector("#loader").classList.add("bye");
+            }, 1000);
+            function getCookie(key) {
+                var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+                return keyValue ? keyValue[2] : null;
+            }
+            window.authToken = getCookie("authToken");
+            if(!authToken) document.location.pathname = "/";
+
+            fetch("https://lq.litdevs.org/v1/quark/me", {headers: {"Authorization": `Bearer ${authToken}`}})
+                .then(response => response.json())
+                .then(result => result.response.quarks.forEach(quark => {
+                    console.log(quark);
+                    document.querySelector("#list").innerHTML = `
+                    <div class="quark" id="${quark._id}" onclick="fetchQuark(this.id)">
+                        <img src="${quark.iconUri}">
+                    </div>` + document.querySelector("#list").innerHTML;
+                }))
+
+            function joinQuark() {
+                let quarkCode = prompt("Enter the invite code for the Quark you want to join.")
+                fetch(`https://lq.litdevs.org/v1/quark/invite/${quarkCode}`, {headers: {"Authorization": `Bearer ${authToken}`}, method: "POST"})
+                    .then(response => response.json())
+                    .then(result => {
+                        if(!result.request.success) {
+                            alert(result.response.message);
+                        } else {
+                            document.location.reload();
+                        }
+                    })
+            }
+
+            function logOut() {
+                document.cookie = "authToken=";
+                document.location.pathname = "/";
+            }
+
+            function fetchQuark(id) {
+                document.querySelector("#servername").innerHTML = "Loading..."
+                document.querySelector("#channels").innerHTML = "Loading...";
+                fetch(`https://lq.litdevs.org/v1/quark/${id}`, {headers: {"Authorization": `Bearer ${authToken}`}})
+                    .then(response => response.json())
+                    .then(result => {
+                        document.querySelector("#servername").innerText = result.response.quark.name;
+                        result.response.quark.channels.forEach(channel => {
+                            fetch(`https://lq.litdevs.org/v1/channel/${channel}`, {headers: {"Authorization": `Bearer ${authToken}`}})
+                                .then(response => response.json())
+                                .then(result => {
+                                    console.log(result);
+                                    if(document.querySelector("#channels").innerHTML == "Loading...") document.querySelector("#channels").innerHTML = "";
+                                    document.querySelector("#channels").innerHTML += `<span id="${result.response.channel._id}" onclick="switchChannel(this.id)">${result.response.channel.name}<br></span>`
+                                })
+                        })
+                    })
+            }
+
+            function switchChannel(id) {
+                console.log(id);
+            }
+        </script>
     </body>
 </html>
