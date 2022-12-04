@@ -82,6 +82,7 @@
             }
             #messages {
                 padding-left: 17vw;
+                padding-top: 1vh;
             }
             #servername {
                 padding-left: 0.5em;
@@ -100,6 +101,9 @@
             .message .avie {
                 width: 3em;
                 border-radius: 100%;
+            }
+            .message .lusername {
+                position: absolute;
             }
         </style>
     </head>
@@ -139,6 +143,11 @@
             }
             window.authToken = getCookie("authToken");
             if(!authToken) document.location.pathname = "/";
+            function escapeHTML(unsafeText) {
+                let div = document.createElement('div');
+                div.innerText = unsafeText;
+                return div.innerHTML;
+            }
 
             fetch("https://lq.litdevs.org/v1/quark/me", {headers: {"Authorization": `Bearer ${authToken}`}})
                 .then(response => response.json())
@@ -189,19 +198,31 @@
 
             function switchChannel(id) {
                 document.querySelector("#messages").innerHTML = "Loading...";
+                let messages = [];
                 fetch(`https://lq.litdevs.org/v1/channel/${id}/messages`, {headers: {"Authorization": `Bearer ${authToken}`}})
                     .then(response => response.json())
                     .then(result => {
                         result.response.messages.forEach(message => {
-                            console.log(message);
                             fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
                                 .then(response => response.json())
                                 .then(result => {
                                     let user = result.response.user;
-                                    if(document.querySelector("#messages").innerHTML == "Loading...") document.querySelector("#messages").innerHTML = "";
-                                    document.querySelector("#messages").innerHTML += `<span class="message"><img src="${user.avatarUri}" class="avie">${message.content}</span><br>`;
+                                    messages.push({"message": message, "user": user, "timestamp": message.timestamp});
+                                }).then(function(){
+                                    if(messages.length == result.response.messages.length) {
+                                        document.querySelector("#messages").innerHTML = "";
+                                        messages = messages.sort(function(x, y) {
+                                            return y.timestamp - x.timestamp;
+                                        })
+                                        messages.forEach(message => {
+                                            document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
+                                        })
+                                    }
                                 })
+                                
                         })
+                        //if(document.querySelector("#messages").innerHTML == "Loading...") document.querySelector("#messages").innerHTML = "";
+                        //document.querySelector("#messages").innerHTML = `<div class="message"><img src="${user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(user.username)}</span>${escapeHTML(message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                     })
             }
         </script>
