@@ -60,7 +60,7 @@
             }
             .bye {
                 animation: hide 0.5s forwards;
-                z-index: 0 !important;
+                z-index: -99999 !important;
             }
             .quark {
                 border-radius: 100%;
@@ -81,7 +81,7 @@
                 background-color: #ff5252;
             }
             #messages {
-                padding-left: 4vw;
+                padding-left: 17vw;
             }
             #servername {
                 padding-left: 0.5em;
@@ -93,6 +93,9 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+            }
+            #loader.bye, #loader.bye #planet {
+                z-index: -999999 !important;
             }
         </style>
     </head>
@@ -181,7 +184,15 @@
             }
 
             function switchChannel(id) {
-                console.log(id);
+                document.querySelector("#messages").innerHTML = "Loading...";
+                fetch(`https://lq.litdevs.org/v1/channel/${id}/messages`, {headers: {"Authorization": `Bearer ${authToken}`}})
+                    .then(response => response.json())
+                    .then(result => {
+                        document.querySelector("#messages").innerHTML = "";
+                        result.response.messages.forEach(message => {
+                            document.querySelector("#messages").innerHTML += `${message.content}<br>`
+                        })
+                    })
             }
         </script>
     </body>
