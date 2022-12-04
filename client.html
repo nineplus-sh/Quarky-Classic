@@ -80,7 +80,7 @@
             .logout {
                 background-color: #ff5252;
             }
-            #messages {
+            #messagesbox {
                 padding-left: 17vw;
                 padding-top: 1vh;
             }
@@ -127,8 +127,13 @@
 
             </span>
         </div>
-        <div id="messages">
-            
+        <div id="messagesbox">
+            <div id="messages">
+
+            </div>
+            <div id="sendmsgs">
+
+            </div>
         </div>
 
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
@@ -160,7 +165,8 @@
                 }))
 
             function joinQuark() {
-                let quarkCode = prompt("Enter the invite code for the Quark you want to join.")
+                let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
+                if(!quarkCode) return;
                 fetch(`https://lq.litdevs.org/v1/quark/invite/${quarkCode}`, {headers: {"Authorization": `Bearer ${authToken}`}, method: "POST"})
                     .then(response => response.json())
                     .then(result => {
@@ -180,18 +186,14 @@
             function fetchQuark(id) {
                 document.querySelector("#servername").innerHTML = "Loading..."
                 document.querySelector("#channels").innerHTML = "Loading...";
+                document.querySelector("#messages").innerHTML = "";
                 fetch(`https://lq.litdevs.org/v1/quark/${id}`, {headers: {"Authorization": `Bearer ${authToken}`}})
                     .then(response => response.json())
                     .then(result => {
                         document.querySelector("#servername").innerText = result.response.quark.name;
                         result.response.quark.channels.forEach(channel => {
-                            fetch(`https://lq.litdevs.org/v1/channel/${channel}`, {headers: {"Authorization": `Bearer ${authToken}`}})
-                                .then(response => response.json())
-                                .then(result => {
-                                    console.log(result);
-                                    if(document.querySelector("#channels").innerHTML == "Loading...") document.querySelector("#channels").innerHTML = "";
-                                    document.querySelector("#channels").innerHTML += `<span id="${result.response.channel._id}" onclick="switchChannel(this.id)">${result.response.channel.name}<br></span>`
-                                })
+                            if(document.querySelector("#channels").innerHTML == "Loading...") document.querySelector("#channels").innerHTML = "";
+                            document.querySelector("#channels").innerHTML += `<span id="${channel._id}" onclick="switchChannel(this.id)">${channel.name}<br></span>`
                         })
                     })
             }
@@ -202,6 +204,7 @@
                 fetch(`https://lq.litdevs.org/v1/channel/${id}/messages`, {headers: {"Authorization": `Bearer ${authToken}`}})
                     .then(response => response.json())
                     .then(result => {
+                        if(result.response.messages.length == 0) document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
                         result.response.messages.forEach(message => {
                             fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
                                 .then(response => response.json())
