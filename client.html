@@ -59,7 +59,7 @@
                 }
             }
             .bye {
-                animation: hide 0.5s forwards;
+                animation: hide 0.5s both;
                 z-index: -99999 !important;
             }
             .quark {
@@ -81,8 +81,9 @@
                 background-color: #ff5252;
             }
             #messagesbox {
-                padding-left: 17vw;
-                padding-top: 1vh;
+                position: fixed;
+                left: 17vw;
+                top: 1vh;
             }
             #servername {
                 padding-left: 0.5em;
@@ -104,6 +105,9 @@
             }
             .message .lusername {
                 position: absolute;
+            }
+            .hidden {
+                display: none !important;
             }
         </style>
     </head>
@@ -131,8 +135,11 @@
             <div id="messages">
 
             </div>
-            <div id="sendmsgs">
-
+            <div id="sendmsgs" class="hidden">
+                <form onsubmit="return false;">
+                    <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
+                    <button onclick="sendMessage()">Ok</button>
+                </form>
             </div>
         </div>
 
@@ -186,7 +193,7 @@
             function fetchQuark(id) {
                 document.querySelector("#servername").innerHTML = "Loading..."
                 document.querySelector("#channels").innerHTML = "Loading...";
-                document.querySelector("#messages").innerHTML = "";
+                document.querySelector("#messagesbox").classList.add("bye");
                 fetch(`https://lq.litdevs.org/v1/quark/${id}`, {headers: {"Authorization": `Bearer ${authToken}`}})
                     .then(response => response.json())
                     .then(result => {
@@ -199,12 +206,15 @@
             }
 
             function switchChannel(id) {
+                document.querySelector("#sendmsgs").classList.add("hidden");
+                document.querySelector("#messagesbox").classList.remove("bye");
                 document.querySelector("#messages").innerHTML = "Loading...";
+                window.currentChannel = id;
                 let messages = [];
                 fetch(`https://lq.litdevs.org/v1/channel/${id}/messages`, {headers: {"Authorization": `Bearer ${authToken}`}})
                     .then(response => response.json())
                     .then(result => {
-                        if(result.response.messages.length == 0) document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
+                        if(result.response.messages.length == 0) return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
                         result.response.messages.forEach(message => {
                             fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
                                 .then(response => response.json())
@@ -220,6 +230,7 @@
                                         messages.forEach(message => {
                                             document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                                         })
+                                        document.querySelector("#sendmsgs").classList.remove("hidden");
                                     }
                                 })
                                 
@@ -227,6 +238,10 @@
                         //if(document.querySelector("#messages").innerHTML == "Loading...") document.querySelector("#messages").innerHTML = "";
                         //document.querySelector("#messages").innerHTML = `<div class="message"><img src="${user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(user.username)}</span>${escapeHTML(message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                     })
+            }
+
+            function sendMessage() {
+                fetch(`https://lq.litdevs.org/v1/channel/${currentChannel}/messages`, {method: "POST", headers: {"Authorization": `Bearer ${authToken}`, 'Content-Type': 'application/json'}, body: JSON.stringify({"content": document.querySelector("#sendmsg").value})})
             }
         </script>
     </body>
