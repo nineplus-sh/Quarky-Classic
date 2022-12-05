@@ -149,6 +149,7 @@
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
         <script>
+            window.knownUsers = [];
             setTimeout(() => {
                 document.querySelector("#loader").classList.add("bye");
             }, 1000);
@@ -222,25 +223,40 @@
                             return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
                         }
                         result.response.messages.forEach(message => {
-                            fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
-                                .then(response => response.json())
-                                .then(result => {
-                                    let user = result.response.user;
-                                    messages.push({"message": message, "user": user, "timestamp": message.timestamp});
-                                }).then(function(){
-                                    if(messages.length == result.response.messages.length) {
-                                        document.querySelector("#messages").innerHTML = "";
-                                        messages = messages.sort(function(x, y) {
-                                            return y.timestamp - x.timestamp;
-                                        })
-                                        messages.forEach(message => {
-                                            document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
-                                        })
-                                        if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
-                                        document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
-                                    }
+                            if(knownUsers.some(user => user._id == message.authorId)) {
+                                messages.push({"message": message, "user": knownUsers.find(user => user._id == message.authorId), "timestamp": message.timestamp});
+                                if(messages.length == result.response.messages.length) {
+                                    document.querySelector("#messages").innerHTML = "";
+                                    messages = messages.sort(function(x, y) {
+                                        return y.timestamp - x.timestamp;
+                                    })
+                                    messages.forEach(message => {
+                                        document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
+                                    })
+                                    if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
+                                    document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
+                                }
+                            } else {
+                                fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
+                                    .then(response => response.json())
+                                    .then(result => {
+                                        let user = result.response.user;
+                                        knownUsers.push(user);
+                                        messages.push({"message": message, "user": user, "timestamp": message.timestamp});
+                                    }).then(function(){
+                                        if(messages.length == result.response.messages.length) {
+                                            document.querySelector("#messages").innerHTML = "";
+                                            messages = messages.sort(function(x, y) {
+                                                return y.timestamp - x.timestamp;
+                                            })
+                                            messages.forEach(message => {
+                                                document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
+                                            })
+                                            if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
+                                            document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
+                                        }
                                 })
-                                
+                            }      
                         })
                         //if(document.querySelector("#messages").innerHTML == "Loading...") document.querySelector("#messages").innerHTML = "";
                         //document.querySelector("#messages").innerHTML = `<div class="message"><img src="${user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(user.username)}</span>${escapeHTML(message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
