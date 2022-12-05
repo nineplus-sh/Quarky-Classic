@@ -84,6 +84,9 @@
                 position: fixed;
                 left: 17vw;
                 top: 1vh;
+                overflow-y: scroll;
+                height: 100%;
+                width: 83%;
             }
             #servername {
                 padding-left: 0.5em;
@@ -229,6 +232,7 @@
                                         })
                                         messages.forEach(message => {
                                             document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
+                                            document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
                                         })
                                         document.querySelector("#sendmsgs").classList.remove("hidden");
                                     }
