@@ -208,17 +208,17 @@
                     })
             }
 
-            function switchChannel(id) {
-                document.querySelector("#sendmsgs").classList.add("hidden");
+            function switchChannel(id, rerender = true) {
+                if(rerender) document.querySelector("#sendmsgs").classList.add("hidden");
+                if(rerender) document.querySelector("#messages").innerHTML = "Loading...";
                 document.querySelector("#messagesbox").classList.remove("bye");
-                document.querySelector("#messages").innerHTML = "Loading...";
                 window.currentChannel = id;
                 let messages = [];
                 fetch(`https://lq.litdevs.org/v1/channel/${id}/messages`, {headers: {"Authorization": `Bearer ${authToken}`}})
                     .then(response => response.json())
                     .then(result => {
                         if(result.response.messages.length == 0) {
-                            document.querySelector("#sendmsgs").classList.remove("hidden");
+                            if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
                             return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
                         }
                         result.response.messages.forEach(message => {
@@ -236,7 +236,7 @@
                                         messages.forEach(message => {
                                             document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                                         })
-                                        document.querySelector("#sendmsgs").classList.remove("hidden");
+                                        if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
                                         document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
                                     }
                                 })
@@ -255,7 +255,7 @@
                     .then(function() {
                         document.querySelector("#sendmsg").value = "";
                         document.querySelector("#sendmsg").disabled = false;
-                        switchChannel(currentChannel);
+                        switchChannel(currentChannel, false);
                     })
             }
         </script>
