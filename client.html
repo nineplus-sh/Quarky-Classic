@@ -236,7 +236,7 @@
                                         return y.timestamp - x.timestamp;
                                     })
                                     messages.forEach(message => {
-                                        document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span><small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
+                                        document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small></span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                                     })
                                     if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
                                     document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
@@ -255,7 +255,7 @@
                                                 return y.timestamp - x.timestamp;
                                             })
                                             messages.forEach(message => {
-                                                document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)}</span><small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
+                                                document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small></span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                                             })
                                             if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
                                             document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
