@@ -72,6 +72,7 @@
             }
             .quark img {
                 width: 4em;
+                height: 4em;
                 border-radius: 100%;
             }
             .joiner {
@@ -178,7 +179,7 @@
                 .then(result => result.response.quarks.forEach(quark => {
                     document.querySelector("#list").innerHTML = `
                     <div class="quark" id="${quark._id}" onclick="fetchQuark(this.id)">
-                        <img src="${quark.iconUri}">
+                        <img src="${quark.iconUri}" onerror="this.src='/assets/img/fail.png';">
                     </div>` + document.querySelector("#list").innerHTML;
                 }))
 
