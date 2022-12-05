@@ -245,7 +245,13 @@
             }
 
             function sendMessage() {
+                document.querySelector("#sendmsg").value = "Sending...";
+                document.querySelector("#sendmsg").disabled = true;
                 fetch(`https://lq.litdevs.org/v1/channel/${currentChannel}/messages`, {method: "POST", headers: {"Authorization": `Bearer ${authToken}`, 'Content-Type': 'application/json'}, body: JSON.stringify({"content": document.querySelector("#sendmsg").value})})
+                    .then(function() {
+                        document.querySelector("#sendmsg").value = "";
+                        document.querySelector("#sendmsg").disabled = false;
+                    })
             }
         </script>
     </body>
