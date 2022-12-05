@@ -141,7 +141,7 @@
 
             </span>
         </div>
-        <div id="messagesbox">
+        <div id="messagesbox" onscroll="scrollingDetected()">
             <div id="messages">
 
             </div>
@@ -157,6 +157,7 @@
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
         <script>
             window.knownUsers = [];
+            window.jumpToBottom = true;
             setTimeout(() => {
                 document.querySelector("#loader").classList.add("bye");
             }, 1000);
@@ -175,7 +176,6 @@
             fetch("https://lq.litdevs.org/v1/quark/me", {headers: {"Authorization": `Bearer ${authToken}`}})
                 .then(response => response.json())
                 .then(result => result.response.quarks.forEach(quark => {
-                    console.log(quark);
                     document.querySelector("#list").innerHTML = `
                     <div class="quark" id="${quark._id}" onclick="fetchQuark(this.id)">
                         <img src="${quark.iconUri}">
@@ -227,14 +227,14 @@
                     .then(response => response.json())
                     .then(result => {
                         if(result.response.messages.length == 0) {
-                            if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
+                            document.querySelector("#sendmsgs").classList.remove("hidden");
                             return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
                         }
                         result.response.messages.forEach(async message => {
-                            console.log(knownUsers);
                             if(knownUsers.some(user => user._id == message.authorId)) {
                                 messages.push({"message": message, "user": knownUsers.find(user => user._id == message.authorId), "timestamp": message.timestamp});
                                 if(messages.length == result.response.messages.length) {
+                                    let currentJumpToBottom = jumpToBottom;
                                     document.querySelector("#messages").innerHTML = "";
                                     messages = messages.sort(function(x, y) {
                                         return y.timestamp - x.timestamp;
@@ -242,8 +242,9 @@
                                     messages.forEach(message => {
                                         document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small></span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                                     })
-                                    if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
-                                    document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
+                                    document.querySelector("#sendmsgs").classList.remove("hidden");
+                                    console.log(jumpToBottom, currentJumpToBottom)
+                                    if(currentJumpToBottom) document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
                                 }
                             } else {
                                 await fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
@@ -261,7 +262,7 @@
                                             messages.forEach(message => {
                                                 document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small></span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
                                             })
-                                            if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
+                                            document.querySelector("#sendmsgs").classList.remove("hidden");
                                             document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
                                         }
                                 })
@@ -282,6 +283,10 @@
                         document.querySelector("#sendmsg").disabled = false;
                         switchChannel(currentChannel, false);
                     })
+            }
+
+            function scrollingDetected() {
+                jumpToBottom = Math.abs(document.querySelector("#messagesbox").scrollHeight - document.querySelector("#messagesbox").clientHeight - document.querySelector("#messagesbox").scrollTop) < 1
             }
 
             setInterval(() => {
