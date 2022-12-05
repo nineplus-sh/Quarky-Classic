@@ -120,6 +120,22 @@
             .hidden {
                 display: none !important;
             }
+            .tippy-box[data-theme~='black'] {
+                background-color: black;
+                color: white;
+            }
+            .tippy-box[data-theme~='black'][data-placement^='top'] > .tippy-arrow::before {
+                border-top-color: black;
+            }
+            .tippy-box[data-theme~='black'][data-placement^='bottom'] > .tippy-arrow::before {
+                border-bottom-color: black;
+            }
+            .tippy-box[data-theme~='black'][data-placement^='left'] > .tippy-arrow::before {
+                border-left-color: black;
+            }
+            .tippy-box[data-theme~='black'][data-placement^='right'] > .tippy-arrow::before {
+                border-right-color: black;
+            }
         </style>
     </head>
     <body>
@@ -127,10 +143,10 @@
             <img src="/assets/img/vukkyplanetdark.svg" id="planet">
         </div>
         <div id="list">
-            <div class="quark joiner" onclick="joinQuark();">
+            <div class="quark joiner" onclick="joinQuark();" data-tippy-content="Join a Quark">
                 <span style="font-size: 2.88em; margin-left: 0.4em;">+</span>
             </div>
-            <div class="quark logout" onclick="logOut();">
+            <div class="quark logout" onclick="logOut();" data-tippy-content="Log Out :(">
                 <span style="font-size: 2.4em; margin-left: 0.4em;">←</span>
             </div>
         </div>
@@ -178,9 +194,14 @@
                 .then(response => response.json())
                 .then(result => result.response.quarks.forEach(quark => {
                     document.querySelector("#list").innerHTML = `
-                    <div class="quark" id="${quark._id}" onclick="fetchQuark(this.id)">
+                    <div class="quark" id="${quark._id}" onclick="fetchQuark(this.id)" data-tippy-content="${quark.name}">
                         <img src="${quark.iconUri}" onerror="this.src='/assets/img/fail.png';">
                     </div>` + document.querySelector("#list").innerHTML;
+                    tippy(`.quark`, {
+                        placement: "right",
+                        positionFixed: true,
+                        theme: "black"
+                    })
                 }))
 
             function joinQuark() {
