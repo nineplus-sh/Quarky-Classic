@@ -217,7 +217,10 @@
                 fetch(`https://lq.litdevs.org/v1/channel/${id}/messages`, {headers: {"Authorization": `Bearer ${authToken}`}})
                     .then(response => response.json())
                     .then(result => {
-                        if(result.response.messages.length == 0) return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
+                        if(result.response.messages.length == 0) {
+                            document.querySelector("#sendmsgs").classList.remove("hidden");
+                            return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
+                        }
                         result.response.messages.forEach(message => {
                             fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
                                 .then(response => response.json())
@@ -245,12 +248,14 @@
             }
 
             function sendMessage() {
+                let oopsiepoopsie = document.querySelector("#sendmsg").value;
                 document.querySelector("#sendmsg").value = "Sending...";
                 document.querySelector("#sendmsg").disabled = true;
-                fetch(`https://lq.litdevs.org/v1/channel/${currentChannel}/messages`, {method: "POST", headers: {"Authorization": `Bearer ${authToken}`, 'Content-Type': 'application/json'}, body: JSON.stringify({"content": document.querySelector("#sendmsg").value})})
+                fetch(`https://lq.litdevs.org/v1/channel/${currentChannel}/messages`, {method: "POST", headers: {"Authorization": `Bearer ${authToken}`, 'Content-Type': 'application/json'}, body: JSON.stringify({"content": oopsiepoopsie})})
                     .then(function() {
                         document.querySelector("#sendmsg").value = "";
                         document.querySelector("#sendmsg").disabled = false;
+                        switchChannel(currentChannel);
                     })
             }
         </script>
