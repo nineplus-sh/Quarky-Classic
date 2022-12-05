@@ -222,7 +222,7 @@
                             if(rerender) document.querySelector("#sendmsgs").classList.remove("hidden");
                             return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
                         }
-                        result.response.messages.forEach(message => {
+                        result.response.messages.forEach(async message => {
                             if(knownUsers.some(user => user._id == message.authorId)) {
                                 messages.push({"message": message, "user": knownUsers.find(user => user._id == message.authorId), "timestamp": message.timestamp});
                                 if(messages.length == result.response.messages.length) {
@@ -237,7 +237,7 @@
                                     document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
                                 }
                             } else {
-                                fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
+                                await fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
                                     .then(response => response.json())
                                     .then(result => {
                                         let user = result.response.user;
