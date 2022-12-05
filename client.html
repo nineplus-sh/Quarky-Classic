@@ -260,7 +260,7 @@
             }
 
             setInterval(() => {
-                if(!currentChannel) return;
+                if(typeof currentChannel == "undefined") return;
                 switchChannel(currentChannel, false);
             }, 1000);
         </script>
