@@ -223,6 +223,7 @@
                             return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
                         }
                         result.response.messages.forEach(async message => {
+                            console.log(knownUsers);
                             if(knownUsers.some(user => user._id == message.authorId)) {
                                 messages.push({"message": message, "user": knownUsers.find(user => user._id == message.authorId), "timestamp": message.timestamp});
                                 if(messages.length == result.response.messages.length) {
