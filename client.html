@@ -258,6 +258,11 @@
                         switchChannel(currentChannel, false);
                     })
             }
+
+            setInterval(() => {
+                if(!currentChannel) return;
+                switchChannel(currentChannel, false);
+            }, 1000);
         </script>
     </body>
 </html>
