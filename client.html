@@ -195,6 +195,7 @@
             }
 
             function fetchQuark(id) {
+                currentChannel = undefined;
                 document.querySelector("#servername").innerHTML = "Loading..."
                 document.querySelector("#channels").innerHTML = "Loading...";
                 document.querySelector("#messagesbox").classList.add("bye");
