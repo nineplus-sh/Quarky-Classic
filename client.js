@@ -224,7 +224,7 @@ function messageRender(message) {
         <br>
     </div>
     `;
-    document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
+    if(jumpToBottom) document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
 /**
