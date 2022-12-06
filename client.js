@@ -23,4 +23,12 @@ async function quarkFetch() {
         
     });
 }
+async function api(url, data = null, method = "GET") {
+    return new Promise(function(resolve, reject) {
+        fetch(url, {"headers": {"Authentication": `Bearer ${authToken}`, "body": data, "method": method}})
+            .then(response => response.json())
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+    });
+}
 welcome();
