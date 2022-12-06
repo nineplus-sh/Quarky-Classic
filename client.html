@@ -2,7 +2,7 @@
     <head>
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preload" href="/assets/sfx/loggedin.mp3" as="audio" />
+        <link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />
         <link rel="preload" href="/assets/img/stars.gif" as="image" />
         <link rel="preload" href="/assets/img/vukkyplanetdark.svg" as="image" />
         <style>
@@ -136,6 +136,18 @@
             .tippy-box[data-theme~='black'][data-placement^='right'] > .tippy-arrow::before {
                 border-right-color: black;
             }
+
+            .quark.stretch img {
+                animation: stretch 0.3s forwards;
+            }
+            @keyframes stretch {
+                0% {
+                    transform: scale(1)
+                }
+                50% {
+                    transform: scale(1, 0.5) translate(0, 50%);
+                }
+            }
         </style>
     </head>
     <body>
@@ -176,7 +188,10 @@
             window.knownUsers = [];
             window.jumpToBottom = true;
             setTimeout(() => {
-                document.querySelector("#loader").classList.add("bye");
+                new Audio("/assets/sfx/wb.mp3").play();
+                setTimeout(() => {
+                    document.querySelector("#loader").classList.add("bye");
+                }, 1500);
             }, 1000);
             function getCookie(key) {
                 var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
@@ -225,6 +240,10 @@
 
             function fetchQuark(id) {
                 currentChannel = undefined;
+                document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
+                setTimeout(function() {
+                    document.querySelector(`.quark[id='${id}']`).classList.add("stretch");
+                }, 0)
                 document.querySelector("#servername").innerHTML = "Loading..."
                 document.querySelector("#channels").innerHTML = "Loading...";
                 document.querySelector("#messagesbox").classList.add("bye");

@@ -3,6 +3,8 @@
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preload" href="/assets/sfx/loggedin.mp3" as="audio" />
+        <link rel="preload" href="/assets/sfx/login.mp3" as="audio" />
+        <audio id="bgm" src="/assets/sfx/login.mp3" autoplay loop></audio>
         <script>
             function getCookie(key) {
                 var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
@@ -24,6 +26,7 @@
                             document.querySelector("#text").innerText = `${response.response.message}!`
                             new Audio("/assets/sfx/nah.mp3").play();
                         } else {
+                            document.querySelector("#bgm").pause();
                             setCookie("authToken", response.response.access_token, 365);
                             new Audio("/assets/sfx/loggedin.mp3").play();
                             document.querySelector("#welcome").classList.add("bye");
