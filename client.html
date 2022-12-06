@@ -148,11 +148,24 @@
                     transform: scale(1, 0.5) translate(0, 50%);
                 }
             }
+
+            #loaderexp {
+                position: fixed;
+                top: 50%;
+                left: 49%;
+                transform: translate(-50%, -50%);
+                z-index: 3;
+                background-color: #36393F;
+                padding: 1em;
+            }
         </style>
     </head>
     <body>
         <div id="loader">
             <img src="/assets/img/vukkyplanetdark.svg" id="planet">
+            <div id="loaderexp">
+                Preparing assets...
+            </div>
         </div>
         <div id="list">
             <div class="quark joiner" onclick="joinQuark();" data-tippy-content="Join a Quark">
@@ -184,156 +197,6 @@
 
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
-        <script>
-            window.knownUsers = [];
-            window.jumpToBottom = true;
-            setTimeout(() => {
-                new Audio("/assets/sfx/wb.mp3").play();
-                setTimeout(() => {
-                    document.querySelector("#loader").classList.add("bye");
-                }, 1500);
-            }, 1000);
-            function getCookie(key) {
-                var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
-                return keyValue ? keyValue[2] : null;
-            }
-            window.authToken = getCookie("authToken");
-            if(!authToken) document.location.pathname = "/";
-            function escapeHTML(unsafeText) {
-                let div = document.createElement('div');
-                div.innerText = unsafeText;
-                return div.innerHTML;
-            }
-
-            fetch("https://lq.litdevs.org/v1/quark/me", {headers: {"Authorization": `Bearer ${authToken}`}})
-                .then(response => response.json())
-                .then(result => result.response.quarks.forEach(quark => {
-                    document.querySelector("#list").innerHTML = `
-                    <div class="quark" id="${quark._id}" onclick="fetchQuark(this.id)" data-tippy-content="${quark.name}">
-                        <img src="${quark.iconUri}" onerror="this.src='/assets/img/fail.png';">
-                    </div>` + document.querySelector("#list").innerHTML;
-                    tippy(`.quark`, {
-                        placement: "right",
-                        positionFixed: true,
-                        theme: "black"
-                    })
-                }))
-
-            function joinQuark() {
-                let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
-                if(!quarkCode) return;
-                fetch(`https://lq.litdevs.org/v1/quark/invite/${quarkCode}`, {headers: {"Authorization": `Bearer ${authToken}`}, method: "POST"})
-                    .then(response => response.json())
-                    .then(result => {
-                        if(!result.request.success) {
-                            alert(result.response.message);
-                        } else {
-                            document.location.reload();
-                        }
-                    })
-            }
-
-            function logOut() {
-                document.cookie = "authToken=";
-                document.location.pathname = "/";
-            }
-
-            function fetchQuark(id) {
-                currentChannel = undefined;
-                document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
-                setTimeout(function() {
-                    document.querySelector(`.quark[id='${id}']`).classList.add("stretch");
-                }, 0)
-                document.querySelector("#servername").innerHTML = "Loading..."
-                document.querySelector("#channels").innerHTML = "Loading...";
-                document.querySelector("#messagesbox").classList.add("bye");
-                fetch(`https://lq.litdevs.org/v1/quark/${id}`, {headers: {"Authorization": `Bearer ${authToken}`}})
-                    .then(response => response.json())
-                    .then(result => {
-                        document.querySelector("#servername").innerText = result.response.quark.name;
-                        result.response.quark.channels.forEach(channel => {
-                            if(document.querySelector("#channels").innerHTML == "Loading...") document.querySelector("#channels").innerHTML = "";
-                            document.querySelector("#channels").innerHTML += `<span id="${channel._id}" onclick="switchChannel(this.id)">${channel.name}<br></span>`
-                        })
-                    })
-            }
-
-            function switchChannel(id, rerender = true) {
-                if(rerender) document.querySelector("#sendmsgs").classList.add("hidden");
-                if(rerender) document.querySelector("#messages").innerHTML = "Loading...";
-                document.querySelector("#messagesbox").classList.remove("bye");
-                window.currentChannel = id;
-                let messages = [];
-                fetch(`https://lq.litdevs.org/v1/channel/${id}/messages`, {headers: {"Authorization": `Bearer ${authToken}`}})
-                    .then(response => response.json())
-                    .then(result => {
-                        if(result.response.messages.length == 0) {
-                            document.querySelector("#sendmsgs").classList.remove("hidden");
-                            return document.querySelector("#messages").innerHTML = "There are no messages in this channel!<br>Maybe you should be the first?";
-                        }
-                        result.response.messages.forEach(async message => {
-                            if(knownUsers.some(user => user._id == message.authorId)) {
-                                messages.push({"message": message, "user": knownUsers.find(user => user._id == message.authorId), "timestamp": message.timestamp});
-                                if(messages.length == result.response.messages.length) {
-                                    let currentJumpToBottom = jumpToBottom;
-                                    document.querySelector("#messages").innerHTML = "";
-                                    messages = messages.sort(function(x, y) {
-                                        return y.timestamp - x.timestamp;
-                                    })
-                                    messages.forEach(message => {
-                                        document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small></span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
-                                    })
-                                    document.querySelector("#sendmsgs").classList.remove("hidden");
-                                    console.log(jumpToBottom, currentJumpToBottom)
-                                    if(currentJumpToBottom) document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
-                                }
-                            } else {
-                                await fetch(`https://lq.litdevs.org/v1/user/${message.authorId}`, {headers: {"Authorization": `Bearer ${authToken}`}})
-                                    .then(response => response.json())
-                                    .then(result => {
-                                        let user = result.response.user;
-                                        knownUsers.push(user);
-                                        messages.push({"message": message, "user": user, "timestamp": message.timestamp});
-                                    }).then(function(){
-                                        if(messages.length == result.response.messages.length) {
-                                            document.querySelector("#messages").innerHTML = "";
-                                            messages = messages.sort(function(x, y) {
-                                                return y.timestamp - x.timestamp;
-                                            })
-                                            messages.forEach(message => {
-                                                document.querySelector("#messages").innerHTML = `<div class="message"><img src="${message.user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(message.user.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()}</small></span>${escapeHTML(message.message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
-                                            })
-                                            document.querySelector("#sendmsgs").classList.remove("hidden");
-                                            document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
-                                        }
-                                })
-                            }      
-                        })
-                        //if(document.querySelector("#messages").innerHTML == "Loading...") document.querySelector("#messages").innerHTML = "";
-                        //document.querySelector("#messages").innerHTML = `<div class="message"><img src="${user.avatarUri}" class="avie"><span class="lusername">${escapeHTML(user.username)}</span>${escapeHTML(message.content)}</div><br>` + document.querySelector("#messages").innerHTML;
-                    })
-            }
-
-            function sendMessage() {
-                let oopsiepoopsie = document.querySelector("#sendmsg").value;
-                document.querySelector("#sendmsg").value = "Sending...";
-                document.querySelector("#sendmsg").disabled = true;
-                fetch(`https://lq.litdevs.org/v1/channel/${currentChannel}/messages`, {method: "POST", headers: {"Authorization": `Bearer ${authToken}`, 'Content-Type': 'application/json'}, body: JSON.stringify({"content": oopsiepoopsie})})
-                    .then(function() {
-                        document.querySelector("#sendmsg").value = "";
-                        document.querySelector("#sendmsg").disabled = false;
-                        switchChannel(currentChannel, false);
-                    })
-            }
-
-            function scrollingDetected() {
-                jumpToBottom = Math.abs(document.querySelector("#messagesbox").scrollHeight - document.querySelector("#messagesbox").clientHeight - document.querySelector("#messagesbox").scrollTop) < 1
-            }
-
-            setInterval(() => {
-                if(typeof currentChannel == "undefined") return;
-                switchChannel(currentChannel, false);
-            }, 1000);
-        </script>
+        <script src="/client.js"></script>
     </body>
 </html>
