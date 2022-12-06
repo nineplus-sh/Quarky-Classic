@@ -26,7 +26,7 @@ function socketListeners() {
         }, 15000);
     }
     wss.onmessage =(message) => {
-        // stuff
+        console.log(message)
     }
     wss.onclose = (message) => {
         if (heartbeat) clearInterval(heartbeat);

@@ -4,14 +4,31 @@
  */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+// Stores if jumping to the bottom automatically is allowed
+window.jumpToBottom = true;
+
+// Stores the current channel
+window.currentChannel = null;
+
 /**
  * Get the value of a cookie
  * @param {string} key 
- * @returns {string} cookie value
+ * @returns {string} - cookie value
  */
 function getCookie(key) {
     var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
     return keyValue ? keyValue[2] : null;
+}
+
+/**
+ * Escapes HTML, in case they need to be evacuated.
+ * @param {string} unsafeText - Text to escape 
+ * @returns {string} Escaped text
+ */
+function escapeHTML(unsafeText) {
+    let div = document.createElement('div');
+    div.innerText = unsafeText;
+    return div.innerHTML;
 }
 
 // Redirect to login screen if no token is presemt
@@ -79,7 +96,8 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
     if (quarkTip) quarkTip.destroy();
     quarkTip = tippy(`.quark`, { 
         placement: "right",
-        theme: "black"
+        theme: "black",
+        hideOnClick: false
     });
 }
 /**
@@ -105,7 +123,9 @@ async function quarkFetch() {
         method: method,
         headers: {
             "Authorization": `Bearer ${authToken}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "User-Agent": "Quarky",
+            "lq-agent": "Quarky"
         }
     }
     // GET requests cannot have a body
@@ -117,7 +137,7 @@ async function quarkFetch() {
         if (data.request.success) return data; // Success
         if (data.request.status_code === 401)  {
             logOut();
-            return logOut(); // this isn't a good idea right
+            return false;
         }
         // Failed :(
         alert(`${data.request.status_code}:\n${data.response.message}`)
@@ -128,20 +148,123 @@ async function quarkFetch() {
     }
 }
 
+/**
+ * Clear the auth cookie and go back to login
+ * @returns {void}
+ */
 function logOut() {
     document.cookie = "authToken=";
     document.location.pathname = "/";
 }
 
+/**
+ * Join a Quark
+ * @returns {void}
+ */
 function joinQuark() {
     let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
     alert("Unfortunately, I'm not gonna do anything with that information :)")
 }
 
-function switchQuark(id) {
+/**
+ * Changes to another Quark
+ * @param {string} id - The ID of the quark to change to.
+ * @returns {void}
+ */
+async function switchQuark(id) {
+    document.querySelector("#messagesbox").classList.add("hidden");
     document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
     void document.querySelector(`.quark[id='${id}']`).offsetWidth;
     document.querySelector(`.quark[id='${id}']`).classList.add("stretch");
+
+    let quark = (await apiCall(`/quark/${id}`)).response.quark;
+    document.querySelector("#servername").innerText = quark.name;
+    channelListRender(quark.channels);
+}
+
+/**
+ * Populates channel list.
+ * @param {array} channels - The list of channels to populate the list with.
+ * @returns {void}
+ */
+async function channelListRender(channels) {
+    document.querySelector("#channels").innerHTML = "";
+    channels.forEach(channel => {
+        document.querySelector("#channels").innerHTML += `
+            <div class="channel" id="${channel._id}" onclick="switchChannel('${channel._id}')">${channel.name}</div>
+        `
+    })
+}
+
+/**
+ * Makes the message format make more sense to me.
+ * @param {array} message - The message to clean.
+ * @returns {object} The cleaned message.
+ */
+function cleanMessage(message) {
+    return {
+        ...message.message,
+        "author": {
+            ...message.author
+        }
+    }
+}
+
+/**
+ * Renders a message.
+ * @param {array} message - The message to render.
+ * @returns {void}
+ */
+function messageRender(message) {
+    document.querySelector("#messages").innerHTML += `
+    <div class="message">
+        <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatar}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
+        <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+        ${escapeHTML(message.content)}
+        <br>
+    </div>
+    `;
+    document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
+}
+
+/**
+ * Changes to another channel
+ * @param {string} id - The ID of the channel to change to.
+ * @returns {void}
+ */
+async function switchChannel(id) {
+    currentChannel = id;
+    document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector("#messages").innerHTML = "";
+    let messages = (await apiCall(`/channel/${id}/messages`)).response.messages;
+    messages = messages.sort(function(x,y) {
+        return x.message.timestamp - y.message.timestamp;
+    });
+    messages.forEach(message => {
+        messageRender(cleanMessage(message));
+    });
+    document.querySelector("#messagesbox").classList.remove("hidden");
+}
+
+/**
+ * Makes sure if auto-scrolling is acceptable or not.
+ * @returns {void}
+ */
+function scrollingDetected() {
+    jumpToBottom = Math.abs(document.querySelector("#messagesbox").scrollHeight - document.querySelector("#messagesbox").clientHeight - document.querySelector("#messagesbox").scrollTop) < 1
+}
+
+/**
+ * Sends a message
+ * @param {string} message - The message to send.
+ * @returns {void}
+ */
+async function sendMessage(message) {
+    document.querySelector("#sendmsg").disabled = true;
+    document.querySelector("#sendmsg").value = "Sending...";
+    await apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
+    document.querySelector("#sendmsg").value = "";
+    document.querySelector("#sendmsg").disabled = false;
 }
 
 welcome();

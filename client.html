@@ -5,6 +5,8 @@
         <link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />
         <link rel="preload" href="/assets/img/stars.gif" as="image" />
         <link rel="preload" href="/assets/img/vukkyplanetdark.svg" as="image" />
+        <link rel="preload" href="/assets/img/loading.png" as="image" />
+        <link rel="preload" href="/assets/img/fail.png" as="image" />
         <style>
             body {
                 margin: 0;
@@ -113,6 +115,9 @@
                 position: absolute;
                 font-weight: bold;
             }
+            .message {
+                padding-bottom: 1em;
+            }
             .timestamp {
                 color: lightgray;
                 font-weight: normal;
@@ -184,14 +189,14 @@
 
             </span>
         </div>
-        <div id="messagesbox" onscroll="scrollingDetected()">
+        <div id="messagesbox" onscroll="scrollingDetected()" class="hidden">
             <div id="messages">
 
             </div>
-            <div id="sendmsgs" class="hidden">
+            <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                    <button onclick="sendMessage()">Ok</button>
+                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)">Ok</button>
                 </form>
             </div>
         </div>
