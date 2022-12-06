@@ -26,7 +26,8 @@ function socketListeners() {
         }, 15000);
     }
     wss.onmessage =(message) => {
-        console.log(message)
+        data = JSON.parse(message.data);
+        if(data.eventId == "messageCreate") messageRender(cleanMessage(data))
     }
     wss.onclose = (message) => {
         if (heartbeat) clearInterval(heartbeat);

@@ -233,7 +233,11 @@ function messageRender(message) {
  * @returns {void}
  */
 async function switchChannel(id) {
+    // Handle subscrpiptions
+    wss.send(JSON.stringify({event: "subscribe", message: `channel_${id}`}))
+    if(currentChannel) wss.send(JSON.stringify({event: "unsubscribe", message: `channel_${currentChannel}`}))
     currentChannel = id;
+
     document.querySelector("#messagesbox").classList.add("hidden");
     document.querySelector("#messages").innerHTML = "";
     let messages = (await apiCall(`/channel/${id}/messages`)).response.messages;
