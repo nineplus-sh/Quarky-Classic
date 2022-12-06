@@ -264,11 +264,8 @@ function scrollingDetected() {
  * @returns {void}
  */
 async function sendMessage(message) {
-    document.querySelector("#sendmsg").disabled = true;
-    document.querySelector("#sendmsg").value = "Sending...";
-    await apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
     document.querySelector("#sendmsg").value = "";
-    document.querySelector("#sendmsg").disabled = false;
+    apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
 }
 
 welcome();
