@@ -11,6 +11,26 @@ window.jumpToBottom = true;
 window.currentChannel = null;
 
 /**
+ * Stolen code to linkify text, because I am soo lazy. https://stackoverflow.com/a/71734086
+ * @param {string} t - Text to linkify.
+ * @returns {string} Linkified text.
+ */
+const linkify = t => {
+    const m = t.match(/(?<=\s|^)[a-zA-Z-:/]+\.[a-zA-Z-].+?(?=[.,;:?!-]?(?:\s|$))/g)
+    if (!m) return t
+    const a = []
+    m.forEach(x => {
+      const [t1, ...t2] = t.split(x)
+      a.push(t1)
+      t = t2.join(x)
+      const y = (!(x.match(/(http(s?)):\/\//)) ? 'https://' : '') + x
+      a.push('<a href="' + y + '" target="_blank">' + y + '</a>')
+    })
+    a.push(t)
+    return a.join('')
+}
+
+/**
  * Get the value of a cookie
  * @param {string} key 
  * @returns {string} - cookie value
@@ -220,7 +240,7 @@ function messageRender(message) {
     <div class="message">
         <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatar}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-        ${escapeHTML(message.content)}
+        ${linkify(escapeHTML(message.content))}
         <br>
     </div>
     `;
