@@ -246,6 +246,11 @@ function messageRender(message) {
         <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatarUri}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
         ${linkify(escapeHTML(message.content))}
+        ${message.attachments && message.attachments.length > 0 ? () => {
+        let a = ""
+        message.attachments.forEach(attachment => a += `<br>attachment: ${attachment}`)
+        return a
+        } : ""}
         <br>
     </div>
     `;
