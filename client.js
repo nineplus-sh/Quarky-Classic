@@ -113,7 +113,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
                 <span style="font-size: 2.4em; margin-left: 0.4em;">←</span>
             </div>`
     // Create a tippy tooltip if it doesnt already exist
-    if (quarkTip) quarkTip.destroy();
+    if (quarkTip) quarkTip.forEach(tip => tip.destroy());
     quarkTip = tippy(`.quark`, { 
         placement: "right",
         theme: "black",
@@ -181,9 +181,14 @@ function logOut() {
  * Join a Quark
  * @returns {void}
  */
-function joinQuark() {
+async function joinQuark() {
     let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
-    alert("Unfortunately, I'm not gonna do anything with that information :)")
+    if (!quarkCode) return;
+    let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
+    if (!joinResponse) return alert(`Failed to join Quark :(\n${joinResponse.response.message}`)
+    quarks = await quarkFetch();
+    quarkRender(quarks);
+    switchQuark(joinResponse.response.quark._id);
 }
 
 /**
@@ -238,7 +243,7 @@ function cleanMessage(message) {
 function messageRender(message) {
     document.querySelector("#messages").innerHTML += `
     <div class="message">
-        <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatar}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
+        <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatarUri}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
         ${linkify(escapeHTML(message.content))}
         <br>
