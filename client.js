@@ -223,7 +223,7 @@ function cleanMessage(message) {
 function messageRender(message) {
     document.querySelector("#messages").innerHTML += `
     <div class="message">
-        <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatar}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
+        <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatarUri}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
         ${escapeHTML(message.content)}
         <br>
