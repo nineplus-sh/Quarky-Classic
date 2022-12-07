@@ -24,7 +24,7 @@ const linkify = t => {
       a.push(t1)
       t = t2.join(x)
       const y = (!(x.match(/(http(s?)):\/\//)) ? 'https://' : '') + x
-      a.push('<a href="' + y + '" target="_blank">' + y + '</a>')
+      a.push('<a href="' + y + '" target="_blank">' + y.replace(/^https?:\/\//, '') + '</a>')
     })
     a.push(t)
     return a.join('')
