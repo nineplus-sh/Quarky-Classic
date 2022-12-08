@@ -197,7 +197,7 @@ async function joinQuark() {
  * @returns {void}
  */
 async function switchQuark(id) {
-    new Audio("/assets/sfx/osu-button-select").play();
+    new Audio("/assets/sfx/osu-button-select.wav").play();
 
     document.querySelector("#messagesbox").classList.add("hidden");
     document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
@@ -267,7 +267,7 @@ function messageRender(message) {
  * @returns {void}
  */
 async function switchChannel(id) {
-    new Audio("/assets/sfx/osu-button-select").play();
+    new Audio("/assets/sfx/osu-button-select.wav").play();
 
     // Handle subscrpiptions
     wss.send(JSON.stringify({event: "subscribe", message: `channel_${id}`}))
