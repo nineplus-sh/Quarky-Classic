@@ -251,7 +251,7 @@ function attachmentTextifier(attachments) {
 function messageRender(message) {
     document.querySelector("#messages").innerHTML += `
     <div class="message">
-        <img src="/assets/img/loading.png" class="avie" onload="this.src='${message.author.avatarUri}'" onerror="this.onload='';this.src='/assets/img/fail.png'">
+        <img src="${message.author.avatarUri}" class="avie loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
         ${linkify(escapeHTML(message.content))}
         ${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}
