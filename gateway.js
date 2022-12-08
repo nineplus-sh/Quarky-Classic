@@ -27,7 +27,10 @@ function socketListeners() {
     }
     wss.onmessage =(message) => {
         data = JSON.parse(message.data);
-        if(data.eventId == "messageCreate") messageRender(cleanMessage(data))
+        if(data.eventId == "messageCreate") {
+            messageRender(cleanMessage(data))
+            if(!document.hasFocus()) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
+        }
     }
     wss.onclose = (message) => {
         if (heartbeat) clearInterval(heartbeat);

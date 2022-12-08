@@ -100,16 +100,16 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
     let quarkList = document.querySelector("#list");
     quarkList.innerHTML = "";
     quarks.forEach(quark => { // ok i wonder if this actually works it should
-        quarkList.innerHTML += `<div class="quark" id="${quark._id}" onclick="switchQuark('${quark._id}');" data-tippy-content="${quark.name}">
+        quarkList.innerHTML += `<div class="quark" id="${quark._id}" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="switchQuark('${quark._id}');" data-tippy-content="${quark.name}">
     <img src="${quark.iconUri}">
 </div>`
     })
     // Add join and log out buttons
     quarkList.innerHTML += `
-            <div class="quark joiner" onclick="joinQuark();" data-tippy-content="Join a Quark">
+            <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
                 <span style="font-size: 2.88em; margin-left: 0.4em;">+</span>
             </div>
-            <div class="quark logout" onclick="logOut();" data-tippy-content="Log Out :(">
+            <div class="quark logout" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="logOut();" data-tippy-content="Log Out :(">
                 <span style="font-size: 2.4em; margin-left: 0.4em;">←</span>
             </div>`
     // Create a tippy tooltip if it doesnt already exist
@@ -197,6 +197,8 @@ async function joinQuark() {
  * @returns {void}
  */
 async function switchQuark(id) {
+    new Audio("/assets/sfx/osu-button-select").play();
+
     document.querySelector("#messagesbox").classList.add("hidden");
     document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
     void document.querySelector(`.quark[id='${id}']`).offsetWidth;
@@ -216,7 +218,7 @@ async function channelListRender(channels) {
     document.querySelector("#channels").innerHTML = "";
     channels.forEach(channel => {
         document.querySelector("#channels").innerHTML += `
-            <div class="channel" id="${channel._id}" onclick="switchChannel('${channel._id}')">${channel.name}</div>
+            <div class="channel" id="${channel._id}" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="switchChannel('${channel._id}')">${channel.name}</div>
         `
     })
 }
@@ -265,6 +267,8 @@ function messageRender(message) {
  * @returns {void}
  */
 async function switchChannel(id) {
+    new Audio("/assets/sfx/osu-button-select").play();
+
     // Handle subscrpiptions
     wss.send(JSON.stringify({event: "subscribe", message: `channel_${id}`}))
     if(currentChannel) wss.send(JSON.stringify({event: "unsubscribe", message: `channel_${currentChannel}`}))
@@ -296,6 +300,7 @@ function scrollingDetected() {
  * @returns {void}
  */
 async function sendMessage(message) {
+    new Audio("/assets/sfx/osu-submit-select.wav").play();
     document.querySelector("#sendmsg").value = "";
     apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
 }
