@@ -302,6 +302,7 @@ function scrollingDetected() {
 async function sendMessage(message) {
     //new Audio("/assets/sfx/osu-submit-select.wav").play();
     document.querySelector("#sendmsg").value = "";
+    message = message.replace(/\B\/shrug\b/gm, "¯\_(ツ)_/¯");
     apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
 }
 
