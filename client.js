@@ -300,7 +300,7 @@ function scrollingDetected() {
  * @returns {void}
  */
 async function sendMessage(message) {
-    new Audio("/assets/sfx/osu-submit-select.wav").play();
+    //new Audio("/assets/sfx/osu-submit-select.wav").play();
     document.querySelector("#sendmsg").value = "";
     apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
 }
