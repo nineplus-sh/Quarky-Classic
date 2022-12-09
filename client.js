@@ -163,7 +163,7 @@ async function quarkFetch() {
         alert(`${data.request.status_code}:\n${data.response.message}`)
         return false;
     } catch (e) {
-        alert(`oh nyo! the sewvew doesn't wawnt tuwu tawk tuwu me anymowe ｡ﾟ(ﾟ´д｀ﾟ)ﾟ｡\nhewe iws infowmation abouwt the ewwow:${e}`);
+        alert(`oh nyo! sewvew doesn't wanna tawk tuwu me anymowe ｡ﾟ(ﾟ´д｀ﾟ)ﾟ｡\ninfos:${e}`);
         return false;
     }
 }
