@@ -206,6 +206,7 @@ async function switchQuark(id) {
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#servername").innerText = quark.name;
+    if(quark.channels[0]) switchChannel(quark.channels[0]._id, false)
     channelListRender(quark.channels);
 }
 
@@ -264,10 +265,11 @@ function messageRender(message) {
 /**
  * Changes to another channel
  * @param {string} id - The ID of the channel to change to.
+ * @param {boolean} audioOn - Play sound effect, defaults to true.
  * @returns {void}
  */
-async function switchChannel(id) {
-    new Audio("/assets/sfx/osu-button-select.wav").play();
+async function switchChannel(id, audioOn = true) {
+    if(audioOn) new Audio("/assets/sfx/osu-button-select.wav").play();
 
     // Handle subscrpiptions
     wss.send(JSON.stringify({event: "subscribe", message: `channel_${id}`}))
