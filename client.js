@@ -253,6 +253,7 @@ function messageRender(message) {
     document.querySelector("#messages").innerHTML += `
     <div class="message">
         <img src="${message.author.avatarUri}" class="avie loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+        ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32'>" : ""}
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
         ${linkify(escapeHTML(message.content))}
         ${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}
