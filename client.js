@@ -163,7 +163,7 @@ async function quarkFetch() {
         alert(`${data.request.status_code}:\n${data.response.message}`)
         return false;
     } catch (e) {
-        alert(`Failed to make API call:\n${e}`);
+        alert(`oh nyo! the sewvew doesn't wawnt tuwu tawk tuwu me anymowe ｡ﾟ(ﾟ´д｀ﾟ)ﾟ｡\nhewe iws infowmation abouwt the ewwow:${e}`);
         return false;
     }
 }
