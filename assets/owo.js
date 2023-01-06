@@ -37,7 +37,7 @@ const prefixes = [
   'OWO ',
   'OwO ',
   'UwU ',
-  'What\'s this? ' // unmerged https://github.com/zuzak/owo/pull/16
+  'wat\'s dis? ' // unmerged https://github.com/zuzak/owo/pull/16
 ]
 
 const suffixes = [
@@ -112,6 +112,12 @@ const substitutions = {
   'the ': 'da ',
   'The ': 'Da ',
   'THE ': 'DA ',
+  'what': 'wat ',
+  'What ': 'Wat ',
+  'WHAT ': 'WAT ',
+  'this ': 'dis ',
+  'This ': 'Dis ',
+  'THIS ': 'DIS '
 }
 
 const addAffixes = (str) => randomItem(prefixes) + str + randomItem(suffixes)
