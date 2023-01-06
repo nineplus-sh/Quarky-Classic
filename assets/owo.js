@@ -112,9 +112,9 @@ const substitutions = {
   'the ': 'da ',
   'The ': 'Da ',
   'THE ': 'DA ',
-  'what': 'wat ',
-  'What ': 'Wat ',
-  'WHAT ': 'WAT ',
+  'what': 'wat',
+  'What': 'Wat',
+  'WHAT': 'WAT',
   'this ': 'dis ',
   'This ': 'Dis ',
   'THIS ': 'DIS '
