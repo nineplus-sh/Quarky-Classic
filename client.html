@@ -2,6 +2,9 @@
     <head>
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/solid.min.css"/>
         <link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-button-select.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-default-hover.wav" as="audio" />
@@ -109,10 +112,12 @@
             #loader.bye, #loader.bye #planet {
                 z-index: -999999 !important;
             }
-            .message .avie {
+            .message .avie, .message .avie img {
                 width: 3em;
                 height: 3em;
                 border-radius: 100%;
+            }
+            .message .avie {
                 margin-right: 0.5em;
             }
             .message .lusername {
@@ -175,7 +180,10 @@
                 color: #00a8f3;
             }
 
-            .avie.loading {
+            /* from tippy documentation */
+            .tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}
+
+            .avie img.loading {
                 content: url("/assets/img/loading.png");
             }
             .message .adminmark {
@@ -183,7 +191,51 @@
                 left: 0;
                 margin-top: 1.6em; 
                 margin-left: 1.5em;
-                filter: drop-shadow(0rem 0rem 0.2rem #00a8f3)
+                filter: drop-shadow(0rem 0rem 0.2rem #00a8f3);
+                width: 32px !important;
+                height: 32px !important;
+            }
+            .adminmark {
+                transform: rotate(0deg) scale(1);
+                transition: transform 0.3s;
+            }
+            .adminmark:hover {
+                transform: rotate(-20deg) scale(1.2);
+                transition: transform 0.3s;
+            }
+
+            #userdata {
+                position: absolute;
+                background-color: #292b2f;
+                width: 100%;
+                height: 3rem;
+                filter: drop-shadow(0 0 0.1rem black);
+                bottom: 0;
+            }
+            #userdata .avie {
+                position: absolute;
+                width: 2.5em;
+                height: 2.5em;
+                border-radius: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 0.3rem;
+            }
+            #userdata .lusername {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 3.1rem;
+                font-weight: bold;
+                font-size: small;
+            }
+
+            #userdata .settings {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 0.5rem;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -209,6 +261,11 @@
             <span id="channels">
 
             </span>
+            <div id="userdata">
+                <img class="avie" src="https://cdn.discordapp.com/emojis/851468740263542814.png">
+                <span class="lusername">Vukky</span>
+                <i class="fa-solid fa-gear fa-lg settings"></i>
+            </div>
         </div>
         <div id="messagesbox" onscroll="scrollingDetected()" class="hidden">
             <div id="messages">
@@ -222,6 +279,7 @@
             </div>
         </div>
 
+        <script src="/assets/owo.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
         <script src="/gateway.js"></script>

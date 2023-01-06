@@ -19,8 +19,8 @@ function socketListeners() {
         }
         // Send heartbeat to server every 15 seconds
         heartbeat = setInterval(() => {
-            console.log(saLines[saIndex]) // i need to know if it's doin the funnies
-           wss.send(JSON.stringify({event: "heartbeat", message: saLines[saIndex]}))
+            console.log(owo(saLines[saIndex])) // i need to know if it's doin the funnies
+           wss.send(JSON.stringify({event: "heartbeat", message: owo(saLines[saIndex])}))
            saIndex += 1;
            if(saIndex === saLines.length - 1) saIndex = 0;
         }, 15000);

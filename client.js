@@ -69,6 +69,23 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
+    tippy("#userdata .avie", {
+        content: "It's me!",
+        appendTo: document.querySelector("#userdata"),
+        theme: "black",
+        hideOnClick: false,
+        animation: "scale",
+        inertia: true,
+    })
+    tippy("#userdata .settings", {
+        content: "Settings",
+        appendTo: document.querySelector("#userdata"),
+        theme: "black",
+        hideOnClick: false,
+        animation: "scale",
+        inertia: true,
+        offset: [0, 25]
+    })
     changeLoading("Opening gateway connection...")
     openGateway()
     changeLoading("Fetching Quarks...");
@@ -117,7 +134,10 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
     quarkTip = tippy(`.quark`, { 
         placement: "right",
         theme: "black",
-        hideOnClick: false
+        hideOnClick: false,
+        animation: "scale",
+        inertia: true,
+        followCursor: "vertical",
     });
 }
 /**
@@ -144,8 +164,8 @@ async function quarkFetch() {
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
-            "User-Agent": "Quarky",
-            "lq-agent": "Quarky"
+            "User-Agent": "Quawky",
+            "lq-agent": "Quawky"
         }
     }
     // GET requests cannot have a body
@@ -163,7 +183,7 @@ async function quarkFetch() {
         alert(`${data.request.status_code}:\n${data.response.message}`)
         return false;
     } catch (e) {
-        alert(`oh nyo! sewvew doesn't wanna tawk tuwu me anymowe ｡ﾟ(ﾟ´д｀ﾟ)ﾟ｡\ninfos:${e}`);
+        alert(`Huohhhh. Sewvew doesn't want to tawk :3c\ninfos:${e}`);
         return false;
     }
 }
@@ -244,6 +264,7 @@ function attachmentTextifier(attachments) {
         return a
 }
 
+let adminTip;
 /**
  * Renders a message.
  * @param {array} message - The message to render.
@@ -252,14 +273,24 @@ function attachmentTextifier(attachments) {
 function messageRender(message) {
     document.querySelector("#messages").innerHTML += `
     <div class="message">
-        <img src="${message.author.avatarUri}" class="avie loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
-        ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32'>" : ""}
+        <span class="avie">
+            <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+            ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a LightQuark developer!'>" : ""}
+        </span>
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-        ${linkify(escapeHTML(message.content))}
+        ${escapeHTML(message.ua) == "Quawky" ? linkify(escapeHTML(message.content)) : owo(linkify(escapeHTML(message.content)))}
         ${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}
         <br>
     </div>
     `;
+    if(message.author.admin) {
+        if (adminTip) adminTip.forEach(tip => tip.destroy()); // destroy old tippies
+        adminTip = tippy(`.adminmark`, { // create a tippy for admin marks
+            theme: "black",
+            hideOnClick: false,
+            appendTo: document.querySelector("#messagesbox")
+        });
+    }
     if(jumpToBottom) document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
