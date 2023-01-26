@@ -26,7 +26,6 @@ window.tlds = [];
  * @returns {string} Linkified text.
  */
 const linkify = t => {
-    console.log(t);
     const m = t.match(/(?<=\s|^)([a-zA-Z-:\/]+\.(?:\p{Letter}+?|xn--\w+?|)(?:\/.+?|\/|))(?=[.,;:?!-]?(?:\s|$))/gu)
     if (!m) return t
     const a = []
@@ -39,7 +38,6 @@ const linkify = t => {
       if (!tld) return a.push(x);
       tld = new URL(y).href.match(/(\.\p{Letter}+?(?:--\w+?|))(?:$|\/)/u)[0].replace(/\/$/, '').replace(/\/$/, '').replace(/^\./, "").toUpperCase();
       if (!tlds.includes(tld)) return a.push(x);
-      console.log(tld);
       a.push('<a href="' + y + '" target="_blank">' + y.replace(/^https?:\/\//, '').replace(/\/$/, '') + '</a>')
     })
     a.push(t)
