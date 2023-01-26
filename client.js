@@ -13,21 +13,34 @@ window.currentChannel = null;
 // Stores channels
 window.channelBox = {}
 
+// List of valid TLDs
+window.tlds = [];
+
 /**
- * Stolen code to linkify text, because I am soo lazy. https://stackoverflow.com/a/71734086
+ * Witchcraft, made with 4 blends. Don't you dare touch it.
+ * First blend: https://stackoverflow.com/a/71734086 
+ * Second blend: https://community.splunk.com/t5/Getting-Data-In/Top-Level-Domain-Extraction-from-URLs/m-p/319069
+ * Third blend: Spending an hour on Regex101 to get it to support non-English TLDs
+ * Fourth blend: Spaghetti
  * @param {string} t - Text to linkify.
  * @returns {string} Linkified text.
  */
 const linkify = t => {
-    const m = t.match(/(?<=\s|^)[a-zA-Z-:/]+\.[a-zA-Z-].+?(?=[.,;:?!-]?(?:\s|$))/g)
+    console.log(t);
+    const m = t.match(/(?<=\s|^)([a-zA-Z-:\/]+\.(?:\p{Letter}+?|xn--\w+?|)(?:\/.+?|\/|))(?=[.,;:?!-]?(?:\s|$))/gu)
     if (!m) return t
     const a = []
     m.forEach(x => {
       const [t1, ...t2] = t.split(x)
       a.push(t1)
       t = t2.join(x)
-      const y = (!(x.match(/(http(s?)):\/\//)) ? 'https://' : '') + x
-      a.push('<a href="' + y + '" target="_blank">' + y.replace(/^https?:\/\//, '') + '</a>')
+      const y = (!(x.match(/(http(s?)):\/\//)) ? 'https://' : '') + x;
+      let tld = x.match(/(\.\p{Letter}+?(?:--\w+?|))(?:$|\/)/u)
+      if (!tld) return a.push(x);
+      tld = new URL(y).href.match(/(\.\p{Letter}+?(?:--\w+?|))(?:$|\/)/u)[0].replace(/\/$/, '').replace(/\/$/, '').replace(/^\./, "").toUpperCase();
+      if (!tlds.includes(tld)) return a.push(x);
+      console.log(tld);
+      a.push('<a href="' + y + '" target="_blank">' + y.replace(/^https?:\/\//, '').replace(/\/$/, '') + '</a>')
     })
     a.push(t)
     return a.join('')
@@ -72,6 +85,8 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
+    tlds = (await (await fetch("/assets/tlds.txt")).text()).split("\n")
+
     // create tippies, don't ask me why this doesn't work otherwise
     tippy("#userdata .avie", {
         content: "It's me!",
