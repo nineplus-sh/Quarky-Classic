@@ -222,9 +222,10 @@ async function joinQuark() {
 /**
  * Changes to another Quark
  * @param {string} id - The ID of the quark to change to.
+ * @param {boolean} forceChannel - Force the first channel to load.
  * @returns {void}
  */
-async function switchQuark(id) {
+async function switchQuark(id, forceChannel = true) {
     new Audio("/assets/sfx/osu-button-select.wav").play();
 
     document.querySelector("#messagesbox").classList.add("hidden");
@@ -234,7 +235,7 @@ async function switchQuark(id) {
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#servername").innerText = quark.name;
-    if(quark.channels[0]) switchChannel(quark.channels[0]._id, false)
+    if(quark.channels[0] && forceChannel) switchChannel(quark.channels[0]._id, false)
     channelListRender(quark.channels);
 }
 
@@ -429,12 +430,14 @@ async function notifyRequest() {
  * @param {string} body - The body of the nofification.
  * @param {boolean} sfx - Play the notification sound.
  * @param {string} icon - The icon for the notification.
+ * @param {function} clickHandler - The click handler for the notification.
  * @param {string} image - The large image for the notification.
  * @returns {void}
  */
-function sendNotification(title, body = undefined, sfx = true, icon = "/assets/img/quarky.svg", image = undefined ) {
+function sendNotification(title, body = undefined, sfx = true, icon = "/assets/img/quarky.svg", clickHandler = undefined, image = undefined) {
     if(sfx) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
-    new Notification(title, {body: body, image: image, icon: icon})
+    let sentNotification = new Notification(title, {body: body, image: image, icon: icon});
+    sentNotification.onclick = clickHandler;
 }
 
 /**

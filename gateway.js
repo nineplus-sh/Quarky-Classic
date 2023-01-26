@@ -34,7 +34,7 @@ function socketListeners() {
             }
             if(document.hidden || data.message.channelId != currentChannel) { // channel isn't focused
                 if(settingGet("notify")) { // user has notifications on
-                    sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, true, data.author.avatarUri)
+                    sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, true, data.author.avatarUri, function() { switchQuark(channelBox[data.message.channelId].quarkId);switchChannel(data.message.channelId, false) })
                     console.log(data.author, channelBox)
                 }
             }
