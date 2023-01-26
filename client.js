@@ -360,9 +360,11 @@ async function fetchAviebox() {
  * TODO: add defaults (https://vukky.paste.lol/quarky-defaults-placeholder)
  * @param {string} key - The key to change.
  * @param {string} value - The value to set it to.
+ * @param {boolean} sfx - Play a sound effect if it is a boolean.
  * @returns {void}
  */
-function settingSet(key, value) {
+function settingSet(key, value, sfx = true) {
+    if(typeof value == "boolean" && sfx) new Audio(`/assets/sfx/osu-checkbox-${value}.wav`).play()
     localStorage.setItem(key, JSON.stringify({type: typeof value, value: value})) // this json was skelly's idea. if you end up hating it later, blame her
 }
 
