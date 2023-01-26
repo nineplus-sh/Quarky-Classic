@@ -10,6 +10,9 @@ window.jumpToBottom = true;
 // Stores the current channel
 window.currentChannel = null;
 
+// Stores channels
+window.channelBox = {}
+
 /**
  * Stolen code to linkify text, because I am soo lazy. https://stackoverflow.com/a/71734086
  * @param {string} t - Text to linkify.
@@ -94,6 +97,7 @@ async function welcome() {
     fetchAviebox();
     changeLoading("Fetching Quarks...");
     quarks = await quarkFetch();
+    subscribeBomb(quarks);
     quarkRender(quarks);
     changeLoading("Doing the epic transition...");
     document.querySelector("#loader").classList.add("bye");
@@ -309,8 +313,10 @@ async function switchChannel(id, audioOn = true) {
     if(audioOn) new Audio("/assets/sfx/osu-button-select.wav").play();
 
     // Handle subscrpiptions
-    wss.send(JSON.stringify({event: "subscribe", message: `channel_${id}`}))
-    if(currentChannel) wss.send(JSON.stringify({event: "unsubscribe", message: `channel_${currentChannel}`}))
+    if(!settingGet("notify")) {
+        wss.send(JSON.stringify({event: "subscribe", message: `channel_${id}`}))
+        if(currentChannel) wss.send(JSON.stringify({event: "unsubscribe", message: `channel_${currentChannel}`}))
+    }
     currentChannel = id;
 
     document.querySelector("#messagesbox").classList.add("hidden");
@@ -393,4 +399,59 @@ function settingsLoad() {
     })
 }
 
+/**
+ * Prepare the user for the magic of notifications.
+ * Requests the notification permission.
+ * @returns {void}
+ */
+async function notifyRequest() {
+    if(settingGet("notify")) {
+        settingSet("notify", false);
+        document.location.reload();
+    }
+
+    document.querySelector("#settings [name='notify']").checked = false;
+    await Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          document.querySelector("#settings [name='notify']").checked = true;
+          settingSet("notify", true)
+          subscribeBomb()
+          sendNotification("Notifications enabled.", "Please enjoy them!")
+        } else {
+            alert("You have denied Quarky's request to send you notifications, so no notifications can be sent...")
+        }
+    });
+}
+
+/**
+ * Sends a notification.
+ * @param {string} title - The title of the notification.
+ * @param {string} body - The body of the nofification.
+ * @param {boolean} sfx - Play the notification sound.
+ * @param {string} image - The image for the notification.
+ * @param {string} icon - The icon for the notification. TODO: find out if this actually does anything??
+ * @returns {void}
+ */
+function sendNotification(title, body = undefined, sfx = true, image = "/assets/img/quarky.svg", icon = "/assets/img/quarky.svg") {
+    if(sfx) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
+    new Notification(title, {body: body, image: image, icon: icon})
+}
+
+/**
+ * Subscribes to all channels.
+ * @param {object} quarks - To prevent redundancy, if you already have a quark list, pass it. If not, it will be fetched.
+ * @returns {void}
+ */
+async function subscribeBomb(quarks = undefined) {
+    if(!quarks) quarks = await quarkFetch();
+    quarks.forEach(function(quark) {
+        quark.channels.forEach(async function(channel) {
+            let channelData = (await apiCall(`/channel/${channel}`)).response.channel;
+            channelData.quarkId = channelData.quark;
+            channelData.quark = quark.name;
+            channelBox[channel] = channelData;
+            wss.send(JSON.stringify({event: "subscribe", message: `channel_${channel}`}))
+        })
+    })
+}
 welcome();
