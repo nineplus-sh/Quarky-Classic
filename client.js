@@ -69,6 +69,7 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
+    // create tippies, don't ask me why this doesn't work otherwise
     tippy("#userdata .avie", {
         content: "It's me!",
         appendTo: document.querySelector("#userdata"),
@@ -86,6 +87,7 @@ async function welcome() {
         inertia: true,
         offset: [0, 25]
     })
+
     changeLoading("Opening gateway connection...")
     openGateway()
     changeLoading("Fetching user data...");
@@ -166,8 +168,8 @@ async function quarkFetch() {
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
-            "User-Agent": "Quawky",
-            "lq-agent": "Quawky"
+            "User-Agent": settingGet("uwuspeak") ? "Quawky" : "Quarky",
+            "lq-agent": settingGet("uwuspeak") ? "Quawky" : "Quarky"
         }
     }
     // GET requests cannot have a body
@@ -352,5 +354,34 @@ async function fetchAviebox() {
     document.querySelector("#userdata .avie").src = userData.avatar;
 }
 
+/**
+ * Changes a setting in the localStorage.
+ * TODO: add defaults (https://vukky.paste.lol/quarky-defaults-placeholder)
+ * @param {string} key - The key to change.
+ * @param {string} value - The value to set it to.
+ * @returns {void}
+ */
+function settingSet(key, value) {
+    localStorage.setItem(key, value)
+}
+
+/**
+ * Get a setting in the localStorage.
+ * @param {string} key - The key to get.
+ * @returns {string} - The value of the key.
+ */
+function settingGet(key) {
+    return localStorage.getItem(key);
+}
+
+/**
+ * Loads localStorage settings into the settings modal.
+ * @returns {void}
+ */
+function settingsLoad() {
+    document.querySelectorAll("#settings input[type='checkbox']").forEach(function(checkbox) { // fetch all checkboxes
+        if(settingGet(checkbox.name)) checkbox.checked = settingGet(checkbox.name) // set the checkbox
+    })
+}
 
 welcome();

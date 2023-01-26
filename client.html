@@ -23,7 +23,7 @@
             }
             #loader {
                 position: fixed;
-                z-index: 1;
+                z-index: 2;
                 background-image: url("/assets/img/stars.gif");
                 background-color: #000000;
                 width: 100%;
@@ -109,7 +109,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-            #loader.bye, #loader.bye #planet {
+            #loader.bye, #loader.bye #planet, .fullmodal.hidden {
                 z-index: -999999 !important;
             }
             .message .avie, .message .avie img {
@@ -237,6 +237,18 @@
                 right: 0.5rem;
                 cursor: pointer;
             }
+
+            #settings {
+                background-color: #36393f;
+                position: fixed;
+                z-index: 1;
+                width: 100%;
+                height: 100%;
+            }
+            #settingscontainer {
+                position: relative;
+                left: 1rem;
+            }
         </style>
     </head>
     <body>
@@ -264,7 +276,7 @@
             <div id="userdata">
                 <img class="avie loading" src="https://cdn.discordapp.com/emojis/851468740263542814.png" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 <span class="lusername">Vukky</span>
-                <i class="fa-solid fa-gear fa-lg settings"></i>
+                <i class="fa-solid fa-gear fa-lg settings" onclick="document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
         <div id="messagesbox" onscroll="scrollingDetected()" class="hidden">
@@ -276,6 +288,18 @@
                     <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
                     <button onclick="sendMessage(owo(document.querySelector('#sendmsg').value))">Ok</button>
                 </form>
+            </div>
+        </div>
+
+        <!-- special modals -->
+        <div id="settings" class="fullmodal hidden">
+            <div id="settingscontainer">
+                <p>HIIII! Wewcome to da settings!! ^w^</p>
+                <h2>Notifications</h2>
+                <p>Not right now.</p>
+                <h2>Other stuff</h2>
+                <p>UwUspeak from <a href="https://twitter.com/BBCBweaking">Bweaking NuwuS</a> <input type="checkbox" name="uwuspeak" onclick="settingSet(this.name, this.checked)"></p>
+                <br><button onclick="document.querySelector('#settings').classList.add('hidden')">Exit</button>
             </div>
         </div>
 
