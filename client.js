@@ -375,6 +375,7 @@ function settingSet(key, value, sfx = true) {
  */
 function settingGet(key) {
     // THE FOLLOWING HACK WAS SKELLY'S IDEA. IF YOU END UP HATING IT LATER, BLAME HER
+    if(!localStorage.getItem(key)) return null;
     let valueData = JSON.parse(localStorage.getItem(key))
 
     if(valueData.type == "string") return valueData.value;
