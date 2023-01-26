@@ -275,6 +275,7 @@ let adminTip;
  * @returns {void}
  */
 function messageRender(message) {
+    let doUwU = message.ua != "Quawky" && settingGet("uwuspeak");
     document.querySelector("#messages").innerHTML += `
     <div class="message">
         <span class="avie">
@@ -282,7 +283,7 @@ function messageRender(message) {
             ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a LightQuark developer!'>" : ""}
         </span>
         <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-        ${escapeHTML(message.ua) == "Quawky" ? linkify(escapeHTML(message.content)) : owo(linkify(escapeHTML(message.content)))}
+        ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
         ${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}
         <br>
     </div>
@@ -362,16 +363,21 @@ async function fetchAviebox() {
  * @returns {void}
  */
 function settingSet(key, value) {
-    localStorage.setItem(key, value)
+    localStorage.setItem(key, JSON.stringify({type: typeof value, value: value})) // this json was skelly's idea. if you end up hating it later, blame her
 }
 
 /**
  * Get a setting in the localStorage.
  * @param {string} key - The key to get.
- * @returns {string} - The value of the key.
+ * @returns {any} - The value of the key.
  */
 function settingGet(key) {
-    return localStorage.getItem(key);
+    // THE FOLLOWING HACK WAS SKELLY'S IDEA. IF YOU END UP HATING IT LATER, BLAME HER
+    let valueData = JSON.parse(localStorage.getItem(key))
+
+    if(valueData.type == "string") return valueData.value;
+    if(valueData.type == "number") return parseFloat(valueData.value);
+    if(valueData.type == "boolean") return JSON.parse(valueData.value);
 }
 
 /**

@@ -43,6 +43,11 @@
                 width: 5rem;
                 height: 100%;
                 background-color: #202225;
+                overflow-y: scroll;
+                scrollbar-width: none;
+            }
+            #list::-webkit-scrollbar { 
+                display: none;
             }
             #quarkdata {
                 position: fixed;
@@ -77,6 +82,7 @@
                 width: 4em;
                 margin-left: 0.4em;
                 margin-top: 1em;
+                margin-bottom: 1em;
                 cursor: pointer;
             }
             .quark img {
@@ -286,7 +292,7 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                    <button onclick="sendMessage(owo(document.querySelector('#sendmsg').value))">Ok</button>
+                    <button onclick="sendMessage(settingGet('uwuspeak') ? owo(document.querySelector('#sendmsg').value) : document.querySelector('#sendmsg').value)">Ok</button>
                 </form>
             </div>
         </div>
