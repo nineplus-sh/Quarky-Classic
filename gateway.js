@@ -32,7 +32,7 @@ function socketListeners() {
             if(data.message.channelId == currentChannel) { // render the message if it's in the current channel
                 messageRender(cleanMessage(data))
             }
-            if(!document.hasFocus() || data.message.channelId != currentChannel) { // channel isn't focused
+            if(document.visibilityState == "hidden" || data.message.channelId != currentChannel) { // channel isn't focused
                 if(settingGet("notify")) { // user has notifications on
                     sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, true, data.author.avatarUri)
                     console.log(data.author, channelBox)
