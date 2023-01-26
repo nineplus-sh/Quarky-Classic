@@ -88,6 +88,8 @@ async function welcome() {
     })
     changeLoading("Opening gateway connection...")
     openGateway()
+    changeLoading("Fetching user data...");
+    fetchAviebox();
     changeLoading("Fetching Quarks...");
     quarks = await quarkFetch();
     quarkRender(quarks);
@@ -339,5 +341,16 @@ async function sendMessage(message) {
     message = message.replace(/\B\/shrug\b/gm, "¯\\_(ツ)_/¯");
     apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
 }
+
+/**
+ * Fetches the user data and updates the aviebox.
+ * @returns {void}
+ */
+async function fetchAviebox() {
+    let userData = (await apiCall(`/user/me`)).response.jwtData;
+    document.querySelector("#userdata .lusername").innerText = userData.username;
+    document.querySelector("#userdata .avie").src = userData.avatar;
+}
+
 
 welcome();
