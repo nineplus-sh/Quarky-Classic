@@ -428,11 +428,11 @@ async function notifyRequest() {
  * @param {string} title - The title of the notification.
  * @param {string} body - The body of the nofification.
  * @param {boolean} sfx - Play the notification sound.
- * @param {string} image - The image for the notification.
- * @param {string} icon - The icon for the notification. TODO: find out if this actually does anything??
+ * @param {string} icon - The icon for the notification.
+ * @param {string} image - The large image for the notification.
  * @returns {void}
  */
-function sendNotification(title, body = undefined, sfx = true, image = "/assets/img/quarky.svg", icon = "/assets/img/quarky.svg") {
+function sendNotification(title, body = undefined, sfx = true, icon = "/assets/img/quarky.svg", image = undefined ) {
     if(sfx) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
     new Notification(title, {body: body, image: image, icon: icon})
 }
