@@ -105,6 +105,7 @@ async function welcome() {
     })
 
     changeLoading("Opening gateway connection...")
+    settingsLoad();
     openGateway()
     changeLoading("Fetching user data...");
     fetchAviebox();
@@ -422,6 +423,7 @@ async function notifyRequest() {
     if(settingGet("notify")) {
         settingSet("notify", false);
         document.location.reload();
+        return;
     }
 
     document.querySelector("#settings [name='notify']").checked = false;
