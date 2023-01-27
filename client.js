@@ -335,11 +335,11 @@ async function switchChannel(id, audioOn = true) {
     currentChannel = id;
 
     document.querySelector("#messagesbox").classList.add("hidden");
-    document.querySelector("#messages").innerHTML = "";
     let messages = (await apiCall(`/channel/${id}/messages`)).response.messages;
     messages = messages.sort(function(x,y) {
         return x.message.timestamp - y.message.timestamp;
     });
+    document.querySelector("#messages").innerHTML = "";
     messages.forEach(message => {
         messageRender(cleanMessage(message));
     });
