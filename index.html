@@ -4,6 +4,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preload" href="/assets/sfx/loggedin.mp3" as="audio" />
         <link rel="preload" href="/assets/sfx/login.mp3" as="audio" />
+        <link rel="preload" href="/assets/sfx/osu-error-notification-pop-in.wav" as="audio" />
+        <link rel="preload" href="/assets/sfx/osu-submit-select.wav" as="audio" />
         <audio id="bgm" src="/assets/sfx/login.mp3" autoplay loop></audio>
         <script>
             function getCookie(key) {
@@ -17,14 +19,20 @@
                 document.cookie = key + '=' + value + ';path=/' + ';expires=' + expires.toUTCString();
             }
             function fetchData() {
-                new Audio("/assets/sfx/do.mp3").play();
-                document.querySelector("#text").innerHTML = "Obtaining token...";
+                new Audio("/assets/sfx/osu-submit-select.wav").play();
+                document.querySelector("#email").classList.remove("fail");
+                document.querySelector("#password").classList.remove("fail");
+                document.querySelector("#text").innerHTML = "Logging in...";
                 fetch("https://lq.litdevs.org/v1/auth/token", {method: 'POST', body: JSON.stringify({"email": document.querySelector("#email").value, "password": document.querySelector("#password").value}), headers: {'Content-Type': 'application/json'}})   
                     .then(response => response.json())
                     .then(response => {
                         if(!response.request.success) {
+                            if(response.response.message == "Incorrect password/email address combination") response.response.message = "Wrong password";
+                            if(response.response.message == "No such user") response.response.message = "That account doesn't exist";
                             document.querySelector("#text").innerText = `${response.response.message}!`
-                            new Audio("/assets/sfx/nah.mp3").play();
+                            new Audio("/assets/sfx/osu-error-notification-pop-in.wav").play();
+                            if(response.response.message == "That account doesn't exist") document.querySelector("#email").classList.add("fail");
+                            if(response.response.message == "Wrong password") document.querySelector("#password").classList.add("fail");
                         } else {
                             document.querySelector("#bgm").pause();
                             setCookie("authToken", response.response.access_token, 365);
@@ -107,6 +115,9 @@
             .moveplanet {
                 animation: moveplanet 0.5s forwards !important;
             }
+            input.fail {
+                border: 2px red solid;
+            }
         </style>
     </head>
     <body>
@@ -114,8 +125,8 @@
             <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
             <p id="text"><i>Quarky</i> is a client for Lightquark, which allows you to join Quarks.<br>Please enter your LITauth login to continue to Quarky.</p>
             <form id="credentials" onsubmit="fetchData(); return false;">
-                <input placeholder="Email" id="email" type="email">
-                <input placeholder="Password" id="password" type="password">
+                <input placeholder="Email" id="email" type="email" required>
+                <input placeholder="Password" id="password" type="password" required>
                 <br><br>
                 <button type="submit" form="credentials" >Done :)</button>  
             </form>

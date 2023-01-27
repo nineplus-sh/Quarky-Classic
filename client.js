@@ -472,4 +472,15 @@ async function subscribeBomb(quarks = undefined) {
         })
     })
 }
+
+/**
+ * Display an error message.
+ * This might seem redundant, but doing it will let me swap it for an actual error UI later.
+ * @param {string} body - The error message to display.
+ * @returns {void}
+ */
+function displayError(body) {
+    new Audio("/assets/sfx/osu-error-notification-pop-in.wav").play();
+    alert(body);
+}
 welcome();

@@ -17,6 +17,7 @@
         <link rel="preload" href="/assets/img/loading.png" as="image" />
         <link rel="preload" href="/assets/img/fail.png" as="image" />
         <link rel="preload" href="/assets/tlds.txt" as="fetch" />
+        <link rel="preload" href="/assets/sfx/osu-error-notification-pop-in.wav" as="audio" />
         <style>
             body {
                 margin: 0;
@@ -295,7 +296,7 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                    <button onclick="sendMessage(settingGet('uwuspeak') ? owo(document.querySelector('#sendmsg').value) : document.querySelector('#sendmsg').value)">Ok</button>
+                    <button onclick="if(document.querySelector('#sendmsg').value == '') return displayError('You need to enter a message to send! :D');sendMessage(settingGet('uwuspeak') ? owo(document.querySelector('#sendmsg').value) : document.querySelector('#sendmsg').value)">Ok</button>
                 </form>
             </div>
         </div>
