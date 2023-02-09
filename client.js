@@ -492,7 +492,9 @@ function credits() {
     document.querySelector("#settings").classList.add("hidden");
     document.querySelector("#credits").classList.remove("hidden");
     loadJS("https://unpkg.com/butterchurn", function() {
-        document.querySelector("#snikosnaketext").innerHTML = "Hewwo Butterchurn :3";
+        setTimeout(() => {
+            document.querySelector("#snikosnaketext").innerHTML = "Hewwo Butterchurn :3";
+        }, 0);
         document.querySelector("#credits audio").load();
         document.querySelector("#snikosnaketext").innerHTML = "Hewwo music :3";
 
