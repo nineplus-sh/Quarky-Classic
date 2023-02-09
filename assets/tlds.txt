@@ -1,5 +1,5 @@
-# https://data.iana.org/TLD/tlds-alpha-by-domain.txt
-# Version 2023012600, Last Updated Thu Jan 26 07:07:01 2023 UTC
+# https://data.iana.org/TLD/tlds-alpha-by-domain.txt 
+# Version 2023020900, Last Updated Thu Feb  9 07:07:01 2023 UTC
 AAA
 AARP
 ABARTH
