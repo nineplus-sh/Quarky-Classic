@@ -18,6 +18,7 @@
         <link rel="preload" href="/assets/img/fail.png" as="image" />
         <link rel="preload" href="/assets/tlds.txt" as="fetch" />
         <link rel="preload" href="/assets/sfx/osu-error-notification-pop-in.wav" as="audio" />
+        <audio src="/assets/sfx/wb.mp3" id="wb"></audio>
         <style>
             body {
                 margin: 0;
@@ -248,7 +249,7 @@
                 cursor: pointer;
             }
 
-            #settings {
+            .fullmodal {
                 background-color: #36393f;
                 position: fixed;
                 z-index: 1;
@@ -258,6 +259,19 @@
             #settingscontainer {
                 position: relative;
                 left: 1rem;
+            }
+
+            #credits #snikosnake {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            #credits #snikosnaketext {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, 550%);
             }
         </style>
     </head>
@@ -309,7 +323,15 @@
                 <p>Notify for all new messages <input type="checkbox" name="notify" onclick="notifyRequest()"></p>
                 <h2>Other stuff</h2>
                 <p>UwUspeak from <a href="https://twitter.com/BBCBweaking">Bweaking NuwuS</a> <input type="checkbox" name="uwuspeak" onclick="settingSet(this.name, this.checked)"></p>
-                <br><button onclick="document.querySelector('#settings').classList.add('hidden')">Exit</button>
+                <br><button onclick="document.querySelector('#settings').classList.add('hidden')">Exit</button> <button onclick="credits()">Credits</button> 
+            </div>
+        </div>
+        <div id="credits" class="fullmodal hidden">
+            <audio src="/assets/sfx/xscape-credits.mp3" preload="none"></audio>
+            <canvas id="butterchurn"></canvas>
+            <div id="snikocontainer">
+                <img src="/assets/img/loading.gif" id="snikosnake">
+                <p id="snikosnaketext">Loading additional resources.</p>
             </div>
         </div>
 
