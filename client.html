@@ -287,20 +287,20 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                transition: transform 1s ease-in-out;
                 width: 20em;
-                height: 30em;
                 background-color: rgb(20, 10, 25);
                 z-index: 1;
-                animation: scroll 5s infinite linear;
             }
 
+            ::root {
+                --creditscontainer-height: 0px;
+            }
             @keyframes scroll {
                 from {
-                    transform: translate(-50%, 100%)
+                    transform: translate(-50%, calc(250% + var(--creditscontainer-height)));
                 }
                 to {
-                    transform: translate(-50%, -100%)
+                    transform: translate(-50%, calc(-250% - var(--creditscontainer-height)))
                 }
             }
         </style>
@@ -363,6 +363,9 @@
                 <h1>Quarky :3</h1>
                 <p>Made by pukky pukkerton</p>
                 <h2>The end</h2>
+                <p>Uwu</p>
+                <h3>OWO</h3>
+                <p>Looks like I did a fucky wucky! Don't worry, our trained AI code generators are working 24/7 to not resolve your problem</p>
             </div>
             <div id="snikocontainer">
                 <img src="/assets/img/loading.webp" id="snikosnake">

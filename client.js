@@ -491,6 +491,7 @@ function displayError(body) {
 function credits() {
     document.querySelector("#settings").classList.add("hidden");
     document.querySelector("#credits").classList.remove("hidden");
+    window.ccHeight = document.querySelector("#creditscontainer").offsetHeight; // offset height of the creditscontainer
     loadJS("https://unpkg.com/butterchurn", function() {
         setTimeout(() => {
             document.querySelector("#snikosnaketext").innerHTML = "Hewwo Butterchurn :3";
@@ -522,6 +523,8 @@ function credits() {
             visualizer.setRendererSize(window.innerWidth, window.innerHeight);
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            document.documentElement.style.setProperty('--creditscontainer-height', `${ccHeight}px`);
+            document.querySelector("#creditscontainer").style.animation = `scroll ${ccHeight / 40}s infinite linear`;
         }, true);
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -530,6 +533,8 @@ function credits() {
         document.querySelector("#wb").pause();
         document.querySelector("#credits audio").play();
         startRenderer();
+        document.documentElement.style.setProperty('--creditscontainer-height', `${ccHeight}px`);
+        document.querySelector("#creditscontainer").style.animation = `scroll ${ccHeight / 40}s infinite linear`;
     })
 }
 
