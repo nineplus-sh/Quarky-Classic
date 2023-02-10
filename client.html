@@ -271,7 +271,37 @@
                 position: fixed;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, 550%);
+                transform: translate(-50%, 350%);
+            }
+            .onespeech {
+                border-style: solid;
+                border-image-source: url("/assets/img/border.png");
+                border-image-slice: 10;
+                border-image-width: 10px;
+                background-color: rgb(20, 10, 25);
+                border-radius: 10px 10px 10px 10px;
+                padding: 10px 15px 10px 15px;
+            }
+            #creditscontainer {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: transform 1s ease-in-out;
+                width: 20em;
+                height: 30em;
+                background-color: rgb(20, 10, 25);
+                z-index: 1;
+                animation: scroll 5s infinite linear;
+            }
+
+            @keyframes scroll {
+                from {
+                    transform: translate(-50%, 100%)
+                }
+                to {
+                    transform: translate(-50%, -100%)
+                }
             }
         </style>
     </head>
@@ -329,8 +359,13 @@
         <div id="credits" class="fullmodal hidden">
             <audio src="/assets/sfx/xscape-credits.mp3" preload="none"></audio>
             <canvas id="butterchurn"></canvas>
+            <div id="creditscontainer" class="onespeech">
+                <h1>Quarky :3</h1>
+                <p>Made by pukky pukkerton</p>
+                <h2>The end</h2>
+            </div>
             <div id="snikocontainer">
-                <img src="/assets/img/loading.gif" id="snikosnake">
+                <img src="/assets/img/loading.webp" id="snikosnake">
                 <p id="snikosnaketext">Loading additional resources.</p>
             </div>
         </div>
