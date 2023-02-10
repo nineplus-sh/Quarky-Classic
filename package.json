@@ -1,0 +1,26 @@
+{
+  "name": "quarky",
+  "version": "1.0.0",
+  "description": "A web client for Lightquark",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vukkyy/quarky.git"
+  },
+  "keywords": [
+    "lightquark"
+  ],
+  "author": "Vukky",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/vukkyy/quarky/issues"
+  },
+  "homepage": "https://github.com/vukkyy/quarky#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "jest": "^29.4.2",
+    "jest-puppeteer": "^7.0.0"
+  }
+}
