@@ -1,6 +1,5 @@
 name: Bugs
 description: Report any creepy insects you spotted crawling in Quarky
-title: ""
 labels: [bug]
 body:
 - type: textarea
