@@ -26,7 +26,7 @@ window.tlds = [];
  * @returns {string} Linkified text.
  */
 const linkify = t => {
-    const m = t.match(/(?<=\s|^)([a-zA-Z-:\/]+\.(?:\p{Letter}+?|xn--\w+?|)(?:\/.+?|\/|))(?=[.,;:?!-]?(?:\s|$))/gu)
+    const m = t.match(/(?<=\s|^)([a-zA-Z-:\/]+\.(?:\p{Letter}+?|xn--\w+?|)(?:\/.+?|\/|))+(?=[.,;:?!-]?(?:\s|$))/gu)
     if (!m) return t
     const a = []
     m.forEach(x => {
