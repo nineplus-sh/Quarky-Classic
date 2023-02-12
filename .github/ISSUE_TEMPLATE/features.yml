@@ -4,6 +4,6 @@ labels: [enhancement]
 body:
 - type: textarea
   attributes:
-    label: Explain more about the feature.
+    label: Explain more about the feature
   validations:
     required: true
