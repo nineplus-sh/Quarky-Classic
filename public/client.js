@@ -178,9 +178,10 @@ async function quarkFetch() {
  * @param {string} path  - Api endpoint, `/quark/me`
  * @param {"GET" | "POST" | "PATCH" | "PUT" | "DELETE"} method - Default GET
  * @param {object} body - Default empty object
+ * @param {string} apiVersion - Default v1
  * @returns {object|false}
  */
- async function apiCall(path, method = "GET", body = {}) {
+ async function apiCall(path, method = "GET", body = {}, apiVersion = "v1") {
     let options = {
         method: method,
         headers: {
@@ -194,7 +195,7 @@ async function quarkFetch() {
     if (method !== "GET") options.body = JSON.stringify(body);
 
     try {
-        let res = await fetch(`https://lq.litdevs.org/v1${path}`, options);
+        let res = await fetch(`https://lq.litdevs.org/${apiVersion}${path}`, options);
         let data = await res.json();
         if (data.request.success) return data; // Success
         if (data.request.status_code === 401)  {
@@ -205,7 +206,7 @@ async function quarkFetch() {
         alert(`${data.request.status_code}:\n${data.response.message}`)
         return false;
     } catch (e) {
-        alert(`Huohhhh. Sewvew doesn't want to tawk :3c\ninfos:${e}`);
+        displayError(`Huohhhh. Sewvew doesn't want to tawk :3c\ninfos:${e}`);
         return false;
     }
 }
@@ -335,7 +336,7 @@ async function switchChannel(id, audioOn = true) {
     currentChannel = id;
 
     document.querySelector("#messagesbox").classList.add("hidden");
-    let messages = (await apiCall(`/channel/${id}/messages`)).response.messages;
+    let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
     messages = messages.sort(function(x,y) {
         return x.message.timestamp - y.message.timestamp;
     });
@@ -434,7 +435,7 @@ async function notifyRequest() {
           subscribeBomb()
           sendNotification("Notifications enabled.", "Please enjoy them!")
         } else {
-            alert("You have denied Quarky's request to send you notifications, so no notifications can be sent...")
+            displayError("You have denied Quarky's request to send you notifications, so no notifications can be sent...")
         }
     });
 }

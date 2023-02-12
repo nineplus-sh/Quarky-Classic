@@ -8,6 +8,24 @@ function openGateway() {
 }
 
 /**
+ * Handle the gateway suddenly dying
+ */
+function gatewaySuddenDeath() {
+    if (heartbeat) clearInterval(heartbeat);
+        document.querySelector("#loader").classList.remove("bye");
+        changeLoading("Connection lost<br/>Please wait - attempting to reestablish...");
+        if (retryCount < 5) { // Max 5 retries
+            // Try reconnect after 1*retryCount seconds
+            retryCount++;
+            setTimeout(() => {
+                openGateway();
+            }, 1000 * retryCount);
+    } else {
+            alert("I'm sorry, but I couldn't connect to LightQuark.\nPlease make sure your internet connection is working.\nIf not, your login might be wrong, or the server fell over.");
+    }
+}
+
+/**
  * Adds listeners to gateway socket
  */
 function socketListeners() {
@@ -40,23 +58,10 @@ function socketListeners() {
             }
         }
     }
-    wss.onclose = (message) => {
-        if (heartbeat) clearInterval(heartbeat);
-        document.querySelector("#loader").classList.remove("bye");
-        changeLoading("Connection lost<br/>Please wait - attempting to reestablish...");
-        if (retryCount < 5) { // Max 5 retries
-            // Try reconnect after 1*retryCount seconds
-            retryCount++;
-            setTimeout(() => {
-                openGateway();
-            }, 1000 * retryCount);
-        } else {
-            alert("Can't open gateway connection, either your internet connection is broken, server is down or your login is wrong");
-        }
-    }
+    wss.onclose = gatewaySuddenDeath;
 
-    wss.onerror = (message) => {
-        // stuff 3
+    wss.onerror = (e) => {
+        console.log(e)
     }
 }
 
