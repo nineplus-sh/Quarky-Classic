@@ -46,14 +46,14 @@ function socketListeners() {
     wss.onmessage =(message) => {
         data = JSON.parse(message.data);
         if(data.eventId == "messageCreate") {
-            console.log(data);
             if(data.message.channelId == currentChannel) { // render the message if it's in the current channel
                 messageRender(cleanMessage(data))
             }
             if(document.hidden || data.message.channelId != currentChannel) { // channel isn't focused
                 if(settingGet("notify")) { // user has notifications on
-                    sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, true, data.author.avatarUri, function() { switchQuark(channelBox[data.message.channelId].quarkId, false);switchChannel(data.message.channelId, false) })
-                    console.log(data.author, channelBox)
+                    if(data.author._id != userID) { // message isn't from themselves
+                        sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, true, data.author.avatarUri, function() { switchQuark(channelBox[data.message.channelId].quarkId, false);switchChannel(data.message.channelId, false) })
+                    }
                 }
             }
         }

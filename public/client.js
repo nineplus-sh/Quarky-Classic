@@ -10,6 +10,9 @@ window.jumpToBottom = true;
 // Stores the current channel
 window.currentChannel = null;
 
+// Stores the ID of the authenticated user
+window.userID = null;
+
 // Stores channels
 window.channelBox = {}
 
@@ -309,7 +312,7 @@ function messageRender(message) {
             <span class="lusername">${escapeHTML(message.author.username)}</span>
             ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
-            <br>
+            <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
         </div>
         `;
     } else {
@@ -401,6 +404,7 @@ async function sendMessage(message) {
  */
 async function fetchAviebox() {
     let userData = (await apiCall(`/user/me`)).response.jwtData;
+    window.userID = userData._id;
     document.querySelector("#userdata .lusername").innerText = userData.username;
     document.querySelector("#userdata .avie").src = userData.avatar;
 }
