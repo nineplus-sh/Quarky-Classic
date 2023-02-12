@@ -7,6 +7,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 // Stores if jumping to the bottom automatically is allowed
 window.jumpToBottom = true;
 
+// Stores the current Quark
+window.currentQuark = null;
+
 // Stores the current channel
 window.currentChannel = null;
 
@@ -114,16 +117,22 @@ async function welcome() {
         offset: [0, 25]
     })
 
-    changeLoading("Opening gateway connection...")
+    changeLoading("Opening gateway connection...");
+    openGateway();
+    changeLoading("Restoring old session...");
     settingsLoad();
-    openGateway()
+    let previousQuark = new URLSearchParams(window.location.search).get("quark");
+    let previousChannel = new URLSearchParams(window.location.search).get("channel");
+    if(previousQuark) switchQuark(previousQuark, false, false, false);
+    if(previousChannel) switchChannel(previousChannel, false);
+    console.log(previousQuark, previousChannel)
     changeLoading("Fetching user data...");
     fetchAviebox();
-    changeLoading("Fetching Quarks...");
+    changeLoading("Fetching Quark list...");
     quarks = await quarkFetch();
     subscribeBomb(quarks);
     quarkRender(quarks);
-    changeLoading("Doing the epic transition...");
+    changeLoading("Letting you in...");
     document.querySelector("#loader").classList.add("bye");
     document.querySelector("#wb").play();
     welcomeHasFinishedOnce = true;
@@ -248,15 +257,19 @@ async function joinQuark() {
  * Changes to another Quark
  * @param {string} id - The ID of the quark to change to.
  * @param {boolean} forceChannel - Force the first channel to load.
+ * @param {boolean} sfx - Play the sound effect.
+ * @param {boolean} anim - Play the animation.
  * @returns {void}
  */
-async function switchQuark(id, forceChannel = true) {
-    new Audio("/assets/sfx/osu-button-select.wav").play();
+async function switchQuark(id, forceChannel = true, sfx = true, anim = true) {
+    if(sfx)new Audio("/assets/sfx/osu-button-select.wav").play();
 
     document.querySelector("#messagesbox").classList.add("hidden");
-    document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
-    void document.querySelector(`.quark[id='${id}']`).offsetWidth;
-    document.querySelector(`.quark[id='${id}']`).classList.add("stretch");
+    if(anim) document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
+    if(anim) void document.querySelector(`.quark[id='${id}']`).offsetWidth;
+    if(anim) document.querySelector(`.quark[id='${id}']`).classList.add("stretch");
+    window.currentQuark = id;
+    history.replaceState(id, "", `/client.html?quark=${currentQuark}`);
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#servername").innerText = quark.name;
@@ -356,6 +369,7 @@ async function switchChannel(id, audioOn = true) {
         if(currentChannel) wss.send(JSON.stringify({event: "unsubscribe", message: `channel_${currentChannel}`}))
     }
     currentChannel = id;
+    history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
     document.querySelector("#messagesbox").classList.add("hidden");
     let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
