@@ -131,7 +131,7 @@
             .message .avie {
                 margin-right: 0.5em;
             }
-            .message .lusername {
+            .message:not(.roleplay) .lusername {
                 position: absolute;
                 font-weight: bold;
             }
@@ -303,6 +303,13 @@
                     transform: translate(-50%, calc(-250% - var(--creditscontainer-height)))
                 }
             }
+
+            .message.roleplay {
+                font-style: italic;
+            }
+            .message.roleplay .timestamp {
+                font-style: initial;
+            }
         </style>
     </head>
     <body>
@@ -353,6 +360,7 @@
                 <p>Notify for all new messages <input type="checkbox" name="notify" onclick="notifyRequest()"></p>
                 <h2>Other stuff</h2>
                 <p>UwUspeak from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a> <input type="checkbox" name="uwuspeak" onclick="settingSet(this.name, this.checked)"></p>
+                <p>Special rendering of /me messages <input type="checkbox" name="mespecial" onclick="settingSet(this.name, this.checked)"></p>
                 <h2>Suggestions or bugs?</h2>
                 <p>Consider <a href="https://github.com/Vukkyy/Quarky/issues/new/choose" target="_blank">reporting it</a>!</p>
                 <br><button onclick="document.querySelector('#settings').classList.add('hidden')">Exit</button> <button onclick="credits()">Credits</button> 

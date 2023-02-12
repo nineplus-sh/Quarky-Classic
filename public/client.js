@@ -16,6 +16,13 @@ window.channelBox = {}
 // List of valid TLDs
 window.tlds = [];
 
+// An object of defaults for settings
+window.defaults = {
+    "notify": false,
+    "uwuspeak": false,
+    "mespecial": true
+}
+
 /**
  * Witchcraft, made with 4 blends. Don't you dare touch it.
  * First blend: https://stackoverflow.com/a/71734086 
@@ -296,18 +303,30 @@ let adminTip;
  */
 function messageRender(message) {
     let doUwU = message.ua != "Quawky" && settingGet("uwuspeak");
-    document.querySelector("#messages").innerHTML += `
-    <div class="message">
-        <span class="avie">
-            <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
-            ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a LightQuark developer!'>" : ""}
-        </span>
-        <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-        ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
-        ${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}
-        <br>
-    </div>
-    `;
+    if(message.specialAttributes.includes("/me") && settingGet("mespecial")) {
+        document.querySelector("#messages").innerHTML += `
+        <div class="message roleplay">
+            <span class="lusername">${escapeHTML(message.author.username)}</span>
+            ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
+            <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
+            <br>
+        </div>
+        `;
+    } else {
+        document.querySelector("#messages").innerHTML += `
+        <div class="message">
+            <span class="avie">
+                <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a LightQuark developer!'>" : ""}
+            </span>
+            <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+            ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
+            ${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}
+            <br>
+        </div>
+        `;
+    }
+
     if(message.author.admin) {
         if (adminTip) adminTip.forEach(tip => tip.destroy()); // destroy old tippies
         adminTip = tippy(`.adminmark`, { // create a tippy for admin marks
@@ -361,10 +380,19 @@ function scrollingDetected() {
  * @returns {void}
  */
 async function sendMessage(message) {
+    let specialAttributes = []; // TODO: in case i need to hack in more later
+
     new Audio("/assets/sfx/osu-submit-select.wav").play();
     document.querySelector("#sendmsg").value = "";
+
+    // handle special effects
     message = message.replace(/\B\/shrug\b/gm, "¯\\_(ツ)_/¯");
-    apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message});
+    if(message.startsWith("/me")) {
+        message = message.substring(4);
+        specialAttributes.push("/me");
+    }
+
+    apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message, specialAttributes: specialAttributes}, "v2");
 }
 
 /**
@@ -397,7 +425,7 @@ function settingSet(key, value, sfx = true) {
  */
 function settingGet(key) {
     // THE FOLLOWING HACK WAS SKELLY'S IDEA. IF YOU END UP HATING IT LATER, BLAME HER
-    if(!localStorage.getItem(key)) return null;
+    if(!localStorage.getItem(key)) settingSet(key, defaults[key], false);
     let valueData = JSON.parse(localStorage.getItem(key))
 
     if(valueData.type == "string") return valueData.value;
