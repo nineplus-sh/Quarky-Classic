@@ -1,0 +1,9 @@
+name: Features
+description: Tell me about your dream feature so I may or may not implement it
+labels: [enhancement]
+body:
+- type: textarea
+  attributes:
+    label: Explain more about the feature
+  validations:
+    required: true

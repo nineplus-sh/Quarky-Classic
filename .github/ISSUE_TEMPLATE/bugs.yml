@@ -1,0 +1,14 @@
+name: Bugs
+description: Report any creepy insects you spotted crawling in Quarky
+labels: [bug]
+body:
+- type: textarea
+  attributes:
+    label: What is the bug?
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: What are the steps to find it?
+  validations:
+    required: false
