@@ -116,6 +116,19 @@ async function welcome() {
         inertia: true,
         offset: [0, 25]
     })
+    tippy.delegate(`#messages`, {
+        target: '.adminmark',
+        theme: "black",
+        hideOnClick: false,
+        appendTo: document.querySelector("#messagesbox")
+    });
+    tippy.delegate(`#messages`, {
+        target: '.bot',
+        theme: "black",
+        hideOnClick: false,
+        appendTo: document.querySelector("#messagesbox"),
+        allowHTML: true
+    });
 
     changeLoading("Opening gateway connection...");
     openGateway();
@@ -318,39 +331,38 @@ let adminTip;
  * @returns {void}
  */
 function messageRender(message) {
-    let doUwU = message.ua != "Quawky" && settingGet("uwuspeak");
-    if(message.specialAttributes.includes("/me") && settingGet("mespecial")) {
-        document.querySelector("#messages").innerHTML += `
-        <div class="message roleplay">
-            <span class="lusername">${escapeHTML(message.author.username)}</span>
+    let doUwU = message.ua != "Quawky" && settingGet("uwuspeak"); // check if UwUspeak is allowed
+    let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
+    if (botMetadata) { // handle bots
+        message.author.botUsername = message.author.username;
+        message.author.username = botMetadata.username;
+        message.author.avatarUri = botMetadata.avatarUri;
+    }
+
+    let messageDiv = document.createElement('div');
+    messageDiv.classList.add("message");
+    messageDiv.id = message._id;
+    if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
+        messageDiv.classList.add("roleplay");
+        messageDiv.innerHTML = `
+            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>">Bot</span>` : ''} : ''}</span>
             ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
-        </div>
         `;
     } else {
-        document.querySelector("#messages").innerHTML += `
-        <div class="message">
+        messageDiv.innerHTML = `
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a LightQuark developer!'>" : ""}
             </span>
-            <span class="lusername">${escapeHTML(message.author.username)} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
             ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
-            ${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}
+            <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
             <br>
-        </div>
         `;
     }
-
-    if(message.author.admin) {
-        if (adminTip) adminTip.forEach(tip => tip.destroy()); // destroy old tippies
-        adminTip = tippy(`.adminmark`, { // create a tippy for admin marks
-            theme: "black",
-            hideOnClick: false,
-            appendTo: document.querySelector("#messagesbox")
-        });
-    }
+    document.querySelector("#messages").appendChild(messageDiv);
     if(jumpToBottom) document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
@@ -406,7 +418,7 @@ async function sendMessage(message) {
     message = message.replace(/\B\/shrug\b/gm, "¯\\_(ツ)_/¯");
     if(message.startsWith("/me")) {
         message = message.substring(4);
-        specialAttributes.push("/me");
+        specialAttributes.push({"type": "/me"});
     }
 
     apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message, specialAttributes: specialAttributes}, "v2");
