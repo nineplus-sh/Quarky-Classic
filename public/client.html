@@ -319,6 +319,13 @@
                 text-transform: uppercase;
                 cursor: help;
             }
+
+            #welcomewrap {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         </style>
     </head>
     <body>
@@ -389,6 +396,12 @@
             <div id="snikocontainer">
                 <img src="/assets/img/loading.webp" id="snikosnake">
                 <p id="snikosnaketext">Loading additional resources.</p>
+            </div>
+        </div>
+        <div id="welcome" class="fullmodal">
+            <div id="welcomewrap">
+                <h1>Welcome to Quarky!</h1>
+                <img src="/assets/img/welcome/hewoo.png" class="welcomehero">
             </div>
         </div>
 
