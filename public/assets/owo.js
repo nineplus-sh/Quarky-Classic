@@ -37,7 +37,8 @@ const prefixes = [
   'OWO ',
   'OwO ',
   'UwU ',
-  'wat\'s dis? ' // unmerged https://github.com/zuzak/owo/pull/16
+  'wat\'s dis? ', // unmerged https://github.com/zuzak/owo/pull/16
+  '*purrs* ' // from vukky
 ]
 
 const suffixes = [
@@ -96,10 +97,13 @@ const suffixes = [
   ' >.>', // unmerged https://github.com/zuzak/owo/pull/39
   '~', // unmerged https://github.com/zuzak/owo/pull/36
   ' *nuzzles u*', // unmerged https://github.com/zuzak/owo/pull/33
-  '^~^' // from skewwy wewwy
-  '^w^', // from vukky
-  '>w>', // from vukky
-  '>w<' // from vukky
+  ' ^~^' // from skewwy wewwy
+  ' ^w^', // from vukky
+  ' >w>', // from vukky
+  ' >w<', // from vukky
+  ' -w-', // from vukky
+  ' 3:', // from vukky
+  ' *purrs*' // from vukky
 ]
 
 const substitutions = {
