@@ -95,7 +95,9 @@ const suffixes = [
   ' >.<', // unmerged https://github.com/zuzak/owo/pull/39
   ' >.>', // unmerged https://github.com/zuzak/owo/pull/39
   '~', // unmerged https://github.com/zuzak/owo/pull/36
-  ' *nuzzles u*' // unmerged https://github.com/zuzak/owo/pull/33
+  ' *nuzzles u*', // unmerged https://github.com/zuzak/owo/pull/33
+  '^~^' // from skewwy wewwy
+  '^w^' // from vukky
 ]
 
 const substitutions = {
