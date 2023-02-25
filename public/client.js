@@ -135,11 +135,20 @@ async function welcome() {
 
     changeLoading("Opening gateway connection...");
     openGateway();
-    changeLoading("Restoring old session...");
+}
+
+/**
+ * Continue initializing Quarky after the gateway has opened.
+ * Say "Hewwo :3" to the gateway!
+ * @returns {void}
+ */
+async function welcomeGateway() {
+    changeLoading("Getting settings...");
     settingsLoad();
+    changeLoading("Restoring old session...");
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
-    if(previousQuark) switchQuark(previousQuark, false, false, false);
+    if(previousQuark) switchQuark(previousQuark, false, false, false, false);
     if(previousChannel) switchChannel(previousChannel, false);
     console.log(previousQuark, previousChannel)
     changeLoading("Fetching user data...");
@@ -275,9 +284,10 @@ async function joinQuark() {
  * @param {boolean} forceChannel - Force the first channel to load.
  * @param {boolean} sfx - Play the sound effect.
  * @param {boolean} anim - Play the animation.
+ * @param {boolean} replaceState - Replace the history state.
  * @returns {void}
  */
-async function switchQuark(id, forceChannel = true, sfx = true, anim = true) {
+async function switchQuark(id, forceChannel = true, sfx = true, anim = true, replaceState = true) {
     if(sfx)new Audio("/assets/sfx/osu-button-select.wav").play();
 
     document.querySelector("#messagesbox").classList.add("hidden");
@@ -285,7 +295,7 @@ async function switchQuark(id, forceChannel = true, sfx = true, anim = true) {
     if(anim) void document.querySelector(`.quark[id='${id}']`).offsetWidth;
     if(anim) document.querySelector(`.quark[id='${id}']`).classList.add("stretch");
     window.currentQuark = id;
-    history.replaceState(id, "", `/client.html?quark=${currentQuark}`);
+    if(replaceState) history.replaceState(id, "", `/client.html?quark=${currentQuark}`);
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#servername").innerText = quark.name;
@@ -383,6 +393,7 @@ async function switchChannel(id, audioOn = true) {
         wss.send(JSON.stringify({event: "subscribe", message: `channel_${id}`}))
         if(currentChannel) wss.send(JSON.stringify({event: "unsubscribe", message: `channel_${currentChannel}`}))
     }
+
     currentChannel = id;
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 

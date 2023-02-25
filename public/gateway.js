@@ -34,6 +34,8 @@ function socketListeners() {
         // If the welcome flow has been completed before, just hide the loader
         if (welcomeHasFinishedOnce) {
             document.querySelector("#loader").classList.add("bye");
+        } else {
+            welcomeGateway()
         }
         // Send heartbeat to server every 15 seconds
         heartbeat = setInterval(() => {
