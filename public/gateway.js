@@ -21,7 +21,7 @@ function gatewaySuddenDeath() {
                 openGateway();
             }, 1000 * retryCount);
     } else {
-            alert("I'm sorry, but I couldn't connect to LightQuark.\nPlease make sure your internet connection is working.\nIf not, your login might be wrong, or the server fell over.");
+            alert("I'm sorry, but I couldn't connect to Lightquark.\nPlease make sure your internet connection is working.\nIf not, your login might be wrong, or the server fell over.");
     }
 }
 
