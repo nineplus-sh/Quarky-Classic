@@ -1,4 +1,4 @@
-# Quarky! ![Quarky planet](/assets/img/vukkyplanetdark.svg#gh-dark-mode-only)![Quarky planet](/assets/img/vukkyplanet.svg#gh-light-mode-only)
+# ![Quarky planet](/public/assets/img/vukkyplanetdark.svg#gh-dark-mode-only)![Quarky planet](/public/assets/img/vukkyplanet.svg#gh-light-mode-only) Quarky!
 
 It's a Lightquark client. Not a very good one, but it has some personality, or so I've been told. You can use it at https://quarky.vukky.net.
 
