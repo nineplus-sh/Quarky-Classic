@@ -1,8 +1,9 @@
 /*
 MIT License
 
-Original substitutions: Copyright (c) 2018 Eva (Nepeta)
-JavaScript library:     Copyright (c) 2019 Douglas Gardner <douglas@chippy.ch>
+Original substitutions:  Copyright (c) 2018 Eva (Nepeta)
+JavaScript library:      Copyright (c) 2019 Douglas Gardner <douglas@chippy.ch>
+Tweaks for Quarky:       Copyright (c) 2023 Vukky <vukky@litdevs.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +42,38 @@ const prefixes = [
   '*purrs* ' // from vukky
 ]
 
+const emotisuffixes = [ // this splitting of "emotisuffixes" from normal suffixes is from vukky
+  ' ._.',
+  ' :3',
+  ' :3c',
+  ' :D',
+  ' :O',
+  ' :P',
+  ' ;-;',
+  ' ;3',
+  ' ;_;',
+  ' <{^v^}>',
+  ' >_<',
+  ' >_>',
+  ' UwU',
+  ' XDDD',
+  ' ^-^',
+  ' ^_^',
+  ' x3',
+  ' x3',
+  ' xD',
+  ' ÙωÙ',
+  ' <_<', // unmerged https://github.com/zuzak/owo/pull/39
+  ' <.<', // unmerged https://github.com/zuzak/owo/pull/39
+  ' >.<', // unmerged https://github.com/zuzak/owo/pull/39
+  ' >.>', // unmerged https://github.com/zuzak/owo/pull/39
+  ' ^~^', // from skewwy wewwy
+  ' ^w^', // from vukky
+  ' >w>', // from vukky
+  ' >w<', // from vukky
+  ' -w-', // from vukky
+  ' 3:', // from vukky
+]
 const suffixes = [
   ' ( ´•̥̥̥ω•̥̥̥` )',
   ' ( ˘ ³˘)♥',
@@ -62,28 +95,8 @@ const suffixes = [
   ' (人◕ω◕)',
   ' (；ω；)',
   ' (｀へ´)',
-  ' ._.',
-  ' :3',
-  ' :3c',
-  ' :D',
-  ' :O',
-  ' :P',
-  ' ;-;',
-  ' ;3',
-  ' ;_;',
-  ' <{^v^}>',
-  ' >_<',
-  ' >_>',
-  ' UwU',
-  ' XDDD',
   ' \\°○°/',
-  ' ^-^',
-  ' ^_^',
   ' ^•ﻌ•^',
-  ' x3',
-  ' x3',
-  ' xD',
-  ' ÙωÙ',
   ' ʕʘ‿ʘʔ',
   ' ʕ•ᴥ•ʔ',
   ' ミ(．．)ミ',
@@ -91,20 +104,11 @@ const suffixes = [
   ', fwendo',
   '（＾ｖ＾）',
   ' nya~', // unmerged https://github.com/zuzak/owo/pull/19
-  ' <_<', // unmerged https://github.com/zuzak/owo/pull/39
-  ' <.<', // unmerged https://github.com/zuzak/owo/pull/39
-  ' >.<', // unmerged https://github.com/zuzak/owo/pull/39
-  ' >.>', // unmerged https://github.com/zuzak/owo/pull/39
   '~', // unmerged https://github.com/zuzak/owo/pull/36
   ' *nuzzles u*', // unmerged https://github.com/zuzak/owo/pull/33
-  ' ^~^', // from skewwy wewwy
-  ' ^w^', // from vukky
-  ' >w>', // from vukky
-  ' >w<', // from vukky
-  ' -w-', // from vukky
-  ' 3:', // from vukky
   ' *purrs*' // from vukky
 ]
+suffixes.push(...emotisuffixes);
 
 const substitutions = {
   'r': 'w',
@@ -129,6 +133,7 @@ const substitutions = {
 }
 
 const addAffixes = (str) => randomItem(prefixes) + str + randomItem(suffixes)
+const getEmotisuffix = () => randomItem(emotisuffixes); // from vukky, when only an emotisuffix is wanted (for use with other functions)
 const substitute = (str) => {
   const replacements = Object.keys(substitutions)
   replacements.forEach((x) => {
@@ -138,11 +143,11 @@ const substitute = (str) => {
 }
 const owo = (str) => addAffixes(substitute(str))
 
-window.owo = owo; // added by vukky to make the thingie thing, i don't browserify
+// added by vukky to make the thingie thing, i don't browserify
+window.owo = owo;
+window.uwutils = {addAffixes, getEmotisuffix, substitute};
 
 module.exports = {
-  addAffixes,
-  substitute,
   owo
 }
 

@@ -334,7 +334,7 @@ let adminTip;
  * @returns {void}
  */
 function messageRender(message) {
-    let doUwU = message.ua != "Quawky" && settingGet("uwuspeak"); // check if UwUspeak is allowed
+    let doUwU = !message.ua.startsWith("Quawky") && settingGet("uwuspeak"); // check if UwUspeak is allowed
     let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
     if (botMetadata) { // handle bots
         message.author.botUsername = message.author.username;
@@ -348,8 +348,8 @@ function messageRender(message) {
     if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
         messageDiv.classList.add("roleplay");
         messageDiv.innerHTML = `
-            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>">Bot</span>` : ''} : ''}</span>
-            ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
+            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>">Bot</span>` : ''}</span>
+            ${doUwU ? `*${uwutils.substitute(linkify(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
         `;
@@ -412,16 +412,24 @@ function scrollingDetected() {
  * @returns {void}
  */
 async function sendMessage(message) {
+    if(message == "") return displayError('You need to enter a message to send! :D');
     let specialAttributes = []; // TODO: in case i need to hack in more later
 
     new Audio("/assets/sfx/osu-submit-select.wav").play();
     document.querySelector("#sendmsg").value = "";
 
     // handle special effects
-    message = message.replace(/\B\/shrug\b/gm, "¯\\_(ツ)_/¯");
-    if(message.startsWith("/me")) {
+    message = message.replace(/\B\/shrug\b/gm, "¯\\_(ツ)_/¯"); // allow shrugging
+    if(message.startsWith("/me")) { // allow /me-ing
         message = message.substring(4);
         specialAttributes.push({"type": "/me"});
+    }
+    if(settingGet("uwuspeak")) {
+        if(specialAttributes.some(atrb => atrb.type == "/me")) { // Vukky *fowmats uuw /me cutewy* >w>
+            message = `*${uwutils.substitute(message)}* ${uwutils.getEmotisuffix()}`
+        } else {
+            message = owo(message);
+        }
     }
 
     apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message, specialAttributes: specialAttributes}, "v2");

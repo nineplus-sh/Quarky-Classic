@@ -363,7 +363,7 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                    <button onclick="if(document.querySelector('#sendmsg').value == '') return displayError('You need to enter a message to send! :D');sendMessage(settingGet('uwuspeak') ? owo(document.querySelector('#sendmsg').value) : document.querySelector('#sendmsg').value)">Ok</button>
+                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)">Ok</button>
                 </form>
             </div>
         </div>
