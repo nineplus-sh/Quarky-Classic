@@ -149,10 +149,8 @@ async function welcomeGateway() {
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
     let previousChannelMissing = !previousChannel;
-    console.log(previousChannelMissing)
     if(previousQuark) switchQuark(previousQuark, previousChannelMissing, false, false, false);
     if(previousChannel) switchChannel(previousChannel, false);
-    console.log(previousQuark, previousChannel)
     changeLoading("Fetching user data...");
     fetchAviebox();
     changeLoading("Fetching Quark list...");
