@@ -4,6 +4,9 @@
  */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+// Stores if the user is running Quarky locally, this is used in the UA
+window.isLocal = document.location.host == "127.0.0.1:4210";
+
 // Stores if jumping to the bottom automatically is allowed
 window.jumpToBottom = true;
 
@@ -219,8 +222,8 @@ async function quarkFetch() {
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
-            "User-Agent": settingGet("uwuspeak") ? "Quawky" : "Quarky",
-            "lq-agent": settingGet("uwuspeak") ? "Quawky" : "Quarky"
+            "User-Agent": `Qua${settingGet("uwuspeak") ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
+            "lq-agent": `Qua${settingGet("uwuspeak") ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`
         }
     }
     // GET requests cannot have a body
