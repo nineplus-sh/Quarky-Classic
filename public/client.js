@@ -148,7 +148,9 @@ async function welcomeGateway() {
     changeLoading("Restoring old session...");
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
-    if(previousQuark) switchQuark(previousQuark, false, false, false, false);
+    let previousChannelMissing = !previousChannel;
+    console.log(previousChannelMissing)
+    if(previousQuark) switchQuark(previousQuark, previousChannelMissing, false, false, false);
     if(previousChannel) switchChannel(previousChannel, false);
     console.log(previousQuark, previousChannel)
     changeLoading("Fetching user data...");
