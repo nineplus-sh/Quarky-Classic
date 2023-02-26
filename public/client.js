@@ -640,4 +640,12 @@ function loadJS(url, implementationCode, location = document.body){
     location.appendChild(scriptTag);
 };
 
+/**
+ * Reloads the current channel.
+ * @returns {void}
+ */
+async function reloadChannel() {
+    switchChannel(currentChannel, false)
+}
+
 welcome();
