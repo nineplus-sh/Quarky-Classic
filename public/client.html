@@ -287,6 +287,8 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 width: 20em;
+            }
+            .creditssection {
                 background-color: rgb(20, 10, 25);
                 z-index: 1;
                 filter: drop-shadow(0 0 0.75rem black);
@@ -359,6 +361,17 @@
                 float: right;
                 animation: rotate 15s infinite linear;
             }
+            .creditsdoodle {
+                image-rendering: pixelated;
+                float: right;
+            }
+            .creditssection {
+                min-height: 150px;
+                margin-bottom: 5em;
+            }
+            .creditssection a {
+                color: white;
+            }
         </style>
     </head>
     <body>
@@ -413,11 +426,36 @@
         <div id="credits" class="fullmodal hidden">
             <audio src="/assets/sfx/xscape-credits.mp3" preload="none"></audio>
             <canvas id="butterchurn"></canvas>
-            <div id="creditscontainer" class="onespeech hidden">
-                <img id="creditsplanet" src="/assets/img/vukkyplanetdark.svg" width="150" height="150">
-                <h1 style="margin-bottom: 0;">Quarky</h1>
-                <h2 style="margin-top: 0;">by Vukky</h2>
-            </div>
+            <span id="creditscontainer" class="hidden">
+                <div class="creditssection onespeech">
+                    <img id="creditsplanet" src="/assets/img/vukkyplanetdark.svg" width="150" height="150">
+                    <h1 style="margin-bottom: 0;">Quarky</h1>
+                    <h2 style="margin-top: 0;">by Vukky</h2>
+                </div>
+                <div class="creditssection onespeech">
+                    <img class="creditsdoodle" src="/assets/img/credits/sound.gif" width="150" height="150">
+                    <h1 style="margin-bottom: 0;">Sounds</h1>
+                    <h4 style="margin-top: 0;">Stolen but good</h2>
+                    <br><br><br><hr>
+                    <p>Login music: <a href="https://youtu.be/fNidzkdF_ic" target="_blank">Startup Theme (Wii U) - Miiverse</a></p>
+                    <p>Login jingle: <a href="https://youtu.be/bFR-4BO_OvA" target="_blank">Nintendo Video - Startup</a></p>
+                    <p>Startup jingle: <a href="https://youtu.be/AFvLNB2oFNk" target="_blank">Main Theme (Wii U) - Miiverse</a></p>
+                    <p>Credits music: <a href="https://youtu.be/IOT4gBGI4QY" target="_blank">Credits - X-Returns</a></p>
+                    <p>Everything else: <a href="https://github.com/ppy/osu-resources" target="_blank">osu!resources</a></p>
+                </div>
+                <div class="creditssection onespeech">
+                    <img class="creditsdoodle" src="/assets/img/credits/code.gif" width="150" height="150">
+                    <h1 style="margin-bottom: 0;">Code</h1>
+                    <h4 style="margin-top: 0;">Stack Overflow snippets are <a href="https://meta.stackexchange.com/q/12527">actually licensed under CC BY-SA</a>, but I don't think anyone knows!</h2>
+                    <hr>
+                    <p><small>*modified for Quarky use</small></p>
+                    <p>Linkifier*: <a href="https://stackoverflow.com/a/71734086" target="_blank">https://stackoverflow.com/a/71734086</a></p>
+                    <p>TLD extractor: <a href="https://community.splunk.com/t5/Getting-Data-In/Top-Level-Domain-Extraction-from-URLs/m-p/319069" target="_blank">https://community.splunk.com/t5/Getting-Data-In/Top-Level-Domain-Extraction-from-URLs/m-p/319069</a></p>
+                    <p>Dynamic JS loader: <a href="https://stackoverflow.com/a/31374433" target="_blank">https://stackoverflow.com/a/31374433</a></p>
+                    <p>UwUspeak*: <br><a href="https://github.com/zuzak/owo" target="_blank">https://github.com/zuzak/owo</a></p>
+                    <p>Credits visualizer: <a href="https://github.com/jberg/butterchurn" target="_blank">https://github.com/jberg/butterchurn</a></p>
+                </div>
+            </span>
             <div id="snikocontainer">
                 <img src="/assets/img/loading.webp" id="snikosnake">
                 <p id="snikosnaketext">Loading additional resources.</p>
