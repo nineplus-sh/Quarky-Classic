@@ -3,8 +3,7 @@
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/solid.min.css"/>
+        <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro-v6@44659d9/css/all.min.css" rel="stylesheet" type="text/css" />
         <link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-button-select.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-default-hover.wav" as="audio" />
@@ -22,7 +21,7 @@
         <style>
             body {
                 margin: 0;
-                background-color: #36393F;
+                background-color: #313338;
                 color: white;
                 font-family: sans-serif;
             }
@@ -47,7 +46,7 @@
                 position: fixed;
                 width: 5rem;
                 height: 100%;
-                background-color: #202225;
+                background-color: #1e1f22;
                 overflow-y: scroll;
                 scrollbar-width: none;
             }
@@ -58,7 +57,7 @@
                 position: fixed;
                 width: 15rem;
                 height: 100%;
-                background-color: #2F3136;
+                background-color: #2b2d31;
                 left: 5rem;
             }
             @keyframes rotate {
@@ -107,13 +106,14 @@
                 top: 0;
                 overflow-y: scroll;
                 height: 100%;
+                max-height: calc(100% - 3.5em); /* add this line */
                 width: 70%;
             }
             #servername {
                 padding-left: 0.5em;
                 padding-top: 0.5em;
                 padding-bottom: 0.5em;
-                background-color: #2F3136;
+                background-color: #2e3035;
                 filter: drop-shadow(0 0 0.1rem black);
                 font-weight: bold;
                 overflow: hidden;
@@ -330,19 +330,19 @@
             }
 
             #messagesbox {
-                scrollbar-color: #00a8f3 #2f3136;
+                scrollbar-color: #00a8f3 #2e3035;
             }
             #messagesbox::-webkit-scrollbar-thumb {
                 background: #00a8f3;
                 border-radius: 10px;
             }
             #messagesbox::-webkit-scrollbar {
-                background: #2f3136;
+                background: #2e3035;
                 width: 10px;
             }
 
             .message:hover {
-                background: #2f3136;
+                background: #2e3035;
             }
             .message {
                 margin-bottom: 1em;
@@ -372,6 +372,29 @@
             .creditssection a {
                 color: white;
             }
+            .message:not(.roleplay) .reply {
+                padding-left: 3em;
+            }
+
+            #sendmsg {
+                width: 90%;
+            }
+            #sendmsggo {
+                float: right;
+                margin-right: 1.2em;
+            }
+            #sendmsgs {
+                position: fixed;
+                left: 20rem;
+                overflow-y: scroll;
+                width: 68.5%;
+                bottom: 0;
+                padding: 1em;
+                background-color: #383a40;
+            }
+            #sendmsgs form {
+                margin: 0;
+            }
         </style>
     </head>
     <body>
@@ -394,19 +417,19 @@
             <div id="userdata">
                 <img class="avie loading" src="https://cdn.discordapp.com/emojis/851468740263542814.png" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 <span class="lusername">Vukky</span>
-                <i class="fa-solid fa-gear fa-lg settings" onclick="document.querySelector('#settings').classList.remove('hidden')"></i>
+                <i class="fa-solid fa-gear fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
         <div id="messagesbox" onscroll="scrollingDetected()" class="hidden">
             <div id="messages">
 
             </div>
-            <div id="sendmsgs">
-                <form onsubmit="return false;" autocomplete="off">
-                    <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)">Ok</button>
-                </form>
-            </div>
+        </div>
+        <div id="sendmsgs">
+            <form onsubmit="return false;" autocomplete="off">
+                <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
+                <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
+            </form>
         </div>
 
         <!-- special modals -->
@@ -420,7 +443,7 @@
                 <p>Special rendering of /me messages <input type="checkbox" name="mespecial" onclick="settingSet(this.name, this.checked);reloadChannel()"></p>
                 <h2>Suggestions or bugs?</h2>
                 <p>Consider <a href="https://github.com/Vukkyy/Quarky/issues/new/choose" target="_blank">reporting it</a>!</p>
-                <br><button onclick="document.querySelector('#settings').classList.add('hidden')">Exit</button> <button onclick="credits()">Credits</button> 
+                <br><button onclick="new Audio('/assets/sfx/osu-overlay-pop-out.wav').play();document.querySelector('#settings').classList.add('hidden')">Exit</button> <button onclick="credits()">Credits</button> 
             </div>
         </div>
         <div id="credits" class="fullmodal hidden">

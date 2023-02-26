@@ -188,7 +188,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
 </div>`
     })
     // Add join and log out buttons
-    quarkList.innerHTML += `
+    quarkList.innerHTML += `<hr>
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
             <i class="fa-solid fa-people-roof quarkicon"></i>
             </div>
@@ -269,6 +269,7 @@ function logOut() {
  * @returns {void}
  */
 async function joinQuark() {
+    new Audio('/assets/sfx/osu-notification-pop-in.wav').play();
     let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
     if (!quarkCode) return;
     let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
@@ -346,6 +347,7 @@ let adminTip;
 function messageRender(message) {
     let doUwU = !message.ua.startsWith("Quawky") && settingGet("uwuspeak"); // check if UwUspeak is allowed
     let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
+    let isReply = message.specialAttributes.find(attr => attr.type === "reply");
     if (botMetadata) { // handle bots
         message.author.botUsername = message.author.username;
         message.author.username = botMetadata.username;
@@ -354,23 +356,25 @@ function messageRender(message) {
 
     let messageDiv = document.createElement('div');
     messageDiv.classList.add("message");
-    messageDiv.id = message._id;
+    messageDiv.id = `m_${message._id}`;
     if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
         messageDiv.classList.add("roleplay");
         messageDiv.innerHTML = `
+            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b>${document.querySelector(`#m_${isReply.replyTo} .realname`)?.innerHTML || "Unknown user"}</b> ${document.querySelector(`#m_${isReply.replyTo} .messagecontent`)?.innerHTML.replaceAll("<br>", " ") || "Unknown message"}</div>` : ""}
             <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>">Bot</span>` : ''}</span>
-            ${doUwU ? `*${uwutils.substitute(linkify(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}
+            <span class="messagecontent">${doUwU ? `*${uwutils.substitute(linkify(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
         `;
     } else {
         messageDiv.innerHTML = `
+            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b>${document.querySelector(`#m_${isReply.replyTo} .realname`)?.innerHTML || "Unknown user"}</b> ${document.querySelector(`#m_${isReply.replyTo} .messagecontent`)?.innerHTML.replaceAll("<br>", " ") || "Unknown message"}</div>` : ""}
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
             </span>
-            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-            ${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}
+            <span class="lusername"><span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+            <span class="messagecontent">${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
             <br>
         `;
