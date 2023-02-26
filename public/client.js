@@ -344,7 +344,6 @@ let adminTip;
  * @returns {void}
  */
 function messageRender(message) {
-    console.log(message)
     let doUwU = !message.ua.startsWith("Quawky") && settingGet("uwuspeak"); // check if UwUspeak is allowed
     let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
     let isReply = message.specialAttributes.find(attr => attr.type === "reply");
