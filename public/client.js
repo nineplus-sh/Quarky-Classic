@@ -190,10 +190,10 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
     // Add join and log out buttons
     quarkList.innerHTML += `
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
-                <span style="font-size: 2.88em; margin-left: 0.4em;">+</span>
+            <i class="fa-solid fa-people-roof quarkicon"></i>
             </div>
             <div class="quark logout" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="logOut();" data-tippy-content="Log Out :(">
-                <span style="font-size: 2.4em; margin-left: 0.4em;">←</span>
+                <i class="fa-solid fa-person-through-window quarkicon"></i>
             </div>`
     // Create a tippy tooltip if it doesnt already exist
     if (quarkTip) quarkTip.forEach(tip => tip.destroy());
