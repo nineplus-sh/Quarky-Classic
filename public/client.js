@@ -407,6 +407,7 @@ async function switchChannel(id, audioOn = true) {
         messageRender(cleanMessage(message));
     });
     document.querySelector("#messagesbox").classList.remove("hidden");
+    document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
 /**
