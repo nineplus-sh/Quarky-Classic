@@ -21,7 +21,7 @@
         <style>
             body {
                 margin: 0;
-                background-color: #36393F;
+                background-color: #313338;
                 color: white;
                 font-family: sans-serif;
             }
@@ -46,7 +46,7 @@
                 position: fixed;
                 width: 5rem;
                 height: 100%;
-                background-color: #202225;
+                background-color: #1e1f22;
                 overflow-y: scroll;
                 scrollbar-width: none;
             }
@@ -57,7 +57,7 @@
                 position: fixed;
                 width: 15rem;
                 height: 100%;
-                background-color: #2F3136;
+                background-color: #2b2d31;
                 left: 5rem;
             }
             @keyframes rotate {
@@ -362,6 +362,23 @@
             .message:not(.roleplay) .reply {
                 padding-left: 3em;
             }
+
+            #sendmsg {
+                width: 90%;
+            }
+            #sendmsggo {
+                float: right;
+                margin-right: 1.2em;
+            }
+            #sendmsgs {
+                position: sticky;
+                bottom: 0;
+                padding: 1em;
+                background-color: #383a40;
+            }
+            #sendmsgs form {
+                margin: 0;
+            }
         </style>
     </head>
     <body>
@@ -384,7 +401,7 @@
             <div id="userdata">
                 <img class="avie loading" src="https://cdn.discordapp.com/emojis/851468740263542814.png" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 <span class="lusername">Vukky</span>
-                <i class="fa-solid fa-gear fa-lg settings" onclick="document.querySelector('#settings').classList.remove('hidden')"></i>
+                <i class="fa-solid fa-gear fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
         <div id="messagesbox" onscroll="scrollingDetected()" class="hidden">
@@ -394,7 +411,7 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)">Ok</button>
+                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
                 </form>
             </div>
         </div>
@@ -410,7 +427,7 @@
                 <p>Special rendering of /me messages <input type="checkbox" name="mespecial" onclick="settingSet(this.name, this.checked);reloadChannel()"></p>
                 <h2>Suggestions or bugs?</h2>
                 <p>Consider <a href="https://github.com/Vukkyy/Quarky/issues/new/choose" target="_blank">reporting it</a>!</p>
-                <br><button onclick="document.querySelector('#settings').classList.add('hidden')">Exit</button> <button onclick="credits()">Credits</button> 
+                <br><button onclick="new Audio('/assets/sfx/osu-overlay-pop-out.wav').play();document.querySelector('#settings').classList.add('hidden')">Exit</button> <button onclick="credits()">Credits</button> 
             </div>
         </div>
         <div id="credits" class="fullmodal hidden">

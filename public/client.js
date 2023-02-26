@@ -188,7 +188,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
 </div>`
     })
     // Add join and log out buttons
-    quarkList.innerHTML += `
+    quarkList.innerHTML += `<hr>
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
             <i class="fa-solid fa-people-roof quarkicon"></i>
             </div>
@@ -269,6 +269,7 @@ function logOut() {
  * @returns {void}
  */
 async function joinQuark() {
+    new Audio('/assets/sfx/osu-notification-pop-in.wav').play();
     let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
     if (!quarkCode) return;
     let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
