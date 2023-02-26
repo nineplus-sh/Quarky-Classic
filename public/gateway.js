@@ -54,6 +54,12 @@ function socketListeners() {
             if(document.hidden || data.message.channelId != currentChannel) { // channel isn't focused
                 if(settingGet("notify")) { // user has notifications on
                     if(data.author._id != userID) { // message isn't from themselves
+                        let botMetadata = data.message.specialAttributes.find(attr => attr.type === "botMessage");
+                        if (botMetadata) { // handle bots
+                            data.author.username = botMetadata.username;
+                            data.author.avatarUri = botMetadata.avatarUri;
+                        }
+
                         sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, true, data.author.avatarUri, function() { switchQuark(channelBox[data.message.channelId].quarkId, false);switchChannel(data.message.channelId, false) })
                     }
                 }
