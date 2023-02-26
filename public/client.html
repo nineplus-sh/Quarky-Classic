@@ -294,10 +294,10 @@
             }
             @keyframes scroll {
                 from {
-                    transform: translate(-50%, calc(250% + var(--creditscontainer-height)));
+                    top: calc(100% + var(--creditscontainer-height));
                 }
                 to {
-                    transform: translate(-50%, calc(-250% - var(--creditscontainer-height)))
+                    top: calc(0% - var(--creditscontainer-height))
                 }
             }
 
@@ -350,6 +350,11 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 font-size: 2em;
+            }
+            
+            #creditsplanet {
+                float: right;
+                animation: rotate 15s infinite linear;
             }
         </style>
     </head>
@@ -405,13 +410,10 @@
         <div id="credits" class="fullmodal hidden">
             <audio src="/assets/sfx/xscape-credits.mp3" preload="none"></audio>
             <canvas id="butterchurn"></canvas>
-            <div id="creditscontainer" class="onespeech">
-                <h1>Quarky :3</h1>
-                <p>Made by pukky pukkerton</p>
-                <h2>The end</h2>
-                <p>Uwu</p>
-                <h3>OWO</h3>
-                <p>Looks like I did a fucky wucky! Don't worry, our trained AI code generators are working 24/7 to not resolve your problem</p>
+            <div id="creditscontainer" class="onespeech hidden">
+                <img id="creditsplanet" src="/assets/img/vukkyplanetdark.svg" width="150" height="150">
+                <h1 style="margin-bottom: 0;">Quarky</h1>
+                <h2 style="margin-top: 0;">by Vukky</h2>
             </div>
             <div id="snikocontainer">
                 <img src="/assets/img/loading.webp" id="snikosnake">
