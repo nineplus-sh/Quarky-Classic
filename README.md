@@ -7,6 +7,7 @@ It's a Lightquark client. Not a very good one, but it has some personality, or s
 - Reading messages
 - Sending messages (including /me, /shrug, and \*purrs\* uwuspeak fow chwonicawwy onwine Wightquawk usews :P)
 - You don't get to delete them though
+- And the client doesn't adapt well to screen resolutions other than my own
 
 ### Features that'll show up when I stop procrastinating
 I'll never manage to maintain such a list if it was in the README, so you can have this GitHub projects link: https://github.com/users/Vukkyy/projects/2/views/2
