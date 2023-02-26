@@ -103,7 +103,7 @@
             }
             #messagesbox {
                 position: fixed;
-                left: 21rem;
+                left: 20.3rem;
                 top: 0;
                 overflow-y: scroll;
                 height: 100%;
@@ -134,9 +134,6 @@
             .message:not(.roleplay) .lusername {
                 position: absolute;
                 font-weight: bold;
-            }
-            .message {
-                padding-bottom: 1em;
             }
             .timestamp {
                 color: lightgray;
@@ -337,6 +334,14 @@
             #messagesbox::-webkit-scrollbar {
                 background: #2f3136;
                 width: 10px;
+            }
+
+            .message:hover {
+                background: #2f3136;
+            }
+            .message {
+                margin-bottom: 1em;
+                padding: 0.2em;
             }
         </style>
     </head>
