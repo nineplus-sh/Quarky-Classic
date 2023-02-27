@@ -29,8 +29,60 @@ window.tlds = [];
 window.defaults = {
     "notify": false,
     "uwuspeak": false,
-    "mespecial": true
+    "mespecial": true,
+    "usericons": true
 }
+
+// The user icons to randomly select from
+window.usericons = [
+    "person",
+    "person-walking-luggage",
+    "person-walking",
+    "person-to-portal",
+    "person-to-door",
+    "person-through-window",
+    "person-swimming",
+    "person-snowboarding",
+    "person-sledding",
+    "person-skiing-nordic",
+    "person-skiing",
+    "person-ski-lift",
+    "person-ski-jumping",
+    "person-skating",
+    "person-simple",
+    "person-shelter",
+    "person-seat-reclined",
+    "person-seat",
+    "person-running",
+    "person-rays",
+    "person-pinball",
+    "person-from-portal",
+    "person-drowning",
+    "person-digging",
+    "person-chalkboard",
+    "person-carry-box",
+    "person-biking-mountain",
+    "person-biking",
+    "user-secret",
+    "user-bounty-hunter",
+    "user-tie",
+    "user-vneck",
+    "user-visor",
+    "user-ninja",
+    "user-headset",
+    "user-cowboy",
+    "user-chef",
+    "user-astronaut",
+    "user-alien",
+    "images-user",
+    "image-user",
+    "house-user",
+    "folder-user",
+    "file-user",
+    "book-user",
+    "image-polaroid-user",
+    "house-chimney-user"
+]
 
 /**
  * Witchcraft, made with 4 blends. Don't you dare touch it.
@@ -373,7 +425,7 @@ function messageRender(message) {
                 <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
             </span>
-            <span class="lusername"><span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+            <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
             <span class="messagecontent">${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
             <br>
@@ -648,6 +700,18 @@ function loadJS(url, implementationCode, location = document.body){
  */
 async function reloadChannel() {
     switchChannel(currentChannel, false)
+}
+
+/**
+* Pick a random item from an array based on a seed. Lovingly stolen from https://stackoverflow.com/a/7493982.
+* @param {array} arr - The array to pick a random item from.
+* @param {string} seed - The seed.
+*/
+function rarrayseed(arr, seed) {
+    var charCodes = seed.split('').reduce(function(a, b, i) {
+        return (i == 1 ? a.charCodeAt(0) : +a) + b.charCodeAt(0);
+    });
+    return arr[charCodes % arr.length]
 }
 
 welcome();
