@@ -197,6 +197,7 @@ async function welcome() {
 async function welcomeGateway() {
     changeLoading("Getting settings...");
     settingsLoad();
+    reloadMsgDeps(false);
     changeLoading("Restoring old session...");
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
@@ -506,14 +507,22 @@ async function sendMessage(message) {
 }
 
 /**
- * Fetches the user data and updates the aviebox.
+ * Fetches the user data and updates the aviebox & settings screen.
  * @returns {void}
  */
 async function fetchAviebox() {
     let userData = (await apiCall(`/user/me`)).response.jwtData;
     window.userID = userData._id;
+
+    // update aviebox
     document.querySelector("#userdata .lusername").innerText = userData.username;
     document.querySelector("#userdata .avie").src = userData.avatar;
+
+    // update settings screen
+    document.querySelectorAll("#settings .message.fake .avie img").forEach(avie => avie.src = userData.avatar)
+    document.querySelectorAll("#settings .message.fake .realname").forEach(realname => realname.innerText = userData.username)
+    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.remove(...window.usericons))
+    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add(`fa-${rarrayseed(window.usericons, userData.username)}`))
 }
 
 /**
@@ -699,7 +708,42 @@ function loadJS(url, implementationCode, location = document.body){
  * @returns {void}
  */
 async function reloadChannel() {
+    if(!currentChannel) return;
     switchChannel(currentChannel, false)
+}
+
+/**
+ * Reloads things dependent on the message settings.
+ * @param {boolean} rch - Reload the channel?
+ * @returns {void}
+ */
+async function reloadMsgDeps(rch = true) {
+    // handle user icons
+    if(settingGet("usericons")) {
+        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.remove("hidden"))
+    } else {
+        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add("hidden"))
+    }
+    // handle uwuspeak
+    if(settingGet("uwuspeak")) {
+        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = "*purrs* I'm a Quawky usew!~";
+        document.querySelectorAll("#settings .message.fake.roleplaycfg .messagecontent").forEach(msgtxt => msgtxt.innerText = "*is excited* OwO")
+        document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quawky")
+    } else {
+        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = "I'm a Quarky user!";
+        document.querySelectorAll("#settings .message.fake.roleplaycfg .messagecontent").forEach(msgtxt => msgtxt.innerText = "is excited")
+        document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quarky")
+    }
+    // handle /me rendering
+    if(settingGet("mespecial")) {
+        document.querySelector("#settings .message.fake.noroleplay").classList.add("hidden");
+        document.querySelector("#settings .message.fake.roleplay").classList.remove("hidden");
+    } else {
+        document.querySelector("#settings .message.fake.noroleplay").classList.remove("hidden");
+        document.querySelector("#settings .message.fake.roleplay").classList.add("hidden");
+    }
+
+    reloadChannel();
 }
 
 /**
