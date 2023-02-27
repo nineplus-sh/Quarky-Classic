@@ -436,6 +436,8 @@ async function sendMessage(message) {
 
     // handle special effects
     message = message.replace(/\B\/shrug\b/gm, "¯\\_(ツ)_/¯"); // allow shrugging
+    message = message.replace(/\B\/tableflip\b/gm, "(╯°□°)╯︵ ┻━┻"); // allow tableflipping
+    message = message.replace(/\B\/unflip\b/gm, "┬─┬ノ( º _ ºノ)"); // allow unflipping
     if(message.startsWith("/me")) { // allow /me-ing
         message = message.substring(4);
         specialAttributes.push({"type": "/me"});
@@ -464,7 +466,6 @@ async function fetchAviebox() {
 
 /**
  * Changes a setting in the localStorage.
- * TODO: add defaults (https://vukky.paste.lol/quarky-defaults-placeholder)
  * @param {string} key - The key to change.
  * @param {string} value - The value to set it to.
  * @param {boolean} sfx - Play a sound effect if it is a boolean.
@@ -472,7 +473,7 @@ async function fetchAviebox() {
  */
 function settingSet(key, value, sfx = true) {
     if(typeof value == "boolean" && sfx) new Audio(`/assets/sfx/osu-checkbox-${value}.wav`).play()
-    localStorage.setItem(key, JSON.stringify({type: typeof value, value: value})) // this json was skelly's idea. if you end up hating it later, blame her
+    localStorage.setItem(key, JSON.stringify({type: typeof value, value: value})) // this json was amy's idea. if you end up hating it later, blame her
 }
 
 /**
@@ -481,7 +482,7 @@ function settingSet(key, value, sfx = true) {
  * @returns {any} - The value of the key.
  */
 function settingGet(key) {
-    // THE FOLLOWING HACK WAS SKELLY'S IDEA. IF YOU END UP HATING IT LATER, BLAME HER
+    // THE FOLLOWING HACK WAS AMY'S IDEA. IF YOU END UP HATING IT LATER, BLAME HER
     if(!localStorage.getItem(key)) settingSet(key, defaults[key], false);
     let valueData = JSON.parse(localStorage.getItem(key))
 
