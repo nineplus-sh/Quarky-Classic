@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "A web client for Lightquark",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "browserify src/assets/linkify-it.js -o public/assets/linkify-it.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,9 @@
     "dotenv": "^16.0.3",
     "jest": "^29.4.2",
     "jest-puppeteer": "^7.0.0"
+  },
+  "dependencies": {
+    "linkify-it": "^4.0.1",
+    "tlds": "^1.236.0"
   }
 }

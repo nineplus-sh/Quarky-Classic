@@ -85,34 +85,6 @@ window.usericons = [
 ]
 
 /**
- * Witchcraft, made with 4 blends. Don't you dare touch it.
- * First blend: https://stackoverflow.com/a/71734086 
- * Second blend: https://community.splunk.com/t5/Getting-Data-In/Top-Level-Domain-Extraction-from-URLs/m-p/319069
- * Third blend: Spending an hour on Regex101 to get it to support non-English TLDs
- * Fourth blend: Spaghetti
- * @param {string} t - Text to linkify.
- * @returns {string} Linkified text.
- */
-const linkify = t => {
-    const m = t.match(/(?<=\s|^)([a-zA-Z-:\/]+\.(?:\p{Letter}+?|xn--\w+?|)(?:\/.+?|\/|))+(?=[.,;:?!-]?(?:\s|$))/gu)
-    if (!m) return t
-    const a = []
-    m.forEach(x => {
-      const [t1, ...t2] = t.split(x)
-      a.push(t1)
-      t = t2.join(x)
-      const y = (!(x.match(/(http(s?)):\/\//)) ? 'https://' : '') + x;
-      let tld = x.match(/(\.\p{Letter}+?(?:--\w+?|))(?:$|\/)/u)
-      if (!tld) return a.push(x);
-      tld = new URL(y).href.match(/(\.\p{Letter}+?(?:--\w+?|))(?:$|\/)/u)[0].replace(/\/$/, '').replace(/\/$/, '').replace(/^\./, "").toUpperCase();
-      if (!tlds.includes(tld)) return a.push(x);
-      a.push('<a href="' + y + '" target="_blank">' + y.replace(/^https?:\/\//, '').replace(/\/$/, '') + '</a>')
-    })
-    a.push(t)
-    return a.join('')
-}
-
-/**
  * Get the value of a cookie
  * @param {string} key 
  * @returns {string} - cookie value
