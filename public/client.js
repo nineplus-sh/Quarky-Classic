@@ -246,20 +246,29 @@ async function quarkFetch() {
  * @param {"GET" | "POST" | "PATCH" | "PUT" | "DELETE"} method - Default GET
  * @param {object} body - Default empty object
  * @param {string} apiVersion - Default v1
+ * @param {object} headers - Additonal headers
+ * @param {boolean} stringify - Stringify the body? default yes
  * @returns {object|false}
  */
- async function apiCall(path, method = "GET", body = {}, apiVersion = "v1") {
+ async function apiCall(path, method = "GET", body = {}, apiVersion = "v1", headers = {}, stringify = true) {
     let options = {
         method: method,
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
             "User-Agent": `Qua${settingGet("uwuspeak") ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
-            "lq-agent": `Qua${settingGet("uwuspeak") ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`
+            "lq-agent": `Qua${settingGet("uwuspeak") ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
+            ...headers
         }
     }
     // GET requests cannot have a body
-    if (method !== "GET") options.body = JSON.stringify(body);
+    if (method !== "GET") {
+        if(stringify) {
+            options.body = JSON.stringify(body);
+        } else {
+            options.body = body;
+        }
+    }
 
     try {
         let res = await fetch(`https://lq.litdevs.org/${apiVersion}${path}`, options);
@@ -726,6 +735,29 @@ function rarrayseed(arr, seed) {
         return (i == 1 ? a.charCodeAt(0) : +a) + b.charCodeAt(0);
     });
     return arr[charCodes % arr.length]
+}
+
+/**
+ * Opens the file picker and uploads the avatar.
+ * @param uploadWrap - Optional, the upload wrapper
+ * @returns {void}
+ */
+function uploadAvie(uploadWrap) {
+    let uploadIcon = uploadWrap.querySelector("i");
+    
+    // https://stackoverflow.com/a/40971885
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = "image/*";
+    input.onchange = async e => { 
+        uploadIcon.style.animation = "stretchcenter 0.2s infinite linear";
+        let file = e.target.files[0]
+        let arrayBuffer = await file.arrayBuffer()
+        apiCall("/user/me/avatar", "PUT", arrayBuffer, "v2", {"Content-Type": file.type}, false).then(function(result) {
+            if(result.request.success) logOut();
+        })
+    }     
+    input.click();
 }
 
 welcome();

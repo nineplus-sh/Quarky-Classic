@@ -15,7 +15,6 @@
         <link rel="preload" href="/assets/img/vukkyplanetdark.svg" as="image" />
         <link rel="preload" href="/assets/img/loading.png" as="image" />
         <link rel="preload" href="/assets/img/fail.png" as="image" />
-        <link rel="preload" href="/assets/tlds.txt" as="fetch" />
         <link rel="preload" href="/assets/sfx/osu-error-notification-pop-in.wav" as="audio" />
         <audio src="/assets/sfx/wb.mp3" id="wb"></audio>
         <style>
@@ -395,6 +394,40 @@
             #sendmsgs form {
                 margin: 0;
             }
+            .avieupload {
+                position: absolute;
+                width: 3em;
+                height: 3em;
+                background-color: #00000073;
+                border-radius: 100%;
+                display: none;
+                cursor: pointer;
+            }
+            .avieupload i {
+                position: relative;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .avie:hover .avieupload {
+                display: inline;
+            }
+            @keyframes rotatecenter {
+                from {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+                to {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+            @keyframes stretchcenter {
+                0% {
+                    transform: translate(-50%, -50%) scale(1)
+                }
+                50% {
+                    transform: translate(-50%, 0%) scale(1, 0.5);
+                }
+            }
         </style>
     </head>
     <body>
@@ -442,6 +475,7 @@
                 <hr>
                 <div class="message fake cozy">
                     <span class="avie">
+                        <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
                         <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                     </span>
                     <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <span class="realname">Niko</span> <small class="timestamp">right now via Quarky</small></span>
@@ -456,6 +490,7 @@
                 </div>
                 <div class="message fake noroleplay roleplaycfg">
                     <span class="avie">
+                        <span class="avieupload" onclick="uploadAvie()"><i class="fa-solid fa-upload"></i></span>
                         <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                     </span>
                     <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <span class="realname">Niko</span> <small class="timestamp">right now via Quarky</small></span>
