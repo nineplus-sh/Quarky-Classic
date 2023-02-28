@@ -430,6 +430,11 @@
                     transform: translate(-50%, 0%) scale(1, 0.5);
                 }
             }
+
+            #channels {
+                overflow-y: scroll;
+                max-height: calc(100% - 5.5rem);
+            }
         </style>
     </head>
     <body>
@@ -446,9 +451,9 @@
             <div id="servername">
                 Select a Quark
             </div>
-            <span id="channels">
+            <div id="channels">
 
-            </span>
+            </div>
             <div id="userdata">
                 <img class="avie loading" src="https://cdn.discordapp.com/emojis/851468740263542814.png" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 <span class="lusername">Vukky</span>
