@@ -123,8 +123,6 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
-    tlds = (await (await fetch("/assets/tlds.txt")).text()).split("\n")
-
     // create tippies, don't ask me why this doesn't work otherwise
     tippy("#userdata .avie", {
         content: "It's me!",
