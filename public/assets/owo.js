@@ -106,7 +106,8 @@ const suffixes = [
   ' nya~', // unmerged https://github.com/zuzak/owo/pull/19
   '~', // unmerged https://github.com/zuzak/owo/pull/36
   ' *nuzzles u*', // unmerged https://github.com/zuzak/owo/pull/33
-  ' *purrs*' // from vukky
+  ' *purrs*', // from vukky
+  '..' // https://github.com/zuzak/owo/commit/9d3d3f560ec13b394779215cc1a62c96348300bf
 ]
 suffixes.push(...emotisuffixes);
 

@@ -279,7 +279,7 @@ async function quarkFetch() {
             return false;
         }
         // Failed :(
-        alert(`${data.request.status_code}:\n${data.response.message}`)
+        displayError(`${data.request.status_code}:\n${data.response.message}`)
         return false;
     } catch (e) {
         displayError(`Huohhhh. Sewvew doesn't want to tawk :3c\ninfos:${e}`);
@@ -301,9 +301,9 @@ function logOut() {
  * @returns {void}
  */
 async function joinQuark() {
-    new Audio('/assets/sfx/osu-notification-pop-in.wav').play();
+    new Audio('/assets/sfx/osu-dialog-pop-in.wav').play();
     let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
-    if (!quarkCode) return;
+    if (!quarkCode) return new Audio('/assets/sfx/osu-dialog-cancel-select.wav').play();
     let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
     if (!joinResponse) return alert(`Failed to join Quark :(\n${joinResponse.response.message}`)
     quarks = await quarkFetch();
