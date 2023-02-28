@@ -141,6 +141,12 @@ async function welcome() {
         inertia: true,
         offset: [0, 25]
     })
+    tippy(".leavequark", {
+        content: "Leave Quark",
+        theme: "black",
+        hideOnClick: false,
+        inertia: true,
+    })
     tippy.delegate(`#messages`, {
         target: '.adminmark',
         theme: "black",
@@ -206,7 +212,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
     let quarkList = document.querySelector("#list");
     quarkList.innerHTML = "";
     quarks.forEach(quark => { // ok i wonder if this actually works it should
-        quarkList.innerHTML += `<div class="quark" id="${quark._id}" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="switchQuark('${quark._id}');" data-tippy-content="${quark.name}">
+        quarkList.innerHTML += `<div class="quark" id="q_${quark._id}" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="switchQuark('${quark._id}');" data-tippy-content="${quark.name}">
     <img src="${quark.iconUri}">
 </div>`
     })
@@ -324,14 +330,15 @@ async function switchQuark(id, forceChannel = true, sfx = true, anim = true, rep
     if(sfx)new Audio("/assets/sfx/osu-button-select.wav").play();
 
     document.querySelector("#messagesbox").classList.add("hidden");
-    if(anim) document.querySelector(`.quark[id='${id}']`).classList.remove("stretch");
-    if(anim) void document.querySelector(`.quark[id='${id}']`).offsetWidth;
-    if(anim) document.querySelector(`.quark[id='${id}']`).classList.add("stretch");
+    if(anim) document.querySelector(`#q_${id}`).classList.remove("stretch");
+    if(anim) void document.querySelector(`#q_${id}`).offsetWidth;
+    if(anim) document.querySelector(`#q_${id}`).classList.add("stretch");
     window.currentQuark = id;
+    document.querySelector(".leavequark").classList.remove("hidden");
     if(replaceState) history.replaceState(id, "", `/client.html?quark=${currentQuark}`);
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
-    document.querySelector("#servername").innerText = quark.name;
+    document.querySelector("#namewrap").innerText = quark.name;
     if(quark.channels[0] && forceChannel) switchChannel(quark.channels[0]._id, false)
     channelListRender(quark.channels);
 }
@@ -779,4 +786,37 @@ function dismoteToImg(string) {
     })
     return string;
 }
+
+/**
+ * Leaves the current quark.
+ * @returns {void}
+ */
+async function leaveQuark() {
+    let quarkData = (await apiCall(`/quark/${currentQuark}`)).response.quark
+    new Audio('/assets/sfx/osu-dialog-pop-in.wav').play();
+    if(confirm(`Are you sure you want to leave ${quarkData.name}?\nYou will need its invite (${quarkData.invite}) to join it again.`) == true) {
+        await apiCall(`/quark/${currentQuark}/leave`, "POST");
+        new Audio('/assets/sfx/osu-dialog-dangerous-select.wav').play();
+        document.querySelector(`#q_${currentQuark}`).remove();
+        goToTheVoid();
+    } else {
+        new Audio('/assets/sfx/osu-dialog-cancel-select.wav').play();
+    }
+}
+
+/**
+ * Goes back to the empty state, if that is required for some reason.
+ * @param {boolean} replaceState - Replace the history state.
+ * @returns {void}
+ */
+function goToTheVoid(replaceState = true) {
+    document.querySelector("#namewrap").innerText = "Select a Quark";
+    document.querySelector("#channels").innerHTML = "";
+    document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector(".leavequark").classList.add("hidden");
+    window.currentQuark = null;
+    window.currentChannel = null;
+    if(replaceState) history.replaceState(null, "", `/client.html`);
+}
+
 welcome();

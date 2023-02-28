@@ -18,6 +18,7 @@
         <link rel="preload" href="/assets/sfx/osu-error-notification-pop-in.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-dialog-pop-in.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-dialog-cancel-select.wav" as="audio" />
+        <link rel="preload" href="/assets/sfx/osu-dialog-dangerous-select.wav" as="audio" />
         <audio src="/assets/sfx/wb.mp3" id="wb"></audio>
         <style>
             body {
@@ -117,9 +118,6 @@
                 background-color: #2e3035;
                 filter: drop-shadow(0 0 0.1rem black);
                 font-weight: bold;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
             }
             #loader.bye, #loader.bye #planet, .fullmodal.hidden {
                 z-index: -999999 !important;
@@ -435,6 +433,20 @@
                 overflow-y: scroll;
                 max-height: calc(100% - 5.5rem);
             }
+            .leavequark {
+                float: right;
+                margin-right: 0.5em;
+                --fa-secondary-color: #00a2ff;
+                --fa-secondary-opacity: 1;
+                cursor: pointer;
+            }
+            #namewrap {
+                display: inline-block;
+                width: calc(100% - 1.6em);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         </style>
     </head>
     <body>
@@ -449,7 +461,10 @@
         </div>
         <div id="quarkdata">
             <div id="servername">
-                Select a Quark
+                <span id="namewrap">
+                    Select a Quark
+                </span>
+                <i class="fa-duotone fa-person-to-portal leavequark hidden" onclick="leaveQuark()"></i>
             </div>
             <div id="channels">
 
