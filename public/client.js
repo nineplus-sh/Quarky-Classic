@@ -406,7 +406,7 @@ function messageRender(message) {
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-            <span class="messagecontent">${doUwU ? owo(linkify(escapeHTML(message.content))) : linkify(escapeHTML(message.content))}</span>
+            <span class="messagecontent">${doUwU ? owo(linkify(escapeHTML(message.content))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
             <br>
         `;
@@ -760,4 +760,24 @@ function uploadAvie(uploadWrap) {
     input.click();
 }
 
+/**
+ * Turns Discord emote strings in a string into image tags.
+ * @param {string} string - The string to perform converting on.
+ * @returns {string} - The converted string.
+ */
+function dismoteToImg(string) {
+    console.log(string)
+    let normalEmote = /(<|&lt;|&wt;):[a-zA-Z_]+:(\d+)(>|&gt;)/g
+    let animatedEmote = /(<|&lt;|&wt;)a:[a-zA-Z_]+:(\d+)(>|&gt;)/g
+    let normalEmoteIds = [...string.matchAll(normalEmote)]
+    let animatedEmoteIds = [...string.matchAll(animatedEmote)]
+
+    normalEmoteIds.forEach(function(id) {
+        string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.png" width="28">`)
+    })
+    animatedEmoteIds.forEach(function(id) {
+        string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.gif" width="28">`)
+    })
+    return string;
+}
 welcome();
