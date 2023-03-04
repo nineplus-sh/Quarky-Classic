@@ -761,7 +761,10 @@ function uploadAvie(uploadWrap) {
         let file = e.target.files[0]
         let arrayBuffer = await file.arrayBuffer()
         apiCall("/user/me/avatar", "PUT", arrayBuffer, "v2", {"Content-Type": file.type}, false).then(function(result) {
-            if(result.request.success) logOut();
+            if(result.request.success) {
+                alert("I think your avatar change was successful! :D\nTo finish the process, please log in again.\nDon't worry, I'll take you there...");
+                logOut();
+            }
         })
     }     
     input.click();
