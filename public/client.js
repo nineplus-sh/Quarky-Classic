@@ -499,7 +499,7 @@ async function sendMessage(message) {
 async function fetchAviebox() {
     let userData = (await apiCall(`/user/me`)).response.jwtData;
     window.userID = userData._id;
-    window.currentUsername = userData.username
+    window.currentUsername = window.currentUsername || userData.username;
 
     // update aviebox
     document.querySelector("#userdata .lusername").innerText = userData.username;
