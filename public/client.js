@@ -334,11 +334,13 @@ async function switchQuark(id, forceChannel = true, sfx = true, anim = true, rep
     if(anim) void document.querySelector(`#q_${id}`).offsetWidth;
     if(anim) document.querySelector(`#q_${id}`).classList.add("stretch");
     window.currentQuark = id;
-    document.querySelector(".leavequark").classList.remove("hidden");
     if(replaceState) history.replaceState(id, "", `/client.html?quark=${currentQuark}`);
+    window.currentUsername = (await apiCall(`/user/me/nick/${currentQuark}`, "GET", {}, "v2")).response.nickname;
+    document.querySelector("#userdata .lusername").innerText = window.currentUsername;
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#namewrap").innerText = quark.name;
+    document.querySelector(".leavequark").classList.remove("hidden");
     if(quark.channels[0] && forceChannel) switchChannel(quark.channels[0]._id, false)
     channelListRender(quark.channels);
 }
@@ -497,17 +499,17 @@ async function sendMessage(message) {
  * @returns {void}
  */
 async function fetchAviebox() {
-    let userData = (await apiCall(`/user/me`)).response.jwtData;
+    let userData = (await apiCall("/user/me")).response.jwtData;
     window.userID = userData._id;
-    window.currentUsername = window.currentUsername || userData.username;
+    window.currentUsername = (await apiCall(`/user/me/nick/${currentQuark ? currentQuark : "global"}`, "GET", {}, "v2")).response.nickname;
 
     // update aviebox
-    document.querySelector("#userdata .lusername").innerText = userData.username;
+    document.querySelector("#userdata .lusername").innerText = window.currentUsername;
     document.querySelector("#userdata .avie").src = userData.avatar;
 
     // update settings screen
     document.querySelectorAll("#settings .message.fake .avie img").forEach(avie => avie.src = userData.avatar)
-    previewUsername(userData.username)
+    previewUsername(window.currentUsername)
 }
 
 /**
