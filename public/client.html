@@ -500,12 +500,12 @@
                         <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
                         <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                     </span>
-                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <span class="realname">Niko</span> <small class="timestamp">right now via Quarky</small></span>
+                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
                     <span class="messagecontent">I'm a Quarky user!</span>
                     <br>
                 </div>
                 <div class="message fake roleplay roleplaycfg">
-                    <span class="lusername"><span class="realname">Niko</span></span>
+                    <span class="lusername"><input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"></span>
                     <span class="messagecontent">is excited</span>
                     <small class="timestamp">right now via Quarky</small>
                     <br>
@@ -515,7 +515,7 @@
                         <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
                         <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                     </span>
-                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <span class="realname">Niko</span> <small class="timestamp">right now via Quarky</small></span>
+                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
                     <span class="messagecontent">is excited</span>
                     <br>
                 </div>
@@ -525,7 +525,7 @@
                 <p>User icons <input type="checkbox" name="usericons" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
                 <h2>Suggestions or bugs?</h2>
                 <p>Consider <a href="https://github.com/Vukkyy/Quarky/issues/new/choose" target="_blank">reporting it</a>!</p>
-                <br><button onclick="new Audio('/assets/sfx/osu-overlay-pop-out.wav').play();document.querySelector('#settings').classList.add('hidden')">Exit</button> <button onclick="credits()">Credits</button> 
+                <br><button id="exitSettings" onclick="exitSettings()">Exit</button> <button onclick="credits()">Credits</button> 
             </div>
         </div>
         <div id="credits" class="fullmodal hidden">

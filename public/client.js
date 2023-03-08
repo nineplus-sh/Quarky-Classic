@@ -161,7 +161,7 @@ async function welcome() {
         allowHTML: true
     });
 
-    changeLoading("Opening gateway connection...");
+    changeLoading("Contacting server...");
     openGateway();
 }
 
@@ -499,6 +499,7 @@ async function sendMessage(message) {
 async function fetchAviebox() {
     let userData = (await apiCall(`/user/me`)).response.jwtData;
     window.userID = userData._id;
+    window.currentUsername = userData.username
 
     // update aviebox
     document.querySelector("#userdata .lusername").innerText = userData.username;
@@ -506,9 +507,7 @@ async function fetchAviebox() {
 
     // update settings screen
     document.querySelectorAll("#settings .message.fake .avie img").forEach(avie => avie.src = userData.avatar)
-    document.querySelectorAll("#settings .message.fake .realname").forEach(realname => realname.innerText = userData.username)
-    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.remove(...window.usericons))
-    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add(`fa-${rarrayseed(window.usericons, userData.username)}`))
+    previewUsername(userData.username)
 }
 
 /**
@@ -738,6 +737,7 @@ async function reloadMsgDeps(rch = true) {
 * @param {string} seed - The seed.
 */
 function rarrayseed(arr, seed) {
+    if(seed.length == 1) seed += "x";
     var charCodes = seed.split('').reduce(function(a, b, i) {
         return (i == 1 ? a.charCodeAt(0) : +a) + b.charCodeAt(0);
     });
@@ -822,4 +822,44 @@ function goToTheVoid(replaceState = true) {
     if(replaceState) history.replaceState(null, "", `/client.html`);
 }
 
+/**
+ * Updates the appearance previews with the new username.
+ * @param {string} username - The username.
+ * @returns {void}
+ */
+function previewUsername(username) {
+    document.querySelectorAll("#settings .message.fake .fakename").forEach(function(fakename) {
+        fakename.value = username;
+        fakename.style.width = `${username.length + 1}ch`;
+    })
+    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.className = "usericon fa-solid")
+    if(username.length == 0) {
+        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add("fa-person-circle-question"))
+    } else {
+        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add(`fa-${rarrayseed(window.usericons, username)}`))
+    }
+} 
+
+/**
+ * Exits the settings and saves data that might require extra server load.
+ * @returns {void}
+ */
+async function exitSettings() {
+    new Audio('/assets/sfx/osu-overlay-pop-out.wav').play();
+    document.querySelector("#exitSettings").disabled = true;
+    document.querySelector("#exitSettings").textContent = "Saving...";
+
+    if(window.currentUsername != document.querySelector(".fakename").value) { // if your current username doesn't match the settings username...
+        document.querySelectorAll("#settings .message.fake .fakename").forEach(fakename => fakename.disabled = true) // disable the settings username boxes to present messing with
+        await apiCall("/user/me/nick", "PUT", {"scope": "global", "nickname": document.querySelector(".fakename").value}, "v2"); // change your username
+        window.currentUsername = document.querySelector(".fakename").value; // store your username for later checks
+        reloadChannel(); // reload the channel
+        document.querySelector("#userdata .lusername").innerText = document.querySelector(".fakename").value; // update the avieboxes
+        document.querySelectorAll("#settings .message.fake .fakename").forEach(fakename => fakename.disabled = false) // unleash the settings username boxes once more
+    }
+
+    document.querySelector("#exitSettings").disabled = false;
+    document.querySelector("#exitSettings").textContent = "Exit";
+    document.querySelector('#settings').classList.add('hidden');
+}
 welcome();

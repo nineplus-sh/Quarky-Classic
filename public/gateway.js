@@ -11,9 +11,14 @@ function openGateway() {
  * Handle the gateway suddenly dying
  */
 function gatewaySuddenDeath() {
-    if (heartbeat) clearInterval(heartbeat);
+    if (heartbeat) 
+        clearInterval(heartbeat);
         document.querySelector("#loader").classList.remove("bye");
-        changeLoading("Connection lost<br/>Please wait - attempting to reestablish...");
+        if(welcomeHasFinishedOnce) {
+            changeLoading("Connection lost<br>Please wait - attempting to reestablish...");
+        } else {
+            changeLoading("But no one responded!<br>Attempting to contact again...");
+        }
         if (retryCount < 5) { // Max 5 retries
             // Try reconnect after 1*retryCount seconds
             retryCount++;
@@ -21,7 +26,7 @@ function gatewaySuddenDeath() {
                 openGateway();
             }, 1000 * retryCount);
     } else {
-            alert("I'm sorry, but I couldn't connect to Lightquark.\nPlease make sure your internet connection is working.\nIf not, your login might be wrong, or the server fell over.");
+        alert("I'm sorry, but I couldn't connect to Lightquark.\nPlease make sure your internet connection is working.\nIf not, your login might be wrong, or the server fell over.");
     }
 }
 
