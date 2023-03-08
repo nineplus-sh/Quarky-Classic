@@ -19,6 +19,12 @@ window.currentChannel = null;
 // Stores the ID of the authenticated user
 window.userID = null;
 
+// Stores the username of the authenticated user
+window.currentUsername = null;
+
+// Stores the nickname of the authenticated user's current Quark
+window.currentNickname = null;
+
 // Stores channels
 window.channelBox = {}
 
@@ -335,8 +341,8 @@ async function switchQuark(id, forceChannel = true, sfx = true, anim = true, rep
     if(anim) document.querySelector(`#q_${id}`).classList.add("stretch");
     window.currentQuark = id;
     if(replaceState) history.replaceState(id, "", `/client.html?quark=${currentQuark}`);
-    window.currentUsername = (await apiCall(`/user/me/nick/${currentQuark}`, "GET", {}, "v2")).response.nickname;
-    document.querySelector("#userdata .lusername").innerText = window.currentUsername;
+    window.currentNickname = (await apiCall(`/user/me/nick/${currentQuark}`, "GET", {}, "v2")).response.nickname;
+    document.querySelector("#userdata .lusername").innerText = window.currentNickname;
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#namewrap").innerText = quark.name;
@@ -501,10 +507,11 @@ async function sendMessage(message) {
 async function fetchAviebox() {
     let userData = (await apiCall("/user/me")).response.jwtData;
     window.userID = userData._id;
-    window.currentUsername = (await apiCall(`/user/me/nick/${currentQuark ? currentQuark : "global"}`, "GET", {}, "v2")).response.nickname;
+    window.currentUsername = (await apiCall(`/user/me/nick/global`, "GET", {}, "v2")).response.nickname;
+    if(currentQuark) window.currentNickname = (await apiCall(`/user/me/nick/${currentQuark}`, "GET", {}, "v2")).response.nickname;
 
     // update aviebox
-    document.querySelector("#userdata .lusername").innerText = window.currentUsername;
+    document.querySelector("#userdata .lusername").innerText = window.currentNickname || window.currentUsername;
     document.querySelector("#userdata .avie").src = userData.avatar;
 
     // update settings screen
