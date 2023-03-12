@@ -1,0 +1,66 @@
+{
+    "$schema": "https://lq.litdevs.org/capability.schema.json",
+    "client": {
+        "name": "Quarky",
+        "author": "Vukky",
+        "repository": "https://github.com/Vukkyy/Quarky",
+        "version": "1.0.0"
+    },
+    "features": {
+        "full": [
+            "general.authentication",
+            "general.gateway",
+            "general.notifications",
+            "quarks.list",
+            "quarks.view",
+            "quarks.join",
+            "quarks.leave",
+            "channels.list",
+            "channels.view",
+            "messages.read",
+            "messages.send",
+            "messages.botMessage",
+            "messages.me",
+            "users.me",
+            "users.avatars",
+            "users.avatar",
+            {
+                "name": "UwUspeak",
+                "description": "wat's dis? automaticawwy purr and rawr at uuw fwiends without theiw consent UwU"
+            },
+            {
+                "name": "User icons",
+                "description": "Based on their nickname, users have an icon next to it."
+            },
+            {
+                "name": "Badge for LIT Devs",
+                "description": "LIT Devs get a special Vukky badge on their avatar."
+            },
+            {
+                "name": "Music and sound effects",
+                "description": "You cannot disable them right now. Deal with it."
+            },
+            {
+                "name": "Still Alive in console",
+                "description": "But you wouldn't know, would you?"
+            }
+        ],
+        "partial": [
+            "quarks.invite",
+            "users.nickname"
+        ],
+        "unsupported": [
+            "general.deeplink",
+            "quarks.create",
+            "quarks.delete",
+            "quarks.edit",
+            "quarks.icon",
+            "quarks.order",
+            "channels.delete",
+            "channels.edit",
+            "channels.history",
+            "messages.edit",
+            "messages.delete"
+        ]
+    }
+}
