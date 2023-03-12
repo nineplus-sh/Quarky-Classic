@@ -24,26 +24,28 @@
             "users.me",
             "users.avatars",
             "users.avatar",
-            {
-                "name": "UwUspeak",
-                "description": "wat's dis? automaticawwy purr and rawr at uuw fwiends without theiw consent UwU"
-            },
-            {
-                "name": "User icons",
-                "description": "Based on their nickname, users have an icon next to it."
-            },
-            {
-                "name": "Badge for LIT Devs",
-                "description": "LIT Devs get a special Vukky badge on their avatar."
-            },
-            {
-                "name": "Music and sound effects",
-                "description": "You cannot disable them right now. Deal with it."
-            },
-            {
-                "name": "Still Alive in console",
-                "description": "But you wouldn't know, would you?"
-            }
+            [
+                {
+                    "name": "UwUspeak",
+                    "description": "wat's dis? automaticawwy purr and rawr at uuw fwiends without theiw consent UwU"
+                },
+                {
+                    "name": "User icons",
+                    "description": "Based on their nickname, users have an icon next to it."
+                },
+                {
+                    "name": "Badge for LIT Devs",
+                    "description": "LIT Devs get a special Vukky badge on their avatar."
+                },
+                {
+                    "name": "Music and sound effects",
+                    "description": "You cannot disable them right now. Deal with it."
+                },
+                {
+                    "name": "Still Alive in console",
+                    "description": "But you wouldn't know, would you?"
+                }
+            ]
         ],
         "partial": [
             "quarks.invite",
