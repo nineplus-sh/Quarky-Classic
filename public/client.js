@@ -416,6 +416,7 @@ function messageRender(message) {
     } else {
         messageDiv.innerHTML = `
             ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b>${document.querySelector(`#m_${isReply.replyTo} .realname`)?.innerHTML || "Unknown user"}</b> ${document.querySelector(`#m_${isReply.replyTo} .messagecontent`)?.innerHTML.replaceAll("<br>", " ") || "Unknown message"}</div>` : ""}
+            ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
@@ -871,4 +872,27 @@ async function exitSettings() {
     document.querySelector("#exitSettings").textContent = "Exit";
     document.querySelector('#settings').classList.add('hidden');
 }
+
+/**
+ * Deletes a message.
+ * @param {string} message - The message ID.
+ * @returns {void}
+ */
+async function deleteMessage(message) {
+    apiCall(`/channel/${currentChannel}/messages/${message}`, "DELETE", undefined, "v2");
+}
+
+/**
+ * Plays the delete animation on a message.
+ * @param {string} message - The message ID.
+ * @returns {void}
+ */
+async function killMessage(message) {
+    if(!document.querySelector(`#m_${message}`)) return;
+    document.querySelector(`#m_${message}`).classList.add("kill");
+    setTimeout(() => {
+        document.querySelector(`#m_${message}`).remove();
+    }, 1000);
+}
+
 welcome();

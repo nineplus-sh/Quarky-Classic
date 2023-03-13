@@ -70,6 +70,9 @@ function socketListeners() {
                 }
             }
         }
+        if(data.eventId == "messageDelete") {
+            killMessage(data.message._id);
+        }
     }
     wss.onclose = gatewaySuddenDeath;
 

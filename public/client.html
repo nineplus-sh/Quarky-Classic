@@ -340,7 +340,7 @@
                 width: 10px;
             }
 
-            .message:not(.fake):hover {
+            .message:not(.fake):not(.kill):hover {
                 background: #2e3035;
             }
             .message {
@@ -446,6 +446,29 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+            }
+
+            .kill {
+                animation: kill 1s forwards;
+            }
+            @keyframes kill {
+                from {
+                    transform: scale(1) rotateZ(0deg);
+                }
+                to {
+                    transform: scale(0) rotateZ(5deg);
+                }
+            }
+
+            .actions {
+                float: right;
+                display: none;
+                padding-top: 0.2em;
+                padding-right: 0.2em;
+            }
+
+            .message:not(.fake):not(.kill):hover .actions {
+                display: block;
             }
         </style>
     </head>
