@@ -24,6 +24,7 @@
             "users.me",
             "users.avatars",
             "users.avatar",
+            "messages.delete",
             [
                 {
                     "name": "UwUspeak",
@@ -61,8 +62,7 @@
             "channels.delete",
             "channels.edit",
             "channels.history",
-            "messages.edit",
-            "messages.delete"
+            "messages.edit"
         ]
     }
 }
