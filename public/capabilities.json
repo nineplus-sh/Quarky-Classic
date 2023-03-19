@@ -4,7 +4,8 @@
         "name": "Quarky",
         "author": "Vukky",
         "repository": "https://github.com/Vukkyy/Quarky",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "url": "https://quarky.vukky.net"
     },
     "features": {
         "full": [
