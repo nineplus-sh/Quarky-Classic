@@ -50,8 +50,14 @@
             ]
         ],
         "partial": [
-            "quarks.invite",
-            "users.nickname"
+            {
+                "feature": "quarks.invite",
+                "reason": "You can get the invite code in the leave quark menu, which isn't an obvious location."
+            },
+            {
+                "feature": "users.nickname",
+                "reason": "You can only set a global nickname."
+            }
         ],
         "unsupported": [
             "general.deeplink",
