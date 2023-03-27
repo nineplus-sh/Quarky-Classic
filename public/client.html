@@ -19,7 +19,6 @@
         <link rel="preload" href="/assets/sfx/osu-dialog-pop-in.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-dialog-cancel-select.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-dialog-dangerous-select.wav" as="audio" />
-        <audio src="/assets/sfx/wb.mp3" id="wb"></audio>
         <style>
             body {
                 margin: 0;
@@ -293,7 +292,7 @@
                 filter: drop-shadow(0 0 0.75rem black);
             }
 
-            ::root {
+            :root {
                 --creditscontainer-height: 0px;
             }
             @keyframes scroll {
@@ -473,6 +472,8 @@
         </style>
     </head>
     <body>
+        <audio src="/assets/sfx/wb.mp3" id="wb"></audio>
+
         <div id="loader">
             <img src="/assets/img/vukkyplanetdark.svg" id="planet">
             <div id="loaderexp">
