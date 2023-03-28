@@ -424,7 +424,7 @@ function messageRender(message) {
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-            <span class="messagecontent">${doUwU ? uwu(linkify(escapeHTML(message.content))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
+            <span class="messagecontent">${doUwU ? uwu(dismoteToImg(linkify(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
             <br>
         `;
