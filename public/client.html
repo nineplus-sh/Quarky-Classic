@@ -514,7 +514,7 @@
         <!-- special modals -->
         <div id="settings" class="fullmodal hidden">
             <div id="settingscontainer">
-                <p>HIIII! Wewcome to da settings!! ^w^</p>
+                <p>Welcome to the Quarky settings!<br>They're a bit unfinished right now, but I might make them better at some point.<br>Maybe. No promises.</p>
                 <h2>Notifications</h2>
                 <p>Notify for all new messages <input type="checkbox" name="notify" onclick="notifyRequest()"></p>
                 <h2>Appearance</h2>
@@ -544,9 +544,12 @@
                     <br>
                 </div>
                 <hr>
-                <p>UwUspeak from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a> <input type="checkbox" name="uwuspeak" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
                 <p>Special rendering of /me messages <input type="checkbox" name="mespecial" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
                 <p>User icons <input type="checkbox" name="usericons" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
+                <h3>UwUspeak stolen from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a></h3>
+                <p>Prefixes <input type="checkbox" name="uwuprefix" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
+                <p>Substitution <input type="checkbox" name="uwusubst" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
+                <p>Suffixes <input type="checkbox" name="uwusuffix" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
                 <h2>Suggestions or bugs?</h2>
                 <p>Consider <a href="https://github.com/Vukkyy/Quarky/issues/new/choose" target="_blank">reporting it</a>!</p>
                 <br><button id="exitSettings" onclick="exitSettings()">Exit</button> <button onclick="credits()">Credits</button> 
@@ -564,7 +567,7 @@
                 <div class="creditssection onespeech">
                     <img class="creditsdoodle" src="/assets/img/credits/sound.gif" width="150" height="150">
                     <h1 style="margin-bottom: 0;">Sounds</h1>
-                    <h4 style="margin-top: 0;">Stolen but good</h2>
+                    <h4 style="margin-top: 0;">Stolen but good</h4>
                     <br><br><br><hr>
                     <p>Login music: <a href="https://youtu.be/fNidzkdF_ic" target="_blank">Startup Theme (Wii U) - Miiverse</a></p>
                     <p>Login jingle: <a href="https://youtu.be/bFR-4BO_OvA" target="_blank">Nintendo Video - Startup</a></p>
@@ -575,7 +578,7 @@
                 <div class="creditssection onespeech">
                     <img class="creditsdoodle" src="/assets/img/credits/code.gif" width="150" height="150">
                     <h1 style="margin-bottom: 0;">Code</h1>
-                    <h4 style="margin-top: 0;">Stack Overflow snippets are <a href="https://meta.stackexchange.com/q/12527">actually licensed under CC BY-SA</a>, but I don't think anyone knows!</h2>
+                    <h4 style="margin-top: 0;">Stack Overflow snippets are <a href="https://meta.stackexchange.com/q/12527">actually licensed under CC BY-SA</a>, but I don't think anyone knows!</h4>
                     <hr>
                     <p><small>*modified for Quarky use</small></p>
                     <p>Linkifier*: <a href="https://github.com/markdown-it/linkify-it" target="_blank">https://github.com/markdown-it/linkify-it</a></p>
@@ -588,7 +591,7 @@
                 <div class="creditssection onespeech">
                     <img class="creditsdoodle" src="/assets/img/credits/other.gif" width="150" height="150">
                     <h1 style="margin-bottom: 0;">Other</h1>
-                    <h4 style="margin-top: 0;">They shouldn't have their own section, but I won't leave them uncredited</h2>
+                    <h4 style="margin-top: 0;">They shouldn't have their own section, but I won't leave them uncredited</h4>
                     <hr>
                     <p>Lightquark<br>uhh well thats what the client is for</p> <!-- provided by amy -->
                     <p>Static web hosting provided by <a href="https://vercel.com" target="_blank">Vercel</a></p>
@@ -607,7 +610,7 @@
         </div>
 
         <script src="/assets/linkify-it.js"></script>
-        <script src="/assets/owo.js"></script>
+        <script src="/assets/uwu.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
         <script src="/gateway.js"></script>

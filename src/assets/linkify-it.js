@@ -51,3 +51,4 @@ function linkify2(content) {
   return out || content;
 }
 window.linkify = linkify2;
+window.linkutils = linkify;

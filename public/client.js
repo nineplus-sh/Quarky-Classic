@@ -34,9 +34,11 @@ window.tlds = [];
 // An object of defaults for settings
 window.defaults = {
     "notify": false,
-    "uwuspeak": false,
     "mespecial": true,
-    "usericons": true
+    "usericons": true,
+    "uwuprefix": false,
+    "uwusubst": false,
+    "uwusuffix": false
 }
 
 // The user icons to randomly select from
@@ -268,8 +270,8 @@ async function quarkFetch() {
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
-            "User-Agent": `Qua${settingGet("uwuspeak") ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
-            "lq-agent": `Qua${settingGet("uwuspeak") ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
+            "User-Agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
+            "lq-agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
             ...headers
         }
     }
@@ -392,7 +394,7 @@ let adminTip;
  * @returns {void}
  */
 function messageRender(message) {
-    let doUwU = !message.ua.startsWith("Quawky") && settingGet("uwuspeak"); // check if UwUspeak is allowed
+    let doUwU = !message.ua.startsWith("Quawky") && uwutils.allowed(); // check if UwUspeak is allowed
     let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
     let isReply = message.specialAttributes.find(attr => attr.type === "reply");
     if (botMetadata) { // handle bots
@@ -422,7 +424,7 @@ function messageRender(message) {
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-            <span class="messagecontent">${doUwU ? owo(linkify(escapeHTML(message.content))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
+            <span class="messagecontent">${doUwU ? uwu(linkify(escapeHTML(message.content))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
             <br>
         `;
@@ -490,11 +492,11 @@ async function sendMessage(message) {
         message = message.substring(4);
         specialAttributes.push({"type": "/me"});
     }
-    if(settingGet("uwuspeak")) {
+    if(uwutils.allowed()) {
         if(specialAttributes.some(atrb => atrb.type == "/me")) { // Vukky *fowmats uuw /me cutewy* >w>
             message = `*${uwutils.substitute(message)}* ${uwutils.getEmotisuffix()}`
         } else {
-            message = owo(message);
+            message = uwu(message);
         }
     }
 
@@ -720,9 +722,10 @@ async function reloadMsgDeps(rch = true) {
         document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add("hidden"))
     }
     // handle uwuspeak
-    if(settingGet("uwuspeak")) {
-        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = "*purrs* I'm a Quawky usew!~";
-        document.querySelectorAll("#settings .message.fake.roleplaycfg .messagecontent").forEach(msgtxt => msgtxt.innerText = "*is excited* OwO")
+    if(uwutils.allowed()) {
+        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = uwu("I'm a Quarky user!");
+        document.querySelector("#settings .message.fake.roleplaycfg .messagecontent").innerText = `*${uwutils.substitute("is excited")}* ${uwutils.getEmotisuffix()}`
+        document.querySelector("#settings .message.fake.noroleplay .messagecontent").innerText = uwu("is excited")
         document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quawky")
     } else {
         document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = "I'm a Quarky user!";
