@@ -325,6 +325,7 @@ async function joinQuark() {
     if (!quarkCode) return new Audio('/assets/sfx/osu-dialog-cancel-select.wav').play();
     let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
     if (!joinResponse) return alert(`Failed to join Quark :(\n${joinResponse.response.message}`)
+    if(settingGet("notify")) subscribeBomb([joinResponse.response.quark]);
     quarks = await quarkFetch();
     quarkRender(quarks);
     switchQuark(joinResponse.response.quark._id);
