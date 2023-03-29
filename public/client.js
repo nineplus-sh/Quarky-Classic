@@ -92,6 +92,11 @@ window.usericons = [
     "house-chimney-user"
 ]
 
+// Cute purring sound effect
+window.purr = new Audio("/assets/sfx/purr.mp3");
+purr.loop = true;
+purr.load();
+
 /**
  * Get the value of a cookie
  * @param {string} key 
@@ -420,7 +425,7 @@ function messageRender(message) {
             ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b>${document.querySelector(`#m_${isReply.replyTo} .realname`)?.innerHTML || "Unknown user"}</b> ${document.querySelector(`#m_${isReply.replyTo} .messagecontent`)?.innerHTML.replaceAll("<br>", " ") || "Unknown message"}</div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
-                <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>

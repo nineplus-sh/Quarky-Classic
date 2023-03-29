@@ -469,6 +469,26 @@
             .message:not(.fake):not(.kill):hover .actions {
                 display: block;
             }
+
+            .petting {
+                display: inline-block;
+                cursor: grab;
+                animation: petting 1s infinite;
+            }
+            @keyframes petting {
+                0% {
+                    transform: rotate(0deg);
+                }
+                25% {
+                    transform: rotate(-20deg);
+                }
+                50% {
+                    transform: rotate(0deg);
+                }
+                75% {
+                    transform: rotate(20deg);
+                }
+            }
         </style>
     </head>
     <body>
@@ -573,6 +593,7 @@
                     <p>Login jingle: <a href="https://youtu.be/bFR-4BO_OvA" target="_blank">Nintendo Video - Startup</a></p>
                     <p>Startup jingle: <a href="https://youtu.be/AFvLNB2oFNk" target="_blank">Main Theme (Wii U) - Miiverse</a></p>
                     <p>Credits music: <a href="https://youtu.be/IOT4gBGI4QY" target="_blank">Credits - X-Returns</a></p>
+                    <p>Purring sound: <a href="https://freesound.org/people/xoiziox/sounds/553375/">Kitty Purr - xoiziox</a></p>
                     <p>Everything else: <a href="https://github.com/ppy/osu-resources" target="_blank">osu!resources</a></p>
                 </div>
                 <div class="creditssection onespeech">
