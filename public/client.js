@@ -486,6 +486,7 @@ function scrollingDetected() {
 async function sendMessage(message) {
     if(message == "") return displayError('You need to enter a message to send! :D');
     let specialAttributes = []; // TODO: in case i need to hack in more later
+    let clientAttributes = {}
 
     new Audio("/assets/sfx/osu-submit-select.wav").play();
     document.querySelector("#sendmsg").value = "";
@@ -499,12 +500,15 @@ async function sendMessage(message) {
         specialAttributes.push({"type": "/me"});
     }
     if(uwutils.allowed()) {
+        clientAttributes.plaintext = message;
         if(specialAttributes.some(atrb => atrb.type == "/me")) { // Vukky *fowmats uuw /me cutewy* >w>
             message = `*${uwutils.substitute(message)}* ${uwutils.getEmotisuffix()}`
         } else {
             message = uwu(message);
         }
     }
+
+    if(Object.keys(clientAttributes).length !== 0) specialAttributes.push({type: "clientAttributes", ...clientAttributes})
 
     apiCall(`/channel/${currentChannel}/messages`, "POST", {"content": message, specialAttributes: specialAttributes}, "v2");
 }
@@ -593,16 +597,16 @@ async function notifyRequest() {
 /**
  * Sends a notification.
  * @param {string} title - The title of the notification.
- * @param {string} body - The body of the nofification.
+ * @param {string} body - The body of the notification.
  * @param {boolean} sfx - Play the notification sound.
  * @param {string} icon - The icon for the notification.
  * @param {function} clickHandler - The click handler for the notification.
  * @param {string} image - The large image for the notification.
  * @returns {void}
  */
-function sendNotification(title, body = undefined, sfx = true, icon = "/assets/img/quarky.svg", clickHandler = undefined, image = undefined) {
-    if(sfx) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
-    let sentNotification = new Notification(title, {body: body, image: image, icon: icon});
+function sendNotification(title, body = undefined, options = {}) {
+    if(options.sfx) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
+    let sentNotification = new Notification(title, {body: body, image: options.image, icon: options.icon || "/assets/img/quarky.svg"});
     sentNotification.onclick = clickHandler;
 }
 
