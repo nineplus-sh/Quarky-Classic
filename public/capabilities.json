@@ -9,6 +9,7 @@
     },
     "features": {
         "full": [
+            "general.opensource",
             "general.authentication",
             "general.gateway",
             "general.notifications",
@@ -20,12 +21,12 @@
             "channels.view",
             "messages.read",
             "messages.send",
+            "messages.delete",
             "messages.botMessage",
             "messages.me",
             "users.me",
             "users.avatars",
             "users.avatar",
-            "messages.delete",
             [
                 {
                     "name": "UwUspeak",
