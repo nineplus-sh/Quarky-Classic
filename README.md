@@ -10,4 +10,6 @@ It's a Lightquark client. Not a very good one, but it has some personality, or s
 - And the client doesn't adapt well to screen resolutions other than my own
 
 ### Features that'll show up when I stop procrastinating
-I'll never manage to maintain such a list if it was in the README, so you can have this GitHub projects link: https://github.com/users/Vukkyy/projects/2/views/2
+You can see those here: https://litdevs.youtrack.cloud/issues?q=project:%20%7BQuarky%7D%20State:%20Unresolved
+
+Or throw even more at me to make me both happy and sad: https://litdevs.youtrack.cloud/newIssue?project=QUARKY
