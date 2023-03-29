@@ -65,7 +65,11 @@ function socketListeners() {
                             data.author.avatarUri = botMetadata.avatarUri;
                         }
 
-                        sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, true, data.author.avatarUri, function() { switchQuark(channelBox[data.message.channelId].quarkId, false);switchChannel(data.message.channelId, false) })
+                        sendNotification(`${data.author.username} (#${channelBox[data.message.channelId].name}, ${channelBox[data.message.channelId].quark})`, data.message.content, {
+                            "icon": data.author.avatarUri,
+                            "handler": function() { switchQuark(channelBox[data.message.channelId].quarkId, false);switchChannel(data.message.channelId, false) },
+                            "tag": data.message.channelId
+                        })
                     }
                 }
             }

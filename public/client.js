@@ -598,16 +598,13 @@ async function notifyRequest() {
  * Sends a notification.
  * @param {string} title - The title of the notification.
  * @param {string} body - The body of the notification.
- * @param {boolean} sfx - Play the notification sound.
- * @param {string} icon - The icon for the notification.
- * @param {function} clickHandler - The click handler for the notification.
- * @param {string} image - The large image for the notification.
+ * @param {object} options - The options.
  * @returns {void}
  */
 function sendNotification(title, body = undefined, options = {}) {
-    if(options.sfx) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
-    let sentNotification = new Notification(title, {body: body, image: options.image, icon: options.icon || "/assets/img/quarky.svg"});
-    sentNotification.onclick = clickHandler;
+    if(options.sfx !== false) new Audio("/assets/sfx/osu-now-playing-pop-in.wav").play();
+    let sentNotification = new Notification(title, {body: body, image: options.image, icon: options.icon || "/assets/img/quarky.svg", tag: options.tag});
+    sentNotification.onclick = options.handler;
 }
 
 /**
