@@ -28,6 +28,9 @@ window.currentNickname = null;
 // Stores channels
 window.channelBox = {}
 
+// Stores messages
+window.messageBox = {}
+
 // List of valid TLDs
 window.tlds = [];
 
@@ -399,10 +402,12 @@ let adminTip;
  * @param {array} message - The message to render.
  * @returns {void}
  */
-function messageRender(message) {
+async function messageRender(message) {
     let doUwU = !message.ua.startsWith("Quawky") && uwutils.allowed(); // check if UwUspeak is allowed
     let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
     let isReply = message.specialAttributes.find(attr => attr.type === "reply");
+    let repliedMessage = undefined;
+    if(isReply) repliedMessage = messageBox[isReply.replyTo];
     if (botMetadata) { // handle bots
         message.author.botUsername = message.author.username;
         message.author.username = botMetadata.username;
@@ -415,15 +420,15 @@ function messageRender(message) {
     if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
         messageDiv.classList.add("roleplay");
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b>${document.querySelector(`#m_${isReply.replyTo} .realname`)?.innerHTML || "Unknown user"}</b> ${document.querySelector(`#m_${isReply.replyTo} .messagecontent`)?.innerHTML.replaceAll("<br>", " ") || "Unknown message"}</div>` : ""}
-            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>">Bot</span>` : ''}</span>
+            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
+            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''}</span>
             <span class="messagecontent">${doUwU ? `*${uwutils.substitute(linkify(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
         `;
     } else {
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b>${document.querySelector(`#m_${isReply.replyTo} .realname`)?.innerHTML || "Unknown user"}</b> ${document.querySelector(`#m_${isReply.replyTo} .messagecontent`)?.innerHTML.replaceAll("<br>", " ") || "Unknown message"}</div>` : ""}
+            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
@@ -437,6 +442,10 @@ function messageRender(message) {
     }
     document.querySelector("#messages").appendChild(messageDiv);
     if(jumpToBottom) document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
+    if(isReply && !repliedMessage) {
+        await fetchContext(message._id, isReply.replyTo);
+        if(jumpToBottom) document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
+    }
 }
 
 /**
@@ -464,6 +473,7 @@ async function switchChannel(id, audioOn = true) {
     });
     document.querySelector("#messages").innerHTML = "";
     messages.forEach(message => {
+        if(!messageBox[message.message._id]) messageBox[message.message._id] = message;
         messageRender(cleanMessage(message));
     });
     document.querySelector("#messagesbox").classList.remove("hidden");
@@ -817,7 +827,7 @@ function dismoteToImg(string) {
 async function leaveQuark() {
     let quarkData = (await apiCall(`/quark/${currentQuark}`)).response.quark
     new Audio('/assets/sfx/osu-dialog-pop-in.wav').play();
-    if(confirm(`Are you sure you want to leave ${quarkData.name}?\nYou will need its invite (${quarkData.invite}) to join it again.`) == true) {
+    if(confirm(`Are you sure you want to leave ${quarkData.name}?\nYou will need its invite (${quarkData.invite}) to join it again.`) === true) {
         await apiCall(`/quark/${currentQuark}/leave`, "POST");
         new Audio('/assets/sfx/osu-dialog-dangerous-select.wav').play();
         document.querySelector(`#q_${currentQuark}`).remove();
@@ -903,6 +913,26 @@ async function killMessage(message) {
     setTimeout(() => {
         document.querySelector(`#m_${message}`).remove();
     }, 1000);
+}
+
+/**
+ * Fetches context for an unavailable reply.
+ * @param {string} message - The original message ID.
+ * @param {string} replyMessage - The message that was replied to.
+ * @returns {void}
+ */
+async function fetchContext(message, replyMessage) {
+    if(!document.querySelector(`#m_${message}`)) return;
+    document.querySelector(`#m_${message} i`).classList.add("fa-fade");
+    document.querySelector(`#m_${message} .rusername`).innerText = "Fetching context...";
+    document.querySelector(`#m_${message} .rusercontent`).innerText = "";
+    await apiCall(`/channel/${currentChannel}/messages/${replyMessage}`, "GET", "", "v2").then(function(result) {
+        messageBox[replyMessage] = result.response.data;
+        console.log(messageBox[replyMessage])
+        document.querySelector(`#m_${message} .rusername`).innerText = result.response.data.author.username;
+        document.querySelector(`#m_${message} .rusercontent`).innerText = result.response.data.message.content;
+        document.querySelector(`#m_${message} i`).classList.remove("fa-fade");
+    })
 }
 
 welcome();

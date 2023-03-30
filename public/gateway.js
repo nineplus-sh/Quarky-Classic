@@ -53,6 +53,7 @@ function socketListeners() {
     wss.onmessage =(message) => {
         data = JSON.parse(message.data);
         if(data.eventId == "messageCreate") {
+            messageBox[data.message._id] = data;
             if(data.message.channelId == currentChannel) { // render the message if it's in the current channel
                 messageRender(cleanMessage(data))
             }
