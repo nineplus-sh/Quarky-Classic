@@ -796,8 +796,8 @@ function uploadAvie(uploadWrap) {
  * @returns {string} - The converted string.
  */
 function dismoteToImg(string) {
-    let normalEmote = /(<|&lt;|&wt;):[a-zA-Z_]+:(\d+)(>|&gt;)/g
-    let animatedEmote = /(<|&lt;|&wt;)a:[a-zA-Z_]+:(\d+)(>|&gt;)/g
+    let normalEmote = /(<|&lt;|&wt;):[a-zA-Z0-9_]+:(\d+)(>|&gt;)/g
+    let animatedEmote = /(<|&lt;|&wt;)a:[a-zA-Z0-9_]+:(\d+)(>|&gt;)/g
     let normalEmoteIds = [...string.matchAll(normalEmote)]
     let animatedEmoteIds = [...string.matchAll(animatedEmote)]
 
