@@ -420,7 +420,7 @@ async function messageRender(message) {
     if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
         messageDiv.classList.add("roleplay");
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
+            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''}</span>
             <span class="messagecontent">${doUwU ? `*${uwutils.substitute(linkify(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
@@ -428,7 +428,7 @@ async function messageRender(message) {
         `;
     } else {
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
+            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
@@ -927,9 +927,9 @@ async function fetchContext(message, replyMessage) {
     document.querySelector(`#m_${message} .rusername`).innerText = "Fetching context...";
     document.querySelector(`#m_${message} .rusercontent`).innerText = "";
     await apiCall(`/channel/${currentChannel}/messages/${replyMessage}`, "GET", "", "v2").then(function(result) {
+        let botMetadata = result.response.data.message.specialAttributes.find(attr => attr.type === "botMessage");
         messageBox[replyMessage] = result.response.data;
-        console.log(messageBox[replyMessage])
-        document.querySelector(`#m_${message} .rusername`).innerText = result.response.data.author.username;
+        document.querySelector(`#m_${message} .rusername`).innerText = botMetadata?.username || result.response.data.author.username;
         document.querySelector(`#m_${message} .rusercontent`).innerText = result.response.data.message.content;
         document.querySelector(`#m_${message} i`).classList.remove("fa-fade");
     })
