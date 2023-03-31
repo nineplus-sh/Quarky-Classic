@@ -62,7 +62,7 @@ const emotisuffixes = [
     ' <.<', // unmerged https://github.com/zuzak/owo/pull/39
     ' >.<', // unmerged https://github.com/zuzak/owo/pull/39
     ' >.>', // unmerged https://github.com/zuzak/owo/pull/39
-    ' ^~^', // from skewwy wewwy
+    ' ^~^', // from amy
     ' ^w^', // from vukky
     ' >w>', // from vukky
     ' >w<', // from vukky
@@ -71,13 +71,10 @@ const emotisuffixes = [
 ]
 const suffixes = [
     ' ( ´•̥̥̥ω•̥̥̥` )',
-    ' ( ˘ ³˘)♥',
     ' ( ͡° ᴥ ͡°)',
-    ' (^³^)',
     ' (´・ω・｀)',
     ' (ʘᗩʘ\')',
     ' (இωஇ )',
-    ' (๑•́ ₃ •̀๑)',
     ' (• o •)',
     ' (•́︿•̀)',
     ' (⁎˃ᆺ˂)',

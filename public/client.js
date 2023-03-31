@@ -357,7 +357,11 @@ async function switchQuark(id, forceChannel = true, sfx = true, anim = true, rep
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#namewrap").innerText = quark.name;
-    document.querySelector(".leavequark").classList.remove("hidden");
+    if(quark.owners.includes(userID)) {
+        document.querySelector(".leavequark").classList.add("hidden");
+    } else {
+        document.querySelector(".leavequark").classList.remove("hidden");
+    }
     if(quark.channels[0] && forceChannel) switchChannel(quark.channels[0]._id, false)
     channelListRender(quark.channels);
 }
