@@ -471,6 +471,7 @@ async function switchChannel(id, audioOn = true) {
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
     document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector("#sendmsgs").classList.add("hidden");
     let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
     messages = messages.sort(function(x,y) {
         return x.message.timestamp - y.message.timestamp;
@@ -481,6 +482,7 @@ async function switchChannel(id, audioOn = true) {
         messageRender(cleanMessage(message));
     });
     document.querySelector("#messagesbox").classList.remove("hidden");
+    document.querySelector("#sendmsgs").classList.remove("hidden");
     document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
