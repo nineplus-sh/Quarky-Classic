@@ -5,7 +5,7 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // Stores if the user is running Quarky locally, this is used in the UA
-window.isLocal = document.location.host == "127.0.0.1:4210";
+window.isLocal = document.location.host == "127.0.0.1:2009";
 
 // Stores if jumping to the bottom automatically is allowed
 window.jumpToBottom = true;
