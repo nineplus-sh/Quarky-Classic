@@ -258,7 +258,6 @@
             #settingscontainer {
                 position: relative;
                 left: 1rem;
-                padding-bottom: 1em;
             }
 
             #credits #snikosnake {
@@ -494,7 +493,40 @@
             }
 
             .messagecontent {
-                white-space: pre-wrap;
+                white-space: pre-wrap   ;
+            }
+
+            #settingsheader {
+                height: 150px;
+            }
+            #settingsheader h1 {
+                display: inline-block;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                margin:0;
+                padding:0;
+            }
+
+            .tab {
+                background-color: #36393f;
+                padding: .5em;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                cursor: pointer;
+                display: inline-block;
+            }
+            #settingssettings {
+                background-color: #2b2d31;
+                height: calc(100vh - 186px); /* loaned from quarklight because this stuff always gives me a disease */
+                width: calc(100% - 150px);
+                border-top-right-radius: 10px;
+            }
+            .tab:not(.selected):hover {
+                transform: translateY(-0.5em);
+            }
+            .tab.selected {
+                background-color: #2b2d31;
             }
         </style>
     </head>
@@ -541,45 +573,18 @@
         <!-- special modals -->
         <div id="settings" class="fullmodal hidden">
             <div id="settingscontainer">
-                <p>Welcome to the Quarky settings!<br>They're a bit unfinished right now, but I might make them better at some point.<br>Maybe. No promises.</p>
-                <h2>Notifications</h2>
-                <p>Notify for all new messages <input type="checkbox" name="notify" onclick="notifyRequest()"></p>
-                <h2>Appearance</h2>
-                <hr>
-                <div class="message fake cozy">
-                    <span class="avie">
-                        <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
-                        <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
-                    </span>
-                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
-                    <span class="messagecontent">I'm a Quarky user!</span>
-                    <br>
+                <div id="settingsheader">
+                    <h1>Settings</h1>
+                    <img style="image-rendering: pixelated; float: right; padding-right: 1rem;" src="/assets/img/credits/sound.gif">
                 </div>
-                <div class="message fake roleplay roleplaycfg">
-                    <span class="lusername"><input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"></span>
-                    <span class="messagecontent">is excited</span>
-                    <small class="timestamp">right now via Quarky</small>
-                    <br>
+                <div id="settingstabs">
+                    <span class="tab selected">General</span>
+                    <span class="tab">Appearance</span>
+                    <span class="tab">About</span>
                 </div>
-                <div class="message fake noroleplay roleplaycfg">
-                    <span class="avie">
-                        <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
-                        <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
-                    </span>
-                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
-                    <span class="messagecontent">is excited</span>
-                    <br>
+                <div id="settingssettings">
+
                 </div>
-                <hr>
-                <p>Special rendering of /me messages <input type="checkbox" name="mespecial" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <p>User icons <input type="checkbox" name="usericons" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <h3>UwUspeak stolen from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a></h3>
-                <p>Prefixes <input type="checkbox" name="uwuprefix" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <p>Substitution <input type="checkbox" name="uwusubst" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <p>Suffixes <input type="checkbox" name="uwusuffix" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <h2>Suggestions or bugs?</h2>
-                <p>Consider <a href="https://litdevs.youtrack.cloud/newIssue?project=QUARKY" target="_blank">reporting it</a>!</p>
-                <br><button id="exitSettings" onclick="exitSettings()">Exit</button> <button onclick="credits()">Credits</button> 
             </div>
         </div>
         <div id="credits" class="fullmodal hidden">
