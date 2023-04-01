@@ -528,6 +528,9 @@
             .tab.selected {
                 background-color: #2b2d31;
             }
+            .settingspage {
+                padding: 1rem;
+            }
         </style>
     </head>
     <body>
@@ -578,12 +581,21 @@
                     <img style="image-rendering: pixelated; float: right; padding-right: 1rem;" src="/assets/img/credits/sound.gif">
                 </div>
                 <div id="settingstabs">
-                    <span class="tab selected">General</span>
-                    <span class="tab">Appearance</span>
-                    <span class="tab">About</span>
+                    <span class="tab selected" tab="general" onclick="switchTab(this.getAttribute('tab'))">General</span>
+                    <span class="tab" tab="appearance" onclick="switchTab(this.getAttribute('tab'))">Appearance</span>
+                    <span class="tab" tab="about" onclick="switchTab(this.getAttribute('tab'))">About</span>
                 </div>
                 <div id="settingssettings">
-
+                    <div tab="general" class="settingspage">
+                        <p>This is a test tab. <vukky-toggle setting="notifications"></vukky-toggle></p>
+                        <p>Do you like the Vukky toggle? <vukky-toggle setting="notifications"></vukky-toggle></p>
+                    </div>
+                    <div tab="appearance" class="settingspage hidden">
+                        <p>This is another test tab.</p>
+                    </div>
+                    <div tab="about" class="settingspage hidden">
+                        <p>Another another test tab! Are you surprised? You shouldn't be.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -648,5 +660,6 @@
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
         <script src="/gateway.js"></script>
         <script src="/client.js"></script>
+        <script src="/assets/vukkytoggle.js"></script>
     </body>
 </html>

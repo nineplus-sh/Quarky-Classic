@@ -941,4 +941,15 @@ async function fetchContext(message, replyMessage) {
     })
 }
 
+/**
+ * Switches to a different tab in the settings.
+ * @param {string} tab - The tab to switch to.
+ */
+async function switchTab(tab) {
+    document.querySelector("#settingstabs [tab].selected").classList.remove("selected");
+    document.querySelector("#settingssettings [tab]:not(.hidden)").classList.add("hidden");
+    document.querySelector(`#settingstabs [tab="${tab}"]`).classList.add("selected");
+    document.querySelector(`#settingssettings [tab="${tab}"]`).classList.remove("hidden");
+}
+
 welcome();
