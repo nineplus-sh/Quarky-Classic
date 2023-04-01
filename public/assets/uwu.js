@@ -109,7 +109,7 @@ const substitutions = {
     'R': 'W',
     'L': 'W',
 //  'ow': 'OwO',
-    'no': 'nu',
+    'no': 'nyo',
     'has': 'haz',
     'have': 'haz',
     ' says': ' sez',
