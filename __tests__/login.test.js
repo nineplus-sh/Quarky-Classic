@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 beforeAll(async () => {
-    await page.goto('http://127.0.0.1:4210');
+    await page.goto('http://127.0.0.1:2009');
     await page.setDefaultTimeout(2000);
 });
 
@@ -30,6 +30,6 @@ describe('the login handler', () => {
         await expect(page).toClick("button", { text: "Done :)" });
         await expect(page).toMatchElement('#planet[class="moveplanet"]');
         await page.reload();
-        await expect(page.url()).toMatch('http://127.0.0.1:4210/client.html');
+        await expect(page.url()).toMatch('http://127.0.0.1:2009/client.html');
     });
 });

@@ -107,8 +107,8 @@
                 top: 0;
                 overflow-y: scroll;
                 height: 100%;
-                max-height: calc(100% - 3.5em); /* add this line */
-                width: 70%;
+                max-height: calc(100% - 3.5em);
+                width: 83%;
             }
             #servername {
                 padding-left: 0.5em;
@@ -387,7 +387,7 @@
                 position: fixed;
                 left: 20rem;
                 overflow-y: scroll;
-                width: 68.5%;
+                width: 81.6%;
                 bottom: 0;
                 padding: 1em;
                 background-color: #383a40;
@@ -431,7 +431,7 @@
             }
 
             #channels {
-                overflow-y: scroll;
+                overflow-y: auto;
                 max-height: calc(100% - 5.5rem);
             }
             .leavequark {
@@ -563,7 +563,7 @@
 
             </div>
         </div>
-        <div id="sendmsgs">
+        <div id="sendmsgs" class="hidden">
             <form onsubmit="return false;" autocomplete="off">
                 <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
                 <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>

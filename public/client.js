@@ -5,7 +5,7 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // Stores if the user is running Quarky locally, this is used in the UA
-window.isLocal = document.location.host == "127.0.0.1:4210";
+window.isLocal = document.location.host == "127.0.0.1:2009";
 
 // Stores if jumping to the bottom automatically is allowed
 window.jumpToBottom = true;
@@ -357,7 +357,11 @@ async function switchQuark(id, forceChannel = true, sfx = true, anim = true, rep
 
     let quark = (await apiCall(`/quark/${id}`)).response.quark;
     document.querySelector("#namewrap").innerText = quark.name;
-    document.querySelector(".leavequark").classList.remove("hidden");
+    if(quark.owners.includes(userID)) {
+        document.querySelector(".leavequark").classList.add("hidden");
+    } else {
+        document.querySelector(".leavequark").classList.remove("hidden");
+    }
     if(quark.channels[0] && forceChannel) switchChannel(quark.channels[0]._id, false)
     channelListRender(quark.channels);
 }
@@ -467,6 +471,7 @@ async function switchChannel(id, audioOn = true) {
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
     document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector("#sendmsgs").classList.add("hidden");
     let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
     messages = messages.sort(function(x,y) {
         return x.message.timestamp - y.message.timestamp;
@@ -477,6 +482,7 @@ async function switchChannel(id, audioOn = true) {
         messageRender(cleanMessage(message));
     });
     document.querySelector("#messagesbox").classList.remove("hidden");
+    document.querySelector("#sendmsgs").classList.remove("hidden");
     document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
