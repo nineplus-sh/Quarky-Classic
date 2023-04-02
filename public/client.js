@@ -11,7 +11,7 @@ function fatalError(error) {
             <p>Something terrible happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting this error if you get it often :3</p>
         </div>
         <div id="fatalerrortrace">
-        <b>${error.name}: ${error.message}</b><br>
+        <b>${error.name || "Error"}: ${error.message || "Unknown error"}</b><br>
         ${escapeHTML(Error().stack)}
         </div>
         <p><button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button> <button onclick="document.location.reload();">Reload</button></p>
