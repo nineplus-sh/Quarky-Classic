@@ -21,6 +21,7 @@ function fatalError(error) {
     crashDisease.querySelector("#crushed").onload = function() {
         if(window.userAvatar) crashDisease.querySelector("#crushed").contentDocument.querySelector("#murderer").setAttribute("xlink:href", window.userAvatar);
     }
+    new Audio("/assets/sfx/osu-error-notification-pop-in.wav").play();
 }
 
 /**
