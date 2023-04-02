@@ -3,11 +3,12 @@
  * @param {Error} error - the error (wow)
  */
 function fatalError(error) {
-    document.body.innerHTML = `
+    let crashDisease = document.createElement('span')
+    crashDisease.innerHTML = `
         <div id="fatalerror">
-            <img src="/assets/img/error.svg" width="120" style="float: left;">
+            <object data="/assets/img/error.svg" width="120" style="float: left;" id="crushed"></object>
             <h1>Fatal error!</h1>
-            <p>Something really bad happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting this error if you get it often :3</p>
+            <p>Something terrible happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting this error if you get it often :3</p>
         </div>
         <div id="fatalerrortrace">
         <b>${error.name}: ${error.message}</b><br>
@@ -15,6 +16,11 @@ function fatalError(error) {
         </div>
         <p><button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button> <button onclick="document.location.reload();">Reload</button></p>
     `
+    document.body.innerHTML = "";
+    document.body.appendChild(crashDisease);
+    crashDisease.querySelector("#crushed").onload = function() {
+        if(window.userAvatar) crashDisease.querySelector("#crushed").contentDocument.querySelector("#murderer").setAttribute("xlink:href", window.userAvatar);
+    }
 }
 
 /**
@@ -158,6 +164,9 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
+    changeLoading("Fetching user data...");
+    await fetchAviebox();
+
     // create tippies, don't ask me why this doesn't work otherwise
     tippy("#userdata .avie", {
         content: "It's me!",
@@ -207,16 +216,14 @@ async function welcome() {
  */
 async function welcomeGateway() {
     changeLoading("Getting settings...");
-    settingsLoad();
+    await settingsLoad();
     reloadMsgDeps(false);
     changeLoading("Restoring old session...");
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
     let previousChannelMissing = !previousChannel;
-    if(previousQuark) switchQuark(previousQuark, previousChannelMissing, false, false, false);
-    if(previousChannel) switchChannel(previousChannel, false);
-    changeLoading("Fetching user data...");
-    fetchAviebox();
+    if(previousQuark) await switchQuark(previousQuark, previousChannelMissing, false, false, false);
+    if(previousChannel) await switchChannel(previousChannel, false);
     changeLoading("Fetching Quark list...");
     quarks = await quarkFetch();
     subscribeBomb(quarks);
@@ -555,6 +562,7 @@ async function sendMessage(message) {
 async function fetchAviebox() {
     let userData = (await apiCall("/user/me")).response.jwtData;
     window.userID = userData._id;
+    window.userAvatar = userData.avatar;
     window.currentUsername = (await apiCall(`/user/me/nick/global`, "GET", {}, "v2")).response.nickname;
     if(currentQuark) window.currentNickname = (await apiCall(`/user/me/nick/${currentQuark}`, "GET", {}, "v2")).response.nickname;
 
