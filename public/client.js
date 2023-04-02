@@ -1,4 +1,23 @@
 /**
+ * Handles critical errors that don't have handlers (although this is a handler, and is used rarely, because im wazy)
+ * @param {Error} error - the error (wow)
+ */
+function fatalError(error) {
+    document.body.innerHTML = `
+        <div id="fatalerror">
+            <img src="/assets/img/error.svg" width="120" style="float: left;">
+            <h1>Fatal error!</h1>
+            <p>Something really bad happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting it if this happens often :3</p>
+        </div>
+        <div id="fatalerrortrace">
+        <b>${error.name}: ${error.message}</b><br>
+        ${escapeHTML(error.stack)}
+        </div>
+        <p><button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button> <button onclick="document.location.reload();">Reload</button></p>
+    `
+}
+
+/**
  * Resolve promise after set amount of ms
  * @param {int} - ms to wait for
  */
@@ -112,7 +131,7 @@ function getCookie(key) {
 
 /**
  * Escapes HTML, in case they need to be evacuated.
- * @param {string} unsafeText - Text to escape 
+ * @param {string} unsafeText - Text to escape
  * @returns {string} Escaped text
  */
 function escapeHTML(unsafeText) {
@@ -301,10 +320,10 @@ async function quarkFetch() {
             return false;
         }
         // Failed :(
-        displayError(`${data.request.status_code}:\n${data.response.message}`)
+        fatalError(Error(`API ${data.request.status_code}: ${data.response.message}`))
         return false;
     } catch (e) {
-        displayError(`Huohhhh. Sewvew doesn't want to tawk :3c\ninfos:${e}`);
+        fatalError(e);
         return false;
     }
 }
