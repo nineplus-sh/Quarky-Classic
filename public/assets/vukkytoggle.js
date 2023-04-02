@@ -32,11 +32,13 @@ class VukkyToggle extends HTMLElement {
 window.customElements.define('vukky-toggle', VukkyToggle)
 document.head.innerHTML += `<style>
 vukky-toggle {
-    background-color: #80848E;
+    background-color: #00a8f3;
     padding: .5rem;
     border-radius: 10px;
     cursor: pointer;
     margin-left: .5rem;
+    filter: grayscale(1);
+    transition: filter 0.3s;
 }
 vukky-toggle .slider {
     position: relative;
@@ -48,8 +50,28 @@ vukky-toggle .slider {
     vertical-align: top;
 }
 vukky-toggle[checked] .slider {
-    content: url("/assets/img/vukky.svg");
+    animation: toggle 0.3s forwards;
+}
+vukky-toggle[checked] {
     filter: grayscale(0);
-    left: 2rem;
+}
+@keyframes toggle {
+    0% {
+        content: url("/assets/img/vukkydisabled.svg");
+        left: -1.5rem;
+        transform: translateY(-25%) rotate(0deg);
+        filter: grayscale(1);
+    }
+    50% {
+        content: url("/assets/img/vukky.svg");
+        transform: translateY(-25%) rotate(180deg);
+        filter: grayscale(0.5);
+    }
+    100% {
+        content: url("/assets/img/vukky.svg");
+        left: 2rem;
+        transform: translateY(-25%) rotate(360deg);
+        filter: grayscale(0);
+    }
 }
 </style>`
