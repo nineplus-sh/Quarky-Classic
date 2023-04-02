@@ -7,7 +7,7 @@ function fatalError(error) {
         <div id="fatalerror">
             <img src="/assets/img/error.svg" width="120" style="float: left;">
             <h1>Fatal error!</h1>
-            <p>Something really bad happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting this error if you get it <ofte></ofte>n :3</p>
+            <p>Something really bad happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting this error if you get it often :3</p>
         </div>
         <div id="fatalerrortrace">
         <b>${error.name}: ${error.message}</b><br>
