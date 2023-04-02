@@ -531,6 +531,15 @@
             .settingspage {
                 padding: 1rem;
             }
+            #logoimg {
+                filter: drop-shadow(0 0 0.4rem white);
+            }
+            #logotext {
+                font-family: serif;
+                display: inline-block;
+                vertical-align: 110%;
+                margin: 0;
+            }
         </style>
     </head>
     <body>
@@ -588,14 +597,46 @@
                 </div>
                 <div id="settingssettings">
                     <div tab="general" class="settingspage">
-                        <p>This is a test tab. <vukky-toggle setting="notifications"></vukky-toggle></p>
-                        <p>Do you like the Vukky toggle? <vukky-toggle setting="notifications"></vukky-toggle></p>
+                        <p>Notifications for all new messages <vukky-toggle setting="notify"></vukky-toggle></p>
                     </div>
                     <div tab="appearance" class="settingspage hidden">
-                        <p>This is another test tab.</p>
+                        <hr>
+                        <div class="message fake cozy">
+                            <span class="avie">
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
+                                <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                            </span>
+                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="messagecontent">I'm a Quarky user!</span>
+                            <br>
+                        </div>
+                        <div class="message fake roleplay roleplaycfg">
+                                <span class="lusername"><input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"></span>
+                                <span class="messagecontent">is excited</span>
+                                <small class="timestamp">right now via Quarky</small>
+                                <br>
+                        </div>
+                        <div class="message fake noroleplay roleplaycfg">
+                            <span class="avie">
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
+                                <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                            </span>
+                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="messagecontent">is excited</span>
+                            <br>
+                        </div>
+                        <hr><br>
+
+                        <p>Special rendering for /me messages <vukky-toggle setting="mespecial"></vukky-toggle></p>
+                        <p>User icons <vukky-toggle setting="usericons"></vukky-toggle></p>
+                        <h3>UwUspeak stolen from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a></h3>
+                        <p>Prefixes <vukky-toggle setting="uwuprefix"></vukky-toggle></p>
+                        <p>Substitution <vukky-toggle setting="uwusubst"></vukky-toggle></p>
+                        <p>Suffixes <vukky-toggle setting="uwusuffix"></vukky-toggle></p>
                     </div>
                     <div tab="about" class="settingspage hidden">
-                        <p>Another another test tab! Are you surprised? You shouldn't be.</p>
+                        <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
+                        <button onclick="credits()">Credits</button>
                     </div>
                 </div>
             </div>

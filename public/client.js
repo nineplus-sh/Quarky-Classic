@@ -580,8 +580,8 @@ function settingGet(key) {
  * @returns {void}
  */
 function settingsLoad() {
-    document.querySelectorAll("#settings input[type='checkbox']").forEach(function(checkbox) { // fetch all checkboxes
-        if(settingGet(checkbox.name)) checkbox.checked = settingGet(checkbox.name) // set the checkbox
+    document.querySelectorAll("#settingssettings vukky-toggle").forEach(function(vukkyToggle) { // fetch all checkboxes
+        if(settingGet(vukkyToggle.getAttribute('setting'))) vukkyToggle.checked = settingGet(vukkyToggle.getAttribute('setting')) // set the checkbox
     })
 }
 

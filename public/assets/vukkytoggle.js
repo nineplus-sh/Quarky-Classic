@@ -2,7 +2,7 @@ class VukkyToggle extends HTMLElement {
     constructor() {
         super();
 
-        this.innerHTML = "<img class='slider' src='/assets/img/vukkydisabled.svg' width='64'>"
+        this.innerHTML = "<img class='slider' src='/assets/img/vukkydisabled.svg' width='64' draggable='false'>"
         this.addEventListener("click", e => {
             if(this.disabled) return;
             this.toggle();
@@ -15,6 +15,7 @@ class VukkyToggle extends HTMLElement {
         } else {
             this.checked = true;
         }
+        settingSet(this.getAttribute("setting"), this.checked);
     }
 
     get checked() {
