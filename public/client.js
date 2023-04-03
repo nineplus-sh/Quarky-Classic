@@ -165,6 +165,11 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
+    if(isLocal) {
+        document.querySelector("#planet").style.filter = "invert(1)";
+        document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
+    }
+
     changeLoading("Fetching user data...");
     await fetchAviebox();
 
