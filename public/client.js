@@ -442,6 +442,7 @@ async function messageRender(message) {
     let doUwU = !message.ua.startsWith("Quawky") && uwutils.allowed(); // check if UwUspeak is allowed
     let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
     let isReply = message.specialAttributes.find(attr => attr.type === "reply");
+    let isCuteKitty = message.specialAttributes.find(attr => attr.type === "clientAttributes")?.isCat;
     let repliedMessage = undefined;
     if(isReply) repliedMessage = messageBox[isReply.replyTo];
     if (botMetadata) { // handle bots
@@ -469,6 +470,7 @@ async function messageRender(message) {
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
+                ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
             <span class="messagecontent">${doUwU ? uwu(dismoteToImg(linkify(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
@@ -549,6 +551,7 @@ async function sendMessage(message) {
     }
     if(uwutils.allowed()) {
         clientAttributes.plaintext = message;
+        clientAttributes.isCat = "yeeees i am indeed a cute kitty nya~"
         if(specialAttributes.some(atrb => atrb.type == "/me")) { // Vukky *fowmats uuw /me cutewy* >w>
             message = `*${uwutils.substitute(message)}* ${uwutils.getEmotisuffix()}`
         } else {
