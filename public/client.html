@@ -33,7 +33,7 @@
             }
             #loader {
                 position: fixed;
-                z-index: 2;
+                z-index: 9999;
                 background-image: url("/assets/img/stars.gif");
                 background-color: #000000;
                 width: 100%;
@@ -109,10 +109,10 @@
             #messagesbox {
                 position: fixed;
                 left: 20.3rem;
-                top: 0;
+                top: 2.2em;
                 overflow-y: scroll;
                 height: 100%;
-                max-height: calc(100% - 3.5em);
+                max-height: calc(100% - 5.7em);
                 width: 83%;
             }
             #servername {
@@ -254,7 +254,7 @@
             .fullmodal {
                 background-color: #36393f;
                 position: fixed;
-                z-index: 1;
+                z-index: 69;
                 width: 100%;
                 height: 100%;
                 overflow-y: scroll;
@@ -551,6 +551,17 @@
                 left: -3.5em;
                 top: -.52em;
             }
+
+            #channeldata {
+                position: fixed;
+                left: 20rem;
+                overflow-y: scroll;
+                width: 82.5%;
+                padding: 0.5em;
+                background-color: #2e3035;
+                filter: drop-shadow(0 0 0.1rem black);
+                z-index: 2;
+            }
         </style>
     </head>
     <body>
@@ -581,17 +592,22 @@
                 <i class="fa-solid fa-gear fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
-        <div id="messagesbox" onscroll="scrollingDetected()" class="hidden">
-            <div id="messages">
+        <div id="channeldata">
+            <b id="channelname">Select a Channel</b> <span id="channeltopic"></span>
+        </div>
+        <span id="messagestuff" class="hidden">
+            <div id="messagesbox" onscroll="scrollingDetected()">
+                <div id="messages">
 
+                </div>
             </div>
-        </div>
-        <div id="sendmsgs" class="hidden">
-            <form onsubmit="return false;" autocomplete="off">
-                <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
-            </form>
-        </div>
+            <div id="sendmsgs">
+                <form onsubmit="return false;" autocomplete="off">
+                    <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
+                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
+                </form>
+            </div>
+        </span>
 
         <!-- special modals -->
         <div id="settings" class="fullmodal hidden">

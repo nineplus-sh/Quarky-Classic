@@ -378,7 +378,7 @@ async function joinQuark() {
 async function switchQuark(id, forceChannel = true, sfx = true, anim = true, replaceState = true) {
     if(sfx)new Audio("/assets/sfx/osu-button-select.wav").play();
 
-    document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector("#messagestuff").classList.add("hidden");
     if(anim) document.querySelector(`#q_${id}`).classList.remove("stretch");
     if(anim) void document.querySelector(`#q_${id}`).offsetWidth;
     if(anim) document.querySelector(`#q_${id}`).classList.add("stretch");
@@ -468,7 +468,7 @@ async function messageRender(message) {
             ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
-                <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
+                <img src="${message.author.avatarUri}" class="loading trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
                 ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
@@ -504,19 +504,22 @@ async function switchChannel(id, audioOn = true) {
     currentChannel = id;
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
-    document.querySelector("#messagesbox").classList.add("hidden");
-    document.querySelector("#sendmsgs").classList.add("hidden");
-    let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
+    document.querySelector("#messagestuff").classList.add("hidden");
+    document.querySelector("#channelname").innerHTML = "<i class=\"fa-solid fa-messages fa-fade\"></i> Fetching messages...";
+    document.querySelector("#channeltopic").innerText = "";
+        let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
+    document.querySelector("#messages").innerHTML = "";
     messages = messages.sort(function(x,y) {
         return x.message.timestamp - y.message.timestamp;
     });
-    document.querySelector("#messages").innerHTML = "";
     messages.forEach(message => {
         if(!messageBox[message.message._id]) messageBox[message.message._id] = message;
         messageRender(cleanMessage(message));
     });
-    document.querySelector("#messagesbox").classList.remove("hidden");
-    document.querySelector("#sendmsgs").classList.remove("hidden");
+    let channelInfo = (await apiCall(`/channel/${id}`)).response.channel;
+    document.querySelector("#channelname").innerText = channelInfo.name;
+    document.querySelector("#channeltopic").innerText = channelInfo.description;
+    document.querySelector("#messagestuff").classList.remove("hidden");
     document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
@@ -887,7 +890,7 @@ async function leaveQuark() {
 function goToTheVoid(replaceState = true) {
     document.querySelector("#namewrap").innerText = "Select a Quark";
     document.querySelector("#channels").innerHTML = "";
-    document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector("#messagestuff").classList.add("hidden");
     document.querySelector(".leavequark").classList.add("hidden");
     window.currentQuark = null;
     window.currentChannel = null;
