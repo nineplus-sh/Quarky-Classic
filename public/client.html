@@ -26,9 +26,14 @@
                 color: white;
                 font-family: sans-serif;
             }
+            #fatalerrortrace {
+                background-color: #2b2d31;
+                padding: 2rem;
+                font-family: monospace;
+            }
             #loader {
                 position: fixed;
-                z-index: 2;
+                z-index: 9999;
                 background-image: url("/assets/img/stars.gif");
                 background-color: #000000;
                 width: 100%;
@@ -104,10 +109,10 @@
             #messagesbox {
                 position: fixed;
                 left: 20.3rem;
-                top: 0;
+                top: 2.2em;
                 overflow-y: scroll;
                 height: 100%;
-                max-height: calc(100% - 3.5em);
+                max-height: calc(100% - 5.7em);
                 width: 83%;
             }
             #servername {
@@ -249,7 +254,7 @@
             .fullmodal {
                 background-color: #36393f;
                 position: fixed;
-                z-index: 1;
+                z-index: 69;
                 width: 100%;
                 height: 100%;
                 overflow-y: scroll;
@@ -258,7 +263,6 @@
             #settingscontainer {
                 position: relative;
                 left: 1rem;
-                padding-bottom: 1em;
             }
 
             #credits #snikosnake {
@@ -494,7 +498,69 @@
             }
 
             .messagecontent {
-                white-space: pre-wrap;
+                white-space: pre-wrap   ;
+            }
+
+            #settingsheader {
+                height: 150px;
+            }
+            #settingsheader h1 {
+                display: inline-block;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                margin:0;
+                padding:0;
+            }
+
+            .tab {
+                background-color: #36393f;
+                padding: .5em;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                cursor: pointer;
+                display: inline-block;
+            }
+            #settingssettings {
+                background-color: #2b2d31;
+                height: calc(100vh - 186px); /* loaned from quarklight because this stuff always gives me a disease */
+                width: calc(100% - 150px);
+                border-top-right-radius: 10px;
+            }
+            .tab:not(.selected):hover {
+                transform: translateY(-0.5em);
+            }
+            .tab.selected {
+                background-color: #2b2d31;
+            }
+            .settingspage {
+                padding: 1rem;
+            }
+            #logoimg {
+                filter: drop-shadow(0 0 0.4rem white);
+            }
+            #logotext {
+                font-family: serif;
+                display: inline-block;
+                vertical-align: 110%;
+                margin: 0;
+            }
+
+            .avie .catears {
+                position: relative;
+                left: -3.5em;
+                top: -.52em;
+            }
+
+            #channeldata {
+                position: fixed;
+                left: 20rem;
+                overflow-y: scroll;
+                width: 82.5%;
+                padding: 0.5em;
+                background-color: #2e3035;
+                filter: drop-shadow(0 0 0.1rem black);
+                z-index: 2;
             }
         </style>
     </head>
@@ -526,60 +592,80 @@
                 <i class="fa-solid fa-gear fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
-        <div id="messagesbox" onscroll="scrollingDetected()" class="hidden">
-            <div id="messages">
+        <div id="channeldata">
+            <b id="channelname">Select a Channel</b> <span id="channeltopic"></span>
+        </div>
+        <span id="messagestuff" class="hidden">
+            <div id="messagesbox" onscroll="scrollingDetected()">
+                <div id="messages">
 
+                </div>
             </div>
-        </div>
-        <div id="sendmsgs" class="hidden">
-            <form onsubmit="return false;" autocomplete="off">
-                <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
-                <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
-            </form>
-        </div>
+            <div id="sendmsgs">
+                <form onsubmit="return false;" autocomplete="off">
+                    <input placeholder="Really bad message sender because trash needed it so much" id="sendmsg">
+                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
+                </form>
+            </div>
+        </span>
 
         <!-- special modals -->
         <div id="settings" class="fullmodal hidden">
             <div id="settingscontainer">
-                <p>Welcome to the Quarky settings!<br>They're a bit unfinished right now, but I might make them better at some point.<br>Maybe. No promises.</p>
-                <h2>Notifications</h2>
-                <p>Notify for all new messages <input type="checkbox" name="notify" onclick="notifyRequest()"></p>
-                <h2>Appearance</h2>
-                <hr>
-                <div class="message fake cozy">
-                    <span class="avie">
-                        <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
-                        <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
-                    </span>
-                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
-                    <span class="messagecontent">I'm a Quarky user!</span>
-                    <br>
+                <div id="settingsheader">
+                    <h1>Settings</h1>
+                    <img style="image-rendering: pixelated; float: right; padding-right: 1rem;" src="/assets/img/credits/sound.gif">
                 </div>
-                <div class="message fake roleplay roleplaycfg">
-                    <span class="lusername"><input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"></span>
-                    <span class="messagecontent">is excited</span>
-                    <small class="timestamp">right now via Quarky</small>
-                    <br>
+                <div id="settingstabs">
+                    <span class="tab selected" tab="general" onclick="switchTab(this.getAttribute('tab'))">General</span>
+                    <span class="tab" tab="appearance" onclick="switchTab(this.getAttribute('tab'))">Appearance</span>
+                    <span class="tab" tab="about" onclick="switchTab(this.getAttribute('tab'))">About</span>
+                    <span class="tab" tab="exit" onclick="exitSettings()">Exit</span>
                 </div>
-                <div class="message fake noroleplay roleplaycfg">
-                    <span class="avie">
-                        <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
-                        <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
-                    </span>
-                    <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
-                    <span class="messagecontent">is excited</span>
-                    <br>
+                <div id="settingssettings">
+                    <div tab="general" class="settingspage">
+                        <p>Notifications for all new messages <vukky-toggle setting="notify"></vukky-toggle></p>
+                    </div>
+                    <div tab="appearance" class="settingspage hidden">
+                        <hr>
+                        <div class="message fake cozy">
+                            <span class="avie">
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
+                                <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                            </span>
+                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="messagecontent">I'm a Quarky user!</span>
+                            <br>
+                        </div>
+                        <div class="message fake roleplay roleplaycfg">
+                                <span class="lusername"><input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"></span>
+                                <span class="messagecontent">is excited</span>
+                                <small class="timestamp">right now via Quarky</small>
+                                <br>
+                        </div>
+                        <div class="message fake noroleplay roleplaycfg">
+                            <span class="avie">
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
+                                <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                            </span>
+                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="messagecontent">is excited</span>
+                            <br>
+                        </div>
+                        <hr><br>
+
+                        <p>Special rendering for /me messages <vukky-toggle setting="mespecial"></vukky-toggle></p>
+                        <p>User icons <vukky-toggle setting="usericons"></vukky-toggle></p>
+                        <h3>UwUspeak stolen from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a></h3>
+                        <p>Prefixes <vukky-toggle setting="uwuprefix"></vukky-toggle></p>
+                        <p>Substitution <vukky-toggle setting="uwusubst"></vukky-toggle></p>
+                        <p>Suffixes <vukky-toggle setting="uwusuffix"></vukky-toggle></p>
+                    </div>
+                    <div tab="about" class="settingspage hidden">
+                        <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
+                        <button onclick="credits()">Credits</button>
+                    </div>
                 </div>
-                <hr>
-                <p>Special rendering of /me messages <input type="checkbox" name="mespecial" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <p>User icons <input type="checkbox" name="usericons" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <h3>UwUspeak stolen from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a></h3>
-                <p>Prefixes <input type="checkbox" name="uwuprefix" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <p>Substitution <input type="checkbox" name="uwusubst" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <p>Suffixes <input type="checkbox" name="uwusuffix" onclick="settingSet(this.name, this.checked);reloadMsgDeps()"></p>
-                <h2>Suggestions or bugs?</h2>
-                <p>Consider <a href="https://litdevs.youtrack.cloud/newIssue?project=QUARKY" target="_blank">reporting it</a>!</p>
-                <br><button id="exitSettings" onclick="exitSettings()">Exit</button> <button onclick="credits()">Credits</button> 
             </div>
         </div>
         <div id="credits" class="fullmodal hidden">
@@ -643,5 +729,6 @@
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
         <script src="/gateway.js"></script>
         <script src="/client.js"></script>
+        <script src="/assets/vukkytoggle.js"></script>
     </body>
 </html>

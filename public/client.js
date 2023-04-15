@@ -1,4 +1,30 @@
 /**
+ * Handles critical errors that don't have handlers (although this is a handler, and is used rarely, because im wazy)
+ * @param {Error} error - the error (wow)
+ */
+function fatalError(error) {
+    let crashDisease = document.createElement('span')
+    crashDisease.innerHTML = `
+        <div id="fatalerror">
+            <object data="/assets/img/error.svg" width="120" style="float: left;" id="crushed"></object>
+            <h1>Fatal error!</h1>
+            <p>Something terrible happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting this error if you get it often :3</p>
+        </div>
+        <div id="fatalerrortrace">
+        <b>${error.name || "Error"}: ${error.message || "Unknown error"}</b><br>
+        ${escapeHTML(Error().stack)}
+        </div>
+        <p><button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button> <button onclick="document.location.reload();">Reload</button></p>
+    `
+    document.body.innerHTML = "";
+    document.body.appendChild(crashDisease);
+    crashDisease.querySelector("#crushed").onload = function() {
+        if(window.userAvatar) crashDisease.querySelector("#crushed").contentDocument.querySelector("#murderer").setAttribute("xlink:href", window.userAvatar);
+    }
+    new Audio("/assets/sfx/osu-error-notification-pop-in.wav").play();
+}
+
+/**
  * Resolve promise after set amount of ms
  * @param {int} - ms to wait for
  */
@@ -112,7 +138,7 @@ function getCookie(key) {
 
 /**
  * Escapes HTML, in case they need to be evacuated.
- * @param {string} unsafeText - Text to escape 
+ * @param {string} unsafeText - Text to escape
  * @returns {string} Escaped text
  */
 function escapeHTML(unsafeText) {
@@ -139,6 +165,14 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
+    if(isLocal) {
+        document.querySelector("#planet").style.filter = "invert(1)";
+        document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
+    }
+
+    changeLoading("Fetching user data...");
+    await fetchAviebox();
+
     // create tippies, don't ask me why this doesn't work otherwise
     tippy("#userdata .avie", {
         content: "It's me!",
@@ -188,16 +222,14 @@ async function welcome() {
  */
 async function welcomeGateway() {
     changeLoading("Getting settings...");
-    settingsLoad();
+    await settingsLoad();
     reloadMsgDeps(false);
     changeLoading("Restoring old session...");
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
     let previousChannelMissing = !previousChannel;
-    if(previousQuark) switchQuark(previousQuark, previousChannelMissing, false, false, false);
-    if(previousChannel) switchChannel(previousChannel, false);
-    changeLoading("Fetching user data...");
-    fetchAviebox();
+    if(previousQuark) await switchQuark(previousQuark, previousChannelMissing, false, false, false);
+    if(previousChannel) await switchChannel(previousChannel, false);
     changeLoading("Fetching Quark list...");
     quarks = await quarkFetch();
     subscribeBomb(quarks);
@@ -301,10 +333,10 @@ async function quarkFetch() {
             return false;
         }
         // Failed :(
-        displayError(`${data.request.status_code}:\n${data.response.message}`)
+        fatalError(Error(`API ${data.request.status_code}: ${data.response.message}`))
         return false;
     } catch (e) {
-        displayError(`Huohhhh. Sewvew doesn't want to tawk :3c\ninfos:${e}`);
+        fatalError(e);
         return false;
     }
 }
@@ -346,7 +378,7 @@ async function joinQuark() {
 async function switchQuark(id, forceChannel = true, sfx = true, anim = true, replaceState = true) {
     if(sfx)new Audio("/assets/sfx/osu-button-select.wav").play();
 
-    document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector("#messagestuff").classList.add("hidden");
     if(anim) document.querySelector(`#q_${id}`).classList.remove("stretch");
     if(anim) void document.querySelector(`#q_${id}`).offsetWidth;
     if(anim) document.querySelector(`#q_${id}`).classList.add("stretch");
@@ -410,6 +442,7 @@ async function messageRender(message) {
     let doUwU = !message.ua.startsWith("Quawky") && uwutils.allowed(); // check if UwUspeak is allowed
     let botMetadata = message.specialAttributes.find(attr => attr.type === "botMessage");
     let isReply = message.specialAttributes.find(attr => attr.type === "reply");
+    let isCuteKitty = message.specialAttributes.find(attr => attr.type === "clientAttributes")?.isCat;
     let repliedMessage = undefined;
     if(isReply) repliedMessage = messageBox[isReply.replyTo];
     if (botMetadata) { // handle bots
@@ -435,8 +468,9 @@ async function messageRender(message) {
             ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
-                <img src="${message.author.avatarUri}" class="loading" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
+                <img src="${message.author.avatarUri}" class="loading trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
+                ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
             <span class="messagecontent">${doUwU ? uwu(dismoteToImg(linkify(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
@@ -470,19 +504,22 @@ async function switchChannel(id, audioOn = true) {
     currentChannel = id;
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
-    document.querySelector("#messagesbox").classList.add("hidden");
-    document.querySelector("#sendmsgs").classList.add("hidden");
-    let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
+    document.querySelector("#messagestuff").classList.add("hidden");
+    document.querySelector("#channelname").innerHTML = "<i class=\"fa-solid fa-messages fa-fade\"></i> Fetching messages...";
+    document.querySelector("#channeltopic").innerText = "";
+        let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
+    document.querySelector("#messages").innerHTML = "";
     messages = messages.sort(function(x,y) {
         return x.message.timestamp - y.message.timestamp;
     });
-    document.querySelector("#messages").innerHTML = "";
     messages.forEach(message => {
         if(!messageBox[message.message._id]) messageBox[message.message._id] = message;
         messageRender(cleanMessage(message));
     });
-    document.querySelector("#messagesbox").classList.remove("hidden");
-    document.querySelector("#sendmsgs").classList.remove("hidden");
+    let channelInfo = (await apiCall(`/channel/${id}`)).response.channel;
+    document.querySelector("#channelname").innerText = channelInfo.name;
+    document.querySelector("#channeltopic").innerText = channelInfo.description;
+    document.querySelector("#messagestuff").classList.remove("hidden");
     document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
@@ -517,6 +554,7 @@ async function sendMessage(message) {
     }
     if(uwutils.allowed()) {
         clientAttributes.plaintext = message;
+        clientAttributes.isCat = "yeeees i am indeed a cute kitty nya~"
         if(specialAttributes.some(atrb => atrb.type == "/me")) { // Vukky *fowmats uuw /me cutewy* >w>
             message = `*${uwutils.substitute(message)}* ${uwutils.getEmotisuffix()}`
         } else {
@@ -536,6 +574,7 @@ async function sendMessage(message) {
 async function fetchAviebox() {
     let userData = (await apiCall("/user/me")).response.jwtData;
     window.userID = userData._id;
+    window.userAvatar = userData.avatar;
     window.currentUsername = (await apiCall(`/user/me/nick/global`, "GET", {}, "v2")).response.nickname;
     if(currentQuark) window.currentNickname = (await apiCall(`/user/me/nick/${currentQuark}`, "GET", {}, "v2")).response.nickname;
 
@@ -580,8 +619,8 @@ function settingGet(key) {
  * @returns {void}
  */
 function settingsLoad() {
-    document.querySelectorAll("#settings input[type='checkbox']").forEach(function(checkbox) { // fetch all checkboxes
-        if(settingGet(checkbox.name)) checkbox.checked = settingGet(checkbox.name) // set the checkbox
+    document.querySelectorAll("#settingssettings vukky-toggle").forEach(function(vukkyToggle) { // fetch all checkboxes
+        if(settingGet(vukkyToggle.getAttribute('setting'))) vukkyToggle.checked = settingGet(vukkyToggle.getAttribute('setting')) // set the checkbox
     })
 }
 
@@ -851,7 +890,7 @@ async function leaveQuark() {
 function goToTheVoid(replaceState = true) {
     document.querySelector("#namewrap").innerText = "Select a Quark";
     document.querySelector("#channels").innerHTML = "";
-    document.querySelector("#messagesbox").classList.add("hidden");
+    document.querySelector("#messagestuff").classList.add("hidden");
     document.querySelector(".leavequark").classList.add("hidden");
     window.currentQuark = null;
     window.currentChannel = null;
@@ -939,6 +978,17 @@ async function fetchContext(message, replyMessage) {
         document.querySelector(`#m_${message} .rusercontent`).innerText = result.response.data.message.content;
         document.querySelector(`#m_${message} i`).classList.remove("fa-fade");
     })
+}
+
+/**
+ * Switches to a different tab in the settings.
+ * @param {string} tab - The tab to switch to.
+ */
+async function switchTab(tab) {
+    document.querySelector("#settingstabs [tab].selected").classList.remove("selected");
+    document.querySelector("#settingssettings [tab]:not(.hidden)").classList.add("hidden");
+    document.querySelector(`#settingstabs [tab="${tab}"]`).classList.add("selected");
+    document.querySelector(`#settingssettings [tab="${tab}"]`).classList.remove("hidden");
 }
 
 welcome();

@@ -110,19 +110,18 @@ const substitutions = {
     'L': 'W',
 //  'ow': 'OwO',
     'no': 'nyo',
+    'what': 'wat',
+    'na': 'nya',
+    'ma': 'mya'
+}
+
+const wordsubstitutions = {
+    'this': 'dis',
+    'the': 'da',
+    'says': 'sez',
     'has': 'haz',
     'have': 'haz',
-    ' says': ' sez',
-    'you': 'uu',
-    'the ': 'da ',
-    'The ': 'Da ',
-    'THE ': 'DA ',
-    'what': 'wat',
-    'What': 'Wat',
-    'WHAT': 'WAT',
-    'this ': 'dis ',
-    'This ': 'Dis ',
-    'THIS ': 'DIS '
+    'you': 'uu'
 }
 
 const randomItem = (array) => array[Math.floor(Math.random()    *array.length)]
@@ -132,6 +131,7 @@ const substitute = (str) => {
     const splitString = str.split(" ");
     for (const blockNumber in splitString) {
         if(linkutils.test(splitString[blockNumber])) continue;
+        if(wordsubstitutions[splitString[blockNumber]]) splitString[blockNumber] = wordsubstitutions[splitString[blockNumber]];
         for (const replacement of replacements) {
             splitString[blockNumber] = splitString[blockNumber].replaceAll(replacement[0], replacement[1]);
         }
