@@ -48,7 +48,7 @@ function socketListeners() {
            wss.send(JSON.stringify({event: "heartbeat", message: uwu(saLines[saIndex])}))
            saIndex += 1;
            if(saIndex === saLines.length) saIndex = 0;
-        }, 1000);
+        }, 15000);
     }
     wss.onmessage =(message) => {
         data = JSON.parse(message.data);
