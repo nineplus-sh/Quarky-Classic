@@ -473,7 +473,7 @@ async function messageRender(message) {
         messageDiv.innerHTML = `
             ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''}</span>
-            <span class="messagecontent">${doUwU ? `*${uwutils.substitute(linkify(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
+            <span class="messagecontent">${doUwU ? `*${linkify(uwutils.substitute(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
         `;
@@ -487,7 +487,7 @@ async function messageRender(message) {
                 ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-            <span class="messagecontent">${doUwU ? uwu(dismoteToImg(linkify(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
+            <span class="messagecontent">${doUwU ? dismoteToImg(linkify(uwu(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
             <br>
         `;
@@ -650,10 +650,10 @@ async function notifyRequest() {
         return;
     }
 
-    document.querySelector("#settings [name='notify']").checked = false;
+    document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = false;
     await Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          document.querySelector("#settings [name='notify']").checked = true;
+          document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = true;
           settingSet("notify", true)
           subscribeBomb()
           sendNotification("Notifications enabled.", "Please enjoy them!")
