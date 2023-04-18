@@ -143,7 +143,7 @@ const allowed = () => settingGet("uwuprefix") || settingGet("uwusubst")  || sett
 window.uwu = (str) => {
     if(settingGet("uwuprefix"))str = randomItem(prefixes) + str;
     if(settingGet("uwusubst")) str = substitute(str);
-    if(settingGet("uwusuffix"))str = str + randomItem(suffixes);
+    if(settingGet("uwusuffix") && !suffixes.some(suffix => str.endsWith(suffix)))str = str + randomItem(suffixes);
     return str;
 }
 window.uwutils = { allowed, getEmotisuffix, substitute }
