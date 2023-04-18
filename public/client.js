@@ -1,24 +1,38 @@
 /**
  * Handles critical errors that don't have handlers (although this is a handler, and is used rarely, because im wazy)
- * @param {Error} error - the error (wow)
+ * @param {Object} error - the error (wow)
  */
 function fatalError(error) {
     let crashDisease = document.createElement('span')
     crashDisease.innerHTML = `
         <div id="fatalerror">
+            ${error.apiCode === 403 && error.apiEndpoint.endsWith("/messages") ? `
+            <img src="/assets/img/nyowope.jpg" alt="A 'no entry' sign that looks like it has cat ears." width="120" style="float: left; padding-right: 1em;">
+            <h1>Nyowope!</h1>
+            <p>
+                W-what are you doing, ${window.currentUsername}-san?
+                <br>You know you're not in that quark, right?
+                <br>Maybe if you say "pwetty pwease", they'll give you the invite code...
+            </p>
+            ` : `
             <object data="/assets/img/error.svg" width="120" style="float: left;" id="crushed"></object>
             <h1>Fatal error!</h1>
-            <p>Something terrible happened.<br>Quarky doesn't know how to handle it, so Quarky is dead.<br>Sowwy! Consider reporting this error if you get it often :3</p>
+            <p>
+                Something terrible happened.
+                <br>Quarky doesn't know how to handle it, so Quarky is dead.
+                <br>Sowwy! Consider reporting this error if you get it often :3
+            </p>
+            `}
         </div>
         <div id="fatalerrortrace">
-        <b>${error.name || "Error"}: ${error.message || "Unknown error"}</b><br>
+        <b>${error.name || "Error"} ${error.message || "Unknown error"}</b><br>${error.apiEndpoint ? `(while attempting to ${error.apiMethod} /${error.apiEndpoint})<br><br>` : ""}
         ${escapeHTML(Error().stack)}
         </div>
-        <p><button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button> <button onclick="document.location.reload();">Reload</button></p>
+        <p><button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLE ASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button> <button onclick="document.location.reload();">Reload</button></p>
     `
     document.body.innerHTML = "";
     document.body.appendChild(crashDisease);
-    crashDisease.querySelector("#crushed").onload = function() {
+    if(crashDisease.querySelector("#crushed")) crashDisease.querySelector("#crushed").onload = function() {
         if(window.userAvatar) crashDisease.querySelector("#crushed").contentDocument.querySelector("#murderer").setAttribute("xlink:href", window.userAvatar);
     }
     new Audio("/assets/sfx/osu-error-notification-pop-in.wav").play();
@@ -230,7 +244,7 @@ async function welcomeGateway() {
     let previousChannelMissing = !previousChannel;
     if(previousQuark) await switchQuark(previousQuark, previousChannelMissing, false, false, false);
     if(previousChannel) await switchChannel(previousChannel, false);
-    changeLoading("Fetching Quark list...");
+    changeLoading("Fetching quark list...");
     quarks = await quarkFetch();
     subscribeBomb(quarks);
     quarkRender(quarks);
@@ -285,7 +299,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
 }
 /**
  * Get the user's quarks
- * @returns {object} - Quark array
+ * @returns {object} - quark array
  */
 async function quarkFetch() {
     let quarkResponse = await apiCall("/quark/me");
@@ -333,7 +347,7 @@ async function quarkFetch() {
             return false;
         }
         // Failed :(
-        fatalError(Error(`API ${data.request.status_code}: ${data.response.message}`))
+        fatalError({"name": "Lightquark API", "message": `${data.request.status_code}: ${data.response.message}`, "apiCode": data.request.status_code, "apiEndpoint": `${apiVersion}${path}`, "apiMethod": method})
         return false;
     } catch (e) {
         fatalError(e);
@@ -356,10 +370,10 @@ function logOut() {
  */
 async function joinQuark() {
     new Audio('/assets/sfx/osu-dialog-pop-in.wav').play();
-    let quarkCode = prompt("Enter the invite code for the Quark you want to join.");
+    let quarkCode = prompt("Enter the invite code for the quark you want to join.");
     if (!quarkCode) return new Audio('/assets/sfx/osu-dialog-cancel-select.wav').play();
     let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
-    if (!joinResponse) return alert(`Failed to join Quark :(\n${joinResponse.response.message}`)
+    if (!joinResponse) return alert(`Failed to join quark :(\n${joinResponse.response.message}`)
     if(settingGet("notify")) subscribeBomb([joinResponse.response.quark]);
     quarks = await quarkFetch();
     quarkRender(quarks);
