@@ -636,10 +636,10 @@ async function notifyRequest() {
         return;
     }
 
-    document.querySelector("#settings [name='notify']").checked = false;
+    document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = false;
     await Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          document.querySelector("#settings [name='notify']").checked = true;
+          document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = true;
           settingSet("notify", true)
           subscribeBomb()
           sendNotification("Notifications enabled.", "Please enjoy them!")
