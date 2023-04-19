@@ -934,11 +934,10 @@ function previewUsername(username) {
  * @returns {void}
  */
 async function exitSettings() {
+    window.exitingSettings = true;
     new Audio('/assets/sfx/osu-overlay-pop-out.wav').play();
-    document.querySelector("#exitSettings").disabled = true;
-    document.querySelector("#exitSettings").textContent = "Saving...";
 
-    if(window.currentUsername != document.querySelector(".fakename").value) { // if your current username doesn't match the settings username...
+    if(window.currentUsername !== document.querySelector(".fakename").value) { // if your current username doesn't match the settings username...
         document.querySelectorAll("#settings .message.fake .fakename").forEach(fakename => fakename.disabled = true) // disable the settings username boxes to present messing with
         await apiCall("/user/me/nick", "PUT", {"scope": "global", "nickname": document.querySelector(".fakename").value}, "v2"); // change your username
         window.currentUsername = document.querySelector(".fakename").value; // store your username for later checks
@@ -947,9 +946,9 @@ async function exitSettings() {
         document.querySelectorAll("#settings .message.fake .fakename").forEach(fakename => fakename.disabled = false) // unleash the settings username boxes once more
     }
 
-    document.querySelector("#exitSettings").disabled = false;
-    document.querySelector("#exitSettings").textContent = "Exit";
     document.querySelector('#settings').classList.add('hidden');
+    window.exitingSettings = false;
+    switchTab('general');
 }
 
 /**
@@ -999,6 +998,7 @@ async function fetchContext(message, replyMessage) {
  * @param {string} tab - The tab to switch to.
  */
 async function switchTab(tab) {
+    if(window.exitingSettings) return;
     document.querySelector("#settingstabs [tab].selected").classList.remove("selected");
     document.querySelector("#settingssettings [tab]:not(.hidden)").classList.add("hidden");
     document.querySelector(`#settingstabs [tab="${tab}"]`).classList.add("selected");

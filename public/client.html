@@ -631,7 +631,7 @@
                     <span class="tab selected" tab="general" onclick="switchTab(this.getAttribute('tab'))">General</span>
                     <span class="tab" tab="appearance" onclick="switchTab(this.getAttribute('tab'))">Appearance</span>
                     <span class="tab" tab="about" onclick="switchTab(this.getAttribute('tab'))">About</span>
-                    <span class="tab" tab="exit" onclick="exitSettings()">Exit</span>
+                    <span class="tab" tab="exit" onclick="switchTab(this.getAttribute('tab'));exitSettings()">Exit</span>
                 </div>
                 <div id="settingssettings">
                     <div tab="general" class="settingspage">
@@ -675,6 +675,9 @@
                     <div tab="about" class="settingspage hidden">
                         <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
                         <button onclick="credits()">Credits</button>
+                    </div>
+                    <div tab="exit" class="settingspage hidden">
+                        <p><i class="fa-solid fa-gear fa-spin"></i> Please wait, your settings are being saved...</p>
                     </div>
                 </div>
             </div>
