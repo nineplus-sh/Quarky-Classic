@@ -520,8 +520,9 @@ async function switchChannel(id, audioOn = true) {
 
     document.querySelector("#messagestuff").classList.add("hidden");
     document.querySelector("#channelname").innerHTML = "<i class=\"fa-solid fa-messages fa-fade\"></i> Fetching messages...";
+    
     document.querySelector("#channeltopic").innerText = "";
-        let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
+    let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
     document.querySelector("#messages").innerHTML = "";
     messages = messages.sort(function(x,y) {
         return x.message.timestamp - y.message.timestamp;
@@ -935,8 +936,8 @@ function previewUsername(username) {
  */
 async function exitSettings() {
     new Audio('/assets/sfx/osu-overlay-pop-out.wav').play();
-    document.querySelector("#exitSettings").disabled = true;
-    document.querySelector("#exitSettings").textContent = "Saving...";
+    document.querySelector("#settings").disabled = true;
+    document.querySelector("#settings").className = "fullmodal hidden";
 
     if(window.currentUsername != document.querySelector(".fakename").value) { // if your current username doesn't match the settings username...
         document.querySelectorAll("#settings .message.fake .fakename").forEach(fakename => fakename.disabled = true) // disable the settings username boxes to present messing with
@@ -948,7 +949,6 @@ async function exitSettings() {
     }
 
     document.querySelector("#exitSettings").disabled = false;
-    document.querySelector("#exitSettings").textContent = "Exit";
     document.querySelector('#settings').classList.add('hidden');
 }
 
