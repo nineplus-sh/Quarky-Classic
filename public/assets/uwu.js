@@ -112,7 +112,8 @@ const substitutions = {
     'no': 'nyo',
     'what': 'wat',
     'na': 'nya',
-    'ma': 'mya'
+    'ma': 'mya',
+    'button': 'bouton'
 }
 
 const wordsubstitutions = {
