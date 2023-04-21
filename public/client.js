@@ -135,6 +135,46 @@ window.usericons = [
     "house-chimney-user"
 ]
 
+//list of image formats for attachments
+//its from https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types I trust mozilla.
+//also what is XMB????
+image_file_types = [
+    "png",
+    "jpg",
+    "jpeg",
+    "bmp",
+    "apng",
+    "avif",
+    "gif",
+    "ico",
+    "svg",
+    "webp",
+    "xbm"
+]
+
+//list of video formats for attachments
+//its from https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers 
+//some are weird
+video_file_types = [
+    "3gp",
+    "adts",
+    "flac",
+    "mpeg",
+    "mp4",
+    "mov",
+    "webm",
+    "mkv",
+    "mpg"
+]
+
+//list of video formats for attachments
+//its from what I could remember and Audacity, there is no list (that I could find)...
+audio_file_types = [
+    "wav",
+    "mp3",
+    "ogg"
+]
+
 // Cute purring sound effect
 window.purr = new Audio("/assets/sfx/purr.mp3");
 purr.loop = true;
@@ -439,11 +479,64 @@ function cleanMessage(message) {
         }
     }
 }
+//gets the filesize.
+function getFileSize(url)
+{
+    var fileSize = '';
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false); // false = Synchronous
 
+    http.send(null); // it will stop here until this http request is complete
+
+    // when we are here, we already have a response, b/c we used Synchronous XHR
+
+    if (http.status === 200) {
+        fileSize = http.getResponseHeader('content-length');
+        fileName = http.getResponseHeader('content-disposition');
+        console.log('fileSize = ' + fileSize);
+    }else if (http.status === 404){
+        alert("File was not found on server")
+    }else{
+        alert("Something happened to the server. (not 404)\nhttp code "+http.status+" was returned")
+    }
+
+    return [formatSizeUnits(fileSize), fileName];
+}
+//formats units
+function formatSizeUnits(size){
+    if (size < 1024) return size + " bytes";
+    const kilo = size / 1024;
+    if (kilo < 1024) return kilo.toFixed(1) + " KB";
+    const mega = kilo / 1024;
+    if (mega < 1024) return mega.toFixed(1) + " MB";
+    const giga = mega / 1024;
+    return giga.toFixed(1) + " GB";
+}
+//makes all unrecognized files downloadable
+function unknown_file_dowloadable(attached){
+    let thegotten = getFileSize(attached)
+    return `<a href='${attached}'>${thegotten[1].split('"')[1]+" ("+thegotten[0]+")"}</a>`
+}
+
+//was added to get rid of the 560 character long headache oneliner
+function check_file_types(attachme){
+    let thesplit = attachme.split(".").length-1
+    if(image_file_types.includes(attachme.split(".")[thesplit])){
+        return `<br><img src='${attachme}' width='400'>`;
+    }else if(video_file_types.includes(attachme.split(".")[thesplit])){
+        return `<br><video controls width="250"><source src='${attachme}' type='video/${attachme.split(".")[thesplit]}'></video>`
+    }else if(audio_file_types.includes(attachment.split(".")[thesplit])){
+        return `<br><audio controls src='${attachment}'>`
+    }else{
+        unknown_file_dowloadable(attache);
+    }
+}
+
+//this gets called to embed attachments
 function attachmentTextifier(attachments) {
-        let a = ""
-        attachments.forEach(attachment => a += `<br>attachment: ${attachment}`)
-        return a
+        let a = "";
+        attachments.forEach(attachment => a += check_file_types(attachment));
+        return a;
 }
 
 let adminTip;
@@ -475,8 +568,7 @@ async function messageRender(message) {
             <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''}</span>
             <span class="messagecontent">${doUwU ? `*${linkify(uwutils.substitute(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
-            <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
-        `;
+            <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>`;
     } else {
         messageDiv.innerHTML = `
             ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
@@ -488,7 +580,7 @@ async function messageRender(message) {
             </span>
             <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
             <span class="messagecontent">${doUwU ? dismoteToImg(linkify(uwu(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
-            <span class="attachments">${message.attachments && message.attachments.length > 0 ? linkify(attachmentTextifier(message.attachments)) : ""}</span>
+            <span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>
             <br>
         `;
     }
