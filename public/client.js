@@ -516,7 +516,7 @@ function formatSizeUnits(size){
 //makes all unrecognized files downloadable
 function unknown_file_downloadable(attached){
     let thegotten = getFileSize(attached)
-    return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attached}'>${thegotten[1].split('"')[1]+" ("+thegotten[0]+")"}<img class="embed-dl-img" src='./assets/img/download_icon.svg' width=30></a>`
+    return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attached}'>${thegotten[1].split('"')[1]+" ("+thegotten[0]+")"}<i class="fa-solid fa-download"></i></a>`
 }
 
 function adddedlbutton(attache){
