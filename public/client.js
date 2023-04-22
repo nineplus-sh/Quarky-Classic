@@ -480,11 +480,14 @@ function cleanMessage(message) {
         }
     }
 }
-//gets the filesize.
-function getFileSize(url)
-{
-    var fileSize = '';
-    var http = new XMLHttpRequest();
+
+/**
+ * Gets the file name and size from a URL.
+ * @param url - The link to the file.
+ * @returns {{size: string, name: string}}
+ */
+function getFileMetadata(url) {
+    const http = new XMLHttpRequest();
     http.open('HEAD', url, false); // false = Synchronous
 
     http.send(null); // it will stop here until this http request is complete
@@ -492,56 +495,69 @@ function getFileSize(url)
     // when we are here, we already have a response, b/c we used Synchronous XHR
 
     if (http.status === 200) {
-        fileSize = http.getResponseHeader('content-length');
-        fileName = http.getResponseHeader('content-disposition');
-        console.log('fileSize = ' + fileSize);
-    }else if (http.status === 404){
+        const fileSize = http.getResponseHeader('content-length');
+        const fileName = http.getResponseHeader('content-disposition');
+        return {"size": prettySize(fileSize), "name": fileName.split("filename=\"")[1].slice(0,-1)};
+    } else if (http.status === 404) {
         alert("File was not found on server.")
-    }else{
+    } else {
         alert("Something happened to the server. (not 404)\nhttp code "+http.status+" was returned")
     }
-
-    return [formatSizeUnits(fileSize), fileName];
 }
-//formats units
-function formatSizeUnits(size){
-    if (size < 1024) return size + " bytes";
-    const kilo = size / 1024;
+
+/**
+ * Formats bytes into human-readable sizes.
+ * @param bytes - The bytes.
+ * @returns {string}
+ */
+function prettySize(bytes){
+    if (bytes < 1024) return bytes + " bytes";
+    const kilo = bytes / 1024;
     if (kilo < 1024) return kilo.toFixed(1) + " KB";
     const mega = kilo / 1024;
     if (mega < 1024) return mega.toFixed(1) + " MB";
     const giga = mega / 1024;
     return giga.toFixed(1) + " GB";
 }
-//makes all unrecognized files downloadable
-function unknown_file_downloadable(attached){
-    let thegotten = getFileSize(attached)
-    return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attached}'>${thegotten[1].split('"')[1]+" ("+thegotten[0]+")"}<i class="fa-solid fa-download"></i></a>`
+
+/**
+ * Generates the HTML for a download button.
+ * @param attachmentURL - The URL to the attachment.
+ * @returns {string}
+ */
+function downloadButton(attachmentURL){
+    return `<a style="padding-left: 1rem;" href='${attachmentURL}' target="_blank" rel="noreferrer noopener"><i class="fa-solid fa-download"></i></a>`;
 }
 
-function adddedlbutton(attache){
-    return `<a style="padding-left: 1rem;" href='${attache}' target="_blank" rel="noreferrer noopener"><i class="fa-solid fa-download"></i></a>`;
-}
-
-//was added to get rid of the 560 character long headache oneliner
-function check_file_types(attachme){
-    let thesplit = attachme.split(".").length-1
-    if(image_file_types.includes(attachme.split(".")[thesplit])){
-        return `<br><img src='${attachme}' width='400'>` + adddedlbutton(attachme);
-    }else if(video_file_types.includes(attachme.split(".")[thesplit])){
-        return `<br><video controls width="250"><source src='${attachme}' type='video/${attachme.split(".")[thesplit]}'></video>` + adddedlbutton(attachme);
-    }else if(audio_file_types.includes(attachme.split(".")[thesplit])){
-        return `<br><audio controls src='${attachme}'>` + adddedlbutton(attachme);
+/**
+ * Checks the file type of an attachment and generates appropiate HTML.
+ * TODO: Always use getFileMetadata, use it to better find out the file type. This could also allow for better 404 handling.
+ * @param attachmentURL - The URL to the attachment.
+ * @returns {string}
+ */
+function checkFileTypes(attachmentURL){
+    let thesplit = attachmentURL.split(".").length-1
+    if(image_file_types.includes(attachmentURL.split(".")[thesplit])){
+        return `<br><img src='${attachmentURL}' width='400'>` + downloadButton(attachmentURL);
+    }else if(video_file_types.includes(attachmentURL.split(".")[thesplit])){
+        return `<br><video controls width="250"><source src='${attachmentURL}' type='video/${attachmentURL.split(".")[thesplit]}'></video>` + downloadButton(attachmentURL);
+    }else if(audio_file_types.includes(attachmentURL.split(".")[thesplit])){
+        return `<br><audio controls src='${attachmentURL}'>` + downloadButton(attachmentURL);
     }else{
-        return unknown_file_downloadable(attachme);
+        let fileMetadata = getFileMetadata(attachmentURL)
+        return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attachmentURL}'>${fileMetadata.name} (${fileMetadata.size})<i class="fa-solid fa-download"></i></a>`
     }
 }
 
-//this gets called to embed attachments
+/**
+ * A wrapper for checkFileTypes.
+ * @param attachments - The attachments on the message.
+ * @returns {string}
+ */
 function attachmentTextifier(attachments) {
-        let a = "";
-        attachments.forEach(attachment => a += check_file_types(attachment));
-        return a;
+        let output = "";
+        attachments.forEach(attachment => output += checkFileTypes(attachment));
+        return output;
 }
 
 let adminTip;
