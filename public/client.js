@@ -141,6 +141,7 @@ window.usericons = [
 image_file_types = [
     "png",
     "jpg",
+    "jfif",
     "jpeg",
     "bmp",
     "apng",
@@ -158,7 +159,6 @@ image_file_types = [
 video_file_types = [
     "3gp",
     "adts",
-    "flac",
     "mpeg",
     "mp4",
     "mov",
@@ -496,7 +496,7 @@ function getFileSize(url)
         fileName = http.getResponseHeader('content-disposition');
         console.log('fileSize = ' + fileSize);
     }else if (http.status === 404){
-        alert("File was not found on server")
+        alert("File was not found on server.")
     }else{
         alert("Something happened to the server. (not 404)\nhttp code "+http.status+" was returned")
     }
@@ -514,22 +514,26 @@ function formatSizeUnits(size){
     return giga.toFixed(1) + " GB";
 }
 //makes all unrecognized files downloadable
-function unknown_file_dowloadable(attached){
+function unknown_file_downloadable(attached){
     let thegotten = getFileSize(attached)
-    return `<a href='${attached}'>${thegotten[1].split('"')[1]+" ("+thegotten[0]+")"}</a>`
+    return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attached}'>${thegotten[1].split('"')[1]+" ("+thegotten[0]+")"}<i class="fa-solid fa-download"></i></a>`
+}
+
+function adddedlbutton(attache){
+    return `<a style="padding-left: 1rem;" href='${attache}' target="_blank" rel="noreferrer noopener"><i class="fa-solid fa-download"></i></a>`;
 }
 
 //was added to get rid of the 560 character long headache oneliner
 function check_file_types(attachme){
     let thesplit = attachme.split(".").length-1
     if(image_file_types.includes(attachme.split(".")[thesplit])){
-        return `<br><img src='${attachme}' width='400'>`;
+        return `<br><img src='${attachme}' width='400'>` + adddedlbutton(attachme);
     }else if(video_file_types.includes(attachme.split(".")[thesplit])){
-        return `<br><video controls width="250"><source src='${attachme}' type='video/${attachme.split(".")[thesplit]}'></video>`
-    }else if(audio_file_types.includes(attachment.split(".")[thesplit])){
-        return `<br><audio controls src='${attachment}'>`
+        return `<br><video controls width="250"><source src='${attachme}' type='video/${attachme.split(".")[thesplit]}'></video>` + adddedlbutton(attachme);
+    }else if(audio_file_types.includes(attachme.split(".")[thesplit])){
+        return `<br><audio controls src='${attachme}'>` + adddedlbutton(attachme);
     }else{
-        unknown_file_dowloadable(attache);
+        return unknown_file_downloadable(attachme);
     }
 }
 
