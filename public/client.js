@@ -520,7 +520,7 @@ function unknown_file_downloadable(attached){
 }
 
 function adddedlbutton(attache){
-    return `<a style="padding-left: 1rem;" href='${attache}' target="_blank" rel="noreferrer noopener"><img src='./assets/img/download_icon.svg' width=30></a>`;
+    return `<a style="padding-left: 1rem;" href='${attache}' target="_blank" rel="noreferrer noopener"><i class="fa-solid fa-download"></i></a>`;
 }
 
 //was added to get rid of the 560 character long headache oneliner
