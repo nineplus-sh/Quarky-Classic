@@ -172,7 +172,8 @@ video_file_types = [
 audio_file_types = [
     "wav",
     "mp3",
-    "ogg"
+    "ogg",
+    "flac"
 ]
 
 // Cute purring sound effect
