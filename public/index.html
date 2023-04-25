@@ -2,12 +2,29 @@
     <head>
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro-v6@44659d9/css/all.min.css" rel="stylesheet" type="text/css" />
         <link rel="preload" href="/assets/sfx/loggedin.mp3" as="audio" />
         <link rel="preload" href="/assets/sfx/login.mp3" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-error-notification-pop-in.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-submit-select.wav" as="audio" />
-        <audio id="bgm" src="/assets/sfx/login.mp3" autoplay loop></audio>
+        <audio id="bgm" src="/assets/sfx/login.mp3" loop></audio>
         <script>
+            const defaultNetwork = "lq.litdevs.org";
+            window.addEventListener("load", fetchNetwork)
+            window.addEventListener("DOMContentLoaded", function() { document.querySelector("#networkSelection").value = localStorage.getItem('preferredServer') || defaultNetwork})
+
+            function fetchNetwork() {
+                switchView("networking");
+                fetch(`https://${localStorage.getItem('preferredServer') || defaultNetwork}/vquarky/network`).then(res => res.json()).then(function(res) {
+                    window.networkData = res;
+                    document.querySelector("#networkName").innerText = networkData.name;
+                    switchView("welcome")
+                    document.querySelector("#bgm").play();
+                }).catch(function(e) {
+                    switchView("eepynetwork");
+                    console.log(e);
+                })
+            }
             function getCookie(key) {
                 var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
                 return keyValue ? keyValue[2] : null;
@@ -46,6 +63,11 @@
                     })
                     .catch(error => console.log('error', error));
             }
+            function switchView(view) {
+                if(view === "networks") document.querySelector("#networkSelect").value = "";
+                document.querySelector(`.view:not(.hidden)`).classList.add("hidden");
+                document.querySelector(`#${view}`).classList.remove("hidden");
+            }
         </script>
         <style>
             html {
@@ -66,7 +88,7 @@
                 animation: rotate 50s infinite linear;
                 z-index: -999999;
             }
-            #welcome {
+            #welcome, #logo, .center {
                 text-align: center;
                 object-position: center;
             }
@@ -118,19 +140,41 @@
             input.fail {
                 border: 2px red solid;
             }
+            .hidden {
+                opacity: 0;
+                display: none;
+            }
         </style>
     </head>
     <body>
-        <div id="welcome">
-            <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
+        <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
+        <div id="prep" class="center view">
+            <p><i class="fa-solid fa-files fa-fade"></i> Preparing assets...</p>
+        </div>
+        <div id="networking" class="center view hidden">
+            <p><i class="fa-solid fa-cloud-arrow-down fa-fade"></i> Requesting network information...</p>
+        </div>
+        <div id="welcome" class="center view hidden">
             <p id="text"><i>Quarky</i> is a client for Lightquark, which allows you to join Quarks.<br>Please enter your LITauth login to continue to Quarky.</p>
             <form id="credentials" onsubmit="fetchData(); return false;">
                 <input placeholder="Email" id="email" name="email" type="email" required>
                 <input placeholder="Password" id="password" name="password" type="password" required>
-                <br><br>
-                <button type="submit" form="credentials" >Done :)</button>  
+                <br><small><i class="fa-solid fa-network-wired"></i> signing into <span id="networkName"></span> - <a href="#" onclick="switchView('networks')">switch network</a></small>
+                <br><br><button type="submit" form="credentials" >Done :)</button>
             </form>
-            <small>some sounds are from <a href="https://github.com/ppy/osu-resources">osu!resources</a>. i think i implemented them poorly, but it works for now!</small>
+            <small>some sounds are from <a href="https://github.com/ppy/osu-resources">osu!resources</a></small>
+        </div>
+        <div id="networks" class="center view hidden">
+            <p>Please enter the domain name of your preferred Lightquark network.<br><b>THIS DOES NOTHING AT THE MOMENT :3</b></p>
+            <select onchange="document.querySelector('#networkSelection').value = this.value;" id="networkSelect">
+                <option disabled selected value="">Presets...</option>
+                <option value="lq.litdevs.org">Lightquark</option>
+                <option value="equinox.litdevs.org">Equinox</option>
+            </select><br><br>
+            <input type="text" placeholder="lq.litdevs.org" id="networkSelection"> <button onclick="localStorage.setItem('preferredServer', document.querySelector('#networkSelection').value);fetchNetwork()">Save</button>
+        </div>
+        <div id="eepynetwork" class="center view hidden">
+            <p><i class="fa-solid fa-cloud-xmark fa-shake"></i> An error occurred while requesting data for your preferred network.<br>You can <button onclick="fetchNetwork()">try again</button> or <button onclick="switchView('networks')">switch networks</button>.</p>
         </div>
         <img src="/assets/img/vukkyplanetdark.svg" id="planet">
     </body>

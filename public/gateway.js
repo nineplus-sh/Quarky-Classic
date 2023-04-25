@@ -3,7 +3,7 @@
  * Call socketListeners() to add listeners
  */
 function openGateway() {
-    wss = new WebSocket("wss://lq-gateway.litdevs.org", authToken);
+    wss = new WebSocket(networkData.gateway, authToken);
     socketListeners();
 }
 

@@ -18,9 +18,12 @@ function fatalError(error) {
             <object data="/assets/img/error.svg" width="120" style="float: left;" id="crushed"></object>
             <h1>Fatal error!</h1>
             <p>
-                Something terrible happened.
+                Quarky is currently broken due to time constraints.
+                <br><b>Please do not report this error.
+                <br>This is most likely not a bug.</b>
+                <!--Something terrible happened.
                 <br>Quarky doesn't know how to handle it, so Quarky is dead.
-                <br>Sowwy! Consider reporting this error if you get it often :3
+                <br>Sowwy! Consider reporting this error if you get it often :3-->
             </p>
             `}
         </div>
@@ -180,6 +183,9 @@ window.purr = new Audio("/assets/sfx/purr.mp3");
 purr.loop = true;
 purr.load();
 
+// Stores the default network
+const defaultNetwork = "lq.litdevs.org";
+
 /**
  * Get the value of a cookie
  * @param {string} key 
@@ -266,7 +272,21 @@ async function welcome() {
     });
 
     changeLoading("Contacting server...");
+    await fetchNetwork();
+    changeLoading("Connecting to server...")
     openGateway();
+}
+
+/**
+ * Sets the network data object which contains network information.
+ * @returns {void}
+ */
+async function fetchNetwork() {
+    await fetch(`https://${localStorage.getItem('preferredServer') || defaultNetwork}/vquarky/network`).then(res => res.json()).then(function(res) {
+        window.networkData = res;
+    }).catch(function(e) {
+        fatalError({"name": "Network", "error": "Could not contact preferred network", "disableReport": true})
+    })
 }
 
 /**
@@ -379,7 +399,7 @@ async function quarkFetch() {
     }
 
     try {
-        let res = await fetch(`https://lq.litdevs.org/${apiVersion}${path}`, options);
+        let res = await fetch(`${networkData.baseUrl}/${apiVersion}${path}`, options);
         let data = await res.json();
         if (data.request.success) return data; // Success
         if (data.request.status_code === 401)  {
