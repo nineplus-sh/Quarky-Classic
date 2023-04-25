@@ -648,7 +648,7 @@
         <div id="settings" class="fullmodal hidden">
             <div id="settingscontainer">
                 <div id="settingsheader">
-                    <h1>Settings</h1>
+                    <h1><quarky-string string="SETTINGS"></quarky-string></h1>
                     <img style="image-rendering: pixelated; float: right; padding-right: 1rem;" src="/assets/img/credits/sound.gif">
                 </div>
                 <div id="settingstabs">
@@ -659,6 +659,10 @@
                 </div>
                 <div id="settingssettings">
                     <div tab="general" class="settingspage">
+                        <p>Language (requires reload): <select setting="language" onchange="settingSet('language', this.value);loadStrings()">
+                            <option value="en">English</option>
+                            <option value="uwu">Cute Engwish</option>
+                        </select></p>
                         <p>Notifications for all new messages <vukky-toggle setting="notify" onclick="notifyRequest()"></vukky-toggle></p>
                     </div>
                     <div tab="appearance" class="settingspage hidden">
@@ -769,5 +773,6 @@
         <script src="/gateway.js"></script>
         <script src="/client.js"></script>
         <script src="/assets/vukkytoggle.js"></script>
+        <script src="/assets/quarkystring.js"></script>
     </body>
 </html>

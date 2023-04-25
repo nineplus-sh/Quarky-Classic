@@ -3,6 +3,7 @@
  * @param {Object} error - the error (wow)
  */
 function fatalError(error) {
+    console.log(error.error.message)
     let crashDisease = document.createElement('span')
     crashDisease.innerHTML = `
         <div id="fatalerror">
@@ -25,7 +26,7 @@ function fatalError(error) {
             `}
         </div>
         <div id="fatalerrortrace">
-        <b>${error.name || "Error"}: ${error.message || "Unknown error"}</b><br>${error.apiEndpoint ? `(while attempting to ${error.apiMethod} /${error.apiEndpoint})<br><br>` : ""}
+        <b>${error.name || "Error"}: ${error.message || "Unknown error"}</b><br>${error.error?.message ? `${error.error.message}<br>` : ""}${error.apiEndpoint ? `(while attempting to ${error.apiMethod} /${error.apiEndpoint})<br>` : ""}<br>
         ${escapeHTML(Error().stack)}
         </div>
         <p>${error.disableReport ? "" : `<button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button>`} <button onclick="logOut()">Log out</button> <button onclick="document.location.reload();">Reload</button></p>
@@ -81,7 +82,8 @@ window.defaults = {
     "usericons": true,
     "uwuprefix": false,
     "uwusubst": false,
-    "uwusuffix": false
+    "uwusuffix": false,
+    "language": "en"
 }
 
 // The user icons to randomly select from
@@ -228,6 +230,7 @@ async function welcome() {
         document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
     }
 
+    await loadStrings();
     changeLoading("Getting network information...");
     await fetchNetwork();
     changeLoading("Fetching user data...");
@@ -285,6 +288,27 @@ async function fetchNetwork() {
     }).catch(function(e) {
         fatalError({"name": "Network", "message": "Could not contact preferred network", "disableReport": true})
     })
+}
+
+/**
+ * Loads strings
+ * @returns {void}
+ */
+async function loadStrings(lang = settingGet("language")) {
+    await fetch(`/assets/lang/${lang}.json`).then(res => res.json()).then(function(res) {
+        window.strings = res;
+    }).catch(async function(e) {
+        if(lang === "en") fatalError({"name": "Localization", "message": "Could not download strings", "error": e})
+    })
+    if(lang !== "en") {
+        await fetch(`/assets/lang/en.json`).then(res => res.json()).then(function(res) {
+            window.strings = {...res, ...window.strings};
+        }).catch(async function(e) {
+           fatalError({"name": "Localization", "message": "Could not download strings", "error": e})
+        })
+    }
+
+    window.dispatchEvent(new Event("stringchange"))
 }
 
 /**
