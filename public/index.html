@@ -40,7 +40,7 @@
                 document.querySelector("#email").classList.remove("fail");
                 document.querySelector("#password").classList.remove("fail");
                 document.querySelector("#text").innerHTML = "Logging in...";
-                fetch("https://lq.litdevs.org/v1/auth/token", {method: 'POST', body: JSON.stringify({"email": document.querySelector("#email").value, "password": document.querySelector("#password").value}), headers: {'Content-Type': 'application/json'}})   
+                fetch(`${networkData.baseUrl}/v1/auth/token`, {method: 'POST', body: JSON.stringify({"email": document.querySelector("#email").value, "password": document.querySelector("#password").value}), headers: {'Content-Type': 'application/json'}})
                     .then(response => response.json())
                     .then(response => {
                         if(!response.request.success) {
@@ -165,7 +165,7 @@
             <small>some sounds are from <a href="https://github.com/ppy/osu-resources">osu!resources</a></small>
         </div>
         <div id="networks" class="center view hidden">
-            <p>Please enter the domain name of your preferred Lightquark network.<br><b>THIS DOES NOTHING AT THE MOMENT :3</b></p>
+            <p>Please enter the domain name of your preferred Lightquark network.</p>
             <select onchange="document.querySelector('#networkSelection').value = this.value;" id="networkSelect">
                 <option disabled selected value="">Presets...</option>
                 <option value="lq.litdevs.org">Lightquark</option>

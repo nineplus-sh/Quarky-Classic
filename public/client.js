@@ -18,20 +18,17 @@ function fatalError(error) {
             <object data="/assets/img/error.svg" width="120" style="float: left;" id="crushed"></object>
             <h1>Fatal error!</h1>
             <p>
-                Quarky is currently broken due to time constraints.
-                <br><b>Please do not report this error.
-                <br>This is most likely not a bug.</b>
-                <!--Something terrible happened.
-                <br>Quarky doesn't know how to handle it, so Quarky is dead.
-                <br>Sowwy! Consider reporting this error if you get it often :3-->
+                Something terrible happened.
+                <br>${error.disableReport ? "Please do not report this issue, it is probably not Quarky's fault." : "Quarky doesn't know how to handle it, so Quarky is dead."}
+                <br>Sowwy! ${error.disableReport ? "I hope you can figure it out." : "Consider reporting this error if you get it often :3"}
             </p>
             `}
         </div>
         <div id="fatalerrortrace">
-        <b>${error.name || "Error"} ${error.message || "Unknown error"}</b><br>${error.apiEndpoint ? `(while attempting to ${error.apiMethod} /${error.apiEndpoint})<br><br>` : ""}
+        <b>${error.name || "Error"}: ${error.message || "Unknown error"}</b><br>${error.apiEndpoint ? `(while attempting to ${error.apiMethod} /${error.apiEndpoint})<br><br>` : ""}
         ${escapeHTML(Error().stack)}
         </div>
-        <p><button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button> <button onclick="document.location.reload();">Reload</button></p>
+        <p>${error.disableReport ? "" : `<button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button>`} <button onclick="logOut()">Log out</button> <button onclick="document.location.reload();">Reload</button></p>
     `
     document.body.innerHTML = "";
     document.body.appendChild(crashDisease);
@@ -231,6 +228,8 @@ async function welcome() {
         document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
     }
 
+    changeLoading("Getting network information...");
+    await fetchNetwork();
     changeLoading("Fetching user data...");
     await fetchAviebox();
 
@@ -272,9 +271,7 @@ async function welcome() {
         allowHTML: true
     });
 
-    changeLoading("Contacting server...");
-    await fetchNetwork();
-    changeLoading("Connecting to server...")
+    changeLoading("Connecting to network...")
     openGateway();
 }
 
@@ -286,7 +283,7 @@ async function fetchNetwork() {
     await fetch(`https://${localStorage.getItem('preferredServer') || defaultNetwork}/vquarky/network`).then(res => res.json()).then(function(res) {
         window.networkData = res;
     }).catch(function(e) {
-        fatalError({"name": "Network", "error": "Could not contact preferred network", "disableReport": true})
+        fatalError({"name": "Network", "message": "Could not contact preferred network", "disableReport": true})
     })
 }
 
@@ -340,7 +337,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
 </div>`
     })
     // Add join and log out buttons
-    quarkList.innerHTML += `<hr>
+    quarkList.innerHTML += `${quarks.length > 0 ? "<hr>" : ""}
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
             <i class="fa-solid fa-people-roof quarkicon"></i>
             </div>
