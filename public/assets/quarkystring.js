@@ -4,6 +4,7 @@ class QuarkyString extends HTMLElement {
         function onstringchange() {
             this.innerHTML = strings[this.getAttribute("string")];
         }
+        if(typeof strings !== "undefined") onstringchange.bind(this)();
         window.addEventListener("stringchange", onstringchange.bind(this))
     }
 }

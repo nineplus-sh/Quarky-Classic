@@ -16,6 +16,7 @@ class VukkyToggle extends HTMLElement {
             this.checked = true;
         }
         settingSet(this.getAttribute("setting"), this.checked);
+        this.dispatchEvent(new Event("toggle"));
     }
 
     get checked() {

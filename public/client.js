@@ -255,7 +255,7 @@ async function welcome() {
         offset: [0, 25]
     })
     tippy(".leavequark", {
-        content: "Leave Quark",
+        content: strings["LEAVE_QUARK"],
         theme: "black",
         hideOnClick: false,
         inertia: true,

@@ -614,7 +614,7 @@
         <div id="quarkdata">
             <div id="servername">
                 <span id="namewrap">
-                    Select a Quark
+                    <quarky-string string="SELECT_A_QUARK">
                 </span>
                 <i class="fa-duotone fa-person-to-portal leavequark hidden" onclick="leaveQuark()"></i>
             </div>
@@ -623,12 +623,12 @@
             </div>
             <div id="userdata">
                 <img class="avie loading" src="https://cdn.discordapp.com/emojis/851468740263542814.png" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
-                <span class="lusername">Niko</span>
+                <span class="lusername"><quarky-string string="DEFAULT_USERNAME"></quarky-string></span>
                 <i class="fa-solid fa-gear fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
         <div id="channeldata">
-            <b id="channelname">Select a Channel</b> <span id="channeltopic"></span>
+            <b id="channelname"><quarky-string string="SELECT_A_CHANNEL"></quarky-string></b> <span id="channeltopic"></span>
         </div>
         <span id="messagestuff" class="hidden">
             <div id="messagesbox" onscroll="scrollingDetected()">
@@ -652,14 +652,14 @@
                     <img style="image-rendering: pixelated; float: right; padding-right: 1rem;" src="/assets/img/credits/sound.gif">
                 </div>
                 <div id="settingstabs">
-                    <span class="tab selected" tab="general" onclick="switchTab(this.getAttribute('tab'))">General</span>
-                    <span class="tab" tab="appearance" onclick="switchTab(this.getAttribute('tab'))">Appearance</span>
-                    <span class="tab" tab="about" onclick="switchTab(this.getAttribute('tab'))">About</span>
-                    <span class="tab" tab="exit" onclick="switchTab(this.getAttribute('tab'));exitSettings()">Exit</span>
+                    <span class="tab selected" tab="general" onclick="switchTab(this.getAttribute('tab'))"><quarky-string string="SETTINGS_GENERAL"></quarky-string></span>
+                    <span class="tab" tab="appearance" onclick="switchTab(this.getAttribute('tab'))"><quarky-string string="SETTINGS_APPEARANCE"></quarky-string></span>
+                    <span class="tab" tab="about" onclick="switchTab(this.getAttribute('tab'))"><quarky-string string="SETTINGS_ABOUT"></quarky-string></span>
+                    <span class="tab" tab="exit" onclick="switchTab(this.getAttribute('tab'));exitSettings()"><quarky-string string="SETTINGS_EXIT"></quarky-string></span>
                 </div>
                 <div id="settingssettings">
                     <div tab="general" class="settingspage">
-                        <p>Language (requires reload): <select setting="language" onchange="settingSet('language', this.value);loadStrings()">
+                        <p><quarky-string string="SETTING_LANGUAGE"></quarky-string> <select setting="language" onchange="settingSet('language', this.value);loadStrings()">
                             <option value="en">English</option>
                             <option value="uwu">Cute Engwish</option>
                         </select></p>
@@ -693,12 +693,12 @@
                         </div>
                         <hr><br>
 
-                        <p>Special rendering for /me messages <vukky-toggle setting="mespecial"></vukky-toggle></p>
-                        <p>User icons <vukky-toggle setting="usericons"></vukky-toggle></p>
+                        <p>Special rendering for /me messages <vukky-toggle setting="mespecial" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
+                        <p>User icons <vukky-toggle setting="usericons" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
                         <h3>UwUspeak stolen from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a></h3>
-                        <p>Prefixes <vukky-toggle setting="uwuprefix"></vukky-toggle></p>
-                        <p>Substitution <vukky-toggle setting="uwusubst"></vukky-toggle></p>
-                        <p>Suffixes <vukky-toggle setting="uwusuffix"></vukky-toggle></p>
+                        <p>Prefixes <vukky-toggle setting="uwuprefix" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
+                        <p>Substitution <vukky-toggle setting="uwusubst" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
+                        <p>Suffixes <vukky-toggle setting="uwusuffix" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
                     </div>
                     <div tab="about" class="settingspage hidden">
                         <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
