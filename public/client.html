@@ -660,8 +660,10 @@
                 <div id="settingssettings">
                     <div tab="general" class="settingspage">
                         <p><quarky-string string="SETTING_LANGUAGE"></quarky-string> <select setting="language" onchange="settingSet('language', this.value);loadStrings()">
+                            <option disabled selected value="">Select...</option>
                             <option value="en">English</option>
                             <option value="uwu">Cute Engwish</option>
+                            <option value="discord">Discord (English)</option>
                         </select></p>
                         <p>Notifications for all new messages <vukky-toggle setting="notify" onclick="notifyRequest()"></vukky-toggle></p>
                     </div>
