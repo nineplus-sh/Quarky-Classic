@@ -427,6 +427,10 @@ async function quarkFetch() {
             logOut();
             return false;
         }
+        // Return data, even though success is false
+        if (data.request.status_code === 404) {
+            return data;
+        }
         // Failed :(
         fatalError({"name": "Lightquark API", "message": `${data.request.status_code}: ${data.response.message}`, "apiCode": data.request.status_code, "apiEndpoint": `${apiVersion}${path}`, "apiMethod": method})
         return false;
@@ -1137,13 +1141,18 @@ async function fetchContext(message, replyMessage) {
     document.querySelector(`#m_${message} i`).classList.add("fa-fade");
     document.querySelector(`#m_${message} .rusername`).innerText = "Fetching context...";
     document.querySelector(`#m_${message} .rusercontent`).innerText = "";
-    await apiCall(`/channel/${currentChannel}/messages/${replyMessage}`, "GET", "", "v2").then(function(result) {
-        let botMetadata = result.response.data.message.specialAttributes.find(attr => attr.type === "botMessage");
-        messageBox[replyMessage] = result.response.data;
-        document.querySelector(`#m_${message} .rusername`).innerText = botMetadata?.username || result.response.data.author.username;
-        document.querySelector(`#m_${message} .rusercontent`).innerText = result.response.data.message.content;
+    let result = await apiCall(`/channel/${currentChannel}/messages/${replyMessage}`, "GET", "", "v2");
+    if (result.request.status_code === 404) {
+        document.querySelector(`#m_${message} .rusername`).innerText = "";
+        document.querySelector(`#m_${message} .rusercontent`).innerText = "This message has been deleted";
         document.querySelector(`#m_${message} i`).classList.remove("fa-fade");
-    })
+        return;
+    }
+    let botMetadata = result.response.data.message.specialAttributes.find(attr => attr.type === "botMessage");
+    messageBox[replyMessage] = result.response.data;
+    document.querySelector(`#m_${message} .rusername`).innerText = botMetadata?.username || result.response.data.author.username;
+    document.querySelector(`#m_${message} .rusercontent`).innerText = result.response.data.message.content;
+    document.querySelector(`#m_${message} i`).classList.remove("fa-fade");
 }
 
 /**
