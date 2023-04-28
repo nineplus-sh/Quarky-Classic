@@ -3,7 +3,6 @@
  * @param {Object} error - the error (wow)
  */
 function fatalError(error) {
-    console.log(error.error.message)
     let crashDisease = document.createElement('span')
     crashDisease.innerHTML = `
         <div id="fatalerror">
