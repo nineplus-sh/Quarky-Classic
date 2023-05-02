@@ -1024,14 +1024,19 @@ function uploadAvie(uploadWrap) {
 function dismoteToImg(string) {
     let normalEmote = /(<|&lt;|&wt;):[a-zA-Z0-9_]+:(\d+)(>|&gt;)/g
     let animatedEmote = /(<|&lt;|&wt;)a:[a-zA-Z0-9_]+:(\d+)(>|&gt;)/g
+    let lightquarkEmote = /(<|&lt;|&wt;)[^:\s]+:([a-f0-9]+)(>|&gt;)/gm
     let normalEmoteIds = [...string.matchAll(normalEmote)]
     let animatedEmoteIds = [...string.matchAll(animatedEmote)]
+    let lightquarkEmoteIds = [...string.matchAll(lightquarkEmote)]
 
     normalEmoteIds.forEach(function(id) {
         string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.png" width="28">`)
     })
     animatedEmoteIds.forEach(function(id) {
         string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.gif" width="28">`)
+    })
+    lightquarkEmoteIds.forEach(function(id) {
+        string = string.replace(id[0], `<img src="${networkData.baseUrl}/v2/quark/emotes/${id[2]}/image" width="28">`)
     })
     return string;
 }
