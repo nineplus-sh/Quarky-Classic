@@ -652,8 +652,8 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Better message sender :3" id="sendmsg">
-                    <button onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><i class="fa-solid fa-face-awesome"></i></button>
-                    <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
+                    <button type="button" onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><i class="fa-solid fa-face-awesome"></i></button>
+                    <button type="submit" onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
                 </form>
             </div>
             <div id="watchingmojo" class="hidden">
