@@ -597,6 +597,19 @@
                 filter: drop-shadow(0 0 0.1rem black);
                 z-index: 2;
             }
+
+            #watchingmojo {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                overflow-y: auto;
+                width: 25em;
+                padding: 0.5em;
+                margin-bottom: 4.5em;
+                background-color: #2b2d31;
+                z-index: 2;
+                height: 25em;
+            }
         </style>
     </head>
     <body>
@@ -639,8 +652,12 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Better message sender :3" id="sendmsg">
+                    <button onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><i class="fa-solid fa-face-awesome"></i></button>
                     <button onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
                 </form>
+            </div>
+            <div id="watchingmojo" class="hidden">
+                No emoji? ;~;
             </div>
         </span>
 
