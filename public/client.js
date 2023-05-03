@@ -1,3 +1,23 @@
+let splashes = [
+    "Did you know? \"Quarky\" is a combination of the words quark and quirky.",
+    "Did you know? There is no development version of Quarky. Everything is production.",
+    "Did you know? Splash texts were added 5 months into Quarky's development.",
+    "Did you know? When accessing a quark you can't access, you will see a no entry sign... with cat ears.",
+    "Did you know? The R74moji option in the emoji picker is actually a quark.",
+    "Did you know? <i class=\"fa-duotone fa-socks\" style=\"--fa-primary-color: #ffffff; --fa-secondary-color: #f7819c; --fa-secondary-opacity: 1;\" title='\"programmer socks\"'></i>",
+    "Did you know? Quarky assumes you use a modern browser.",
+    "Did uu knyow? Da stowen UwUspeak options in da settings can myake youw messages unweadabwe :3",
+    "Did you know? Quarky is just a client, the backend is <a href='https://github.com/LITdevs/Lightquark'>separate and not owned by me</a>.",
+    "Nya~ :3",
+    "huohhh, i'm hungy. 3:<br>do you have any food? :3",
+    "zzz -w-",
+    "Ah! Hewwo!",
+    "Did you know?",
+    "Please don't refresh the page a lot to see the different messages.",
+    "Purr... >w<",
+    "Did you know? Quarky has lots of bugs."
+]
+
 /**
  * Handles critical errors that don't have handlers (although this is a handler, and is used rarely, because im wazy)
  * @param {Object} error - the error (wow)
@@ -224,6 +244,7 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
+    showSplash();
     if(isLocal) {
         document.querySelector("#planet").style.filter = "invert(1)";
         document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
@@ -352,7 +373,7 @@ async function welcomeGateway() {
  * @returns {void}
  */
 function changeLoading(text) {
-    document.querySelector("#loaderexp").innerHTML = text;
+    document.querySelector("#loadinginfo").innerHTML = text;
 }
 
 let quarkTip;
@@ -1178,6 +1199,7 @@ async function fetchContext(message, replyMessage) {
 /**
  * Switches to a different tab in the settings.
  * @param {string} tab - The tab to switch to.
+ * @returns {void}
  */
 async function switchTab(tab) {
     if(window.exitingSettings) return;
@@ -1190,6 +1212,7 @@ async function switchTab(tab) {
 /**
  * Loads a particular quark's emoji into watchedmojos.
  * @param {string} quark - The quark to load emoji from.
+ * @returns {void}
  */
 async function loadEmoji(quark) {
     document.querySelector("#watchingmojo select").disabled = true;
@@ -1209,6 +1232,7 @@ async function loadEmoji(quark) {
  * Put an emoji in the user's sendmsg.
  * @param {string} emojiName - Emoji name.
  * @param {string} emojID - Emoji ID.
+ * @returns {void}
  */
 function insertEmoji(emojiName, emojID) {
     document.querySelector("#sendmsg").value += `<${emojiName}:${emojID}>`;
@@ -1236,6 +1260,14 @@ function uploadEmoji() {
         reader.readAsDataURL(file);
     }
     input.click();
+}
+
+/**
+ * Shows a splash on the loading screen.
+ * @returns {void}
+ */
+function showSplash() {
+    document.querySelector("#loadingsplash").innerHTML = splashes[Math.floor(Math.random() * splashes.length)]
 }
 
 welcome();

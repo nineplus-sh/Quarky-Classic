@@ -495,9 +495,11 @@
             @keyframes kill {
                 from {
                     transform: scale(1) rotateZ(0deg);
+                    opacity: 1;
                 }
                 to {
-                    transform: scale(0) rotateZ(5deg);
+                    transform: scale(0) rotateZ(5deg) translateX(-60em);
+                    opacity: 0;
                 }
             }
 
@@ -610,6 +612,10 @@
                 z-index: 2;
                 height: 25em;
             }
+
+            #loadingsplash {
+                font-size: 10px;
+            }
         </style>
     </head>
     <body>
@@ -618,7 +624,8 @@
         <div id="loader">
             <img src="/assets/img/vukkyplanetdark.svg" id="planet">
             <div id="loaderexp">
-                Preparing assets...
+                <span id="loadinginfo">Preparing assets...</span><br>
+                <span id="loadingsplash"><br></span>
             </div>
         </div>
         <div id="list">
