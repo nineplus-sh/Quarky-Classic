@@ -353,12 +353,16 @@ let quarkTip;
  */
 async function quarkRender(quarks) { // i mean.. that only happens once? yeah true
     let quarkList = document.querySelector("#list");
+    let quarkEmojiList = document.querySelector("#watchingmojo select");
     quarkList.innerHTML = "";
+    quarkEmojiList.innerHTML = `<option disabled selected value="">Select quark...</option>`;
     quarks.forEach(quark => { // ok i wonder if this actually works it should
         quarkList.innerHTML += `<div class="quark" id="q_${quark._id}" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="switchQuark('${quark._id}');" data-tippy-content="${quark.name}">
     <img src="${quark.iconUri}">
 </div>`
+        quarkEmojiList.innerHTML += `<option value="${quark._id}">${quark.name}</option>`
     })
+    quarkEmojiList.innerHTML += `<option disabled value="">Defaults...</option><option value="645216ca1e77b8a8b9e30093">R74moji</option>`;
     // Add join and log out buttons
     quarkList.innerHTML += `${quarks.length > 0 ? "<hr>" : ""}
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
@@ -1170,6 +1174,57 @@ async function switchTab(tab) {
     document.querySelector("#settingssettings [tab]:not(.hidden)").classList.add("hidden");
     document.querySelector(`#settingstabs [tab="${tab}"]`).classList.add("selected");
     document.querySelector(`#settingssettings [tab="${tab}"]`).classList.remove("hidden");
+}
+
+/**
+ * Loads a particular quark's emoji into watchedmojos.
+ * @param {string} quark - The quark to load emoji from.
+ */
+async function loadEmoji(quark) {
+    document.querySelector("#watchingmojo select").disabled = true;
+
+    document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-fade"></i> Loading emoji... :3`;
+    const emojis = (await apiCall(`/quark/${quark}/emotes`, "GET", "", "v2")).response.emotes;
+    document.querySelector("#watchedmojos").innerHTML = "";
+    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> Nyo emoji... 3:`;
+    emojis.forEach(function(emoji) {
+        document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" title="${emoji.description || emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')">`;
+    })
+
+    document.querySelector("#watchingmojo select").disabled = false;
+}
+
+/**
+ * Put an emoji in the user's sendmsg.
+ * @param {string} emojiName - Emoji name.
+ * @param {string} emojID - Emoji ID.
+ */
+function insertEmoji(emojiName, emojID) {
+    document.querySelector("#sendmsg").value += `<${emojiName}:${emojID}>`;
+}
+
+function uploadEmoji() {
+    document.querySelector("#watchingmojo select").disabled = true;
+
+    // https://stackoverflow.com/a/40971885
+    // https://stackoverflow.com/a/4250408
+    // https://stackoverflow.com/a/65926546
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = "image/*";
+    input.onchange = async e => {
+        document.querySelector("#watchingmojo .fa-face-smile-plus").style.animation = "stretchcenter 0.2s infinite linear";
+        let file = e.target.files[0]
+        const reader = new FileReader();
+        reader.onload = function() {
+            apiCall(`/quark/${document.querySelector("#watchingmojo select").value}/emotes`, "POST", {"name": file.name.replace(/\.[^/.]+$/, ""), "image": reader.result.replace('data:', '').replace(/^.+,/, '')}, "v2").then(function(result) {
+                document.querySelector("#watchingmojo .fa-face-smile-plus").style.animation = "";
+                    loadEmoji(document.querySelector("#watchingmojo select").value)
+            })
+        }
+        reader.readAsDataURL(file);
+    }
+    input.click();
 }
 
 welcome();
