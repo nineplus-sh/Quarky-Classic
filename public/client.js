@@ -272,6 +272,17 @@ async function welcome() {
         appendTo: document.querySelector("#messagesbox"),
         allowHTML: true
     });
+    tippy.delegate(`#watchedmojos`, {
+        target: 'img',
+        theme: "black",
+        hideOnClick: false,
+        allowHTML: true,
+        appendTo: document.body,
+        placement: "bottom",
+        animation: "scale",
+        inertia: true,
+        followCursor: "horizontal",
+    });
 
     changeLoading("Connecting to network...")
     openGateway();
@@ -1188,7 +1199,7 @@ async function loadEmoji(quark) {
     document.querySelector("#watchedmojos").innerHTML = "";
     if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> Nyo emoji... 3:`;
     emojis.forEach(function(emoji) {
-        document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" title="${emoji.description || emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')">`;
+        document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b><br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}</center>">`;
     })
 
     document.querySelector("#watchingmojo select").disabled = false;
