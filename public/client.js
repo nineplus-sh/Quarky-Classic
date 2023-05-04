@@ -618,7 +618,7 @@ function downloadButton(attachmentURL){
 function checkFileTypes(attachmentURL){
     let thesplit = attachmentURL.split(".").length-1
     if(image_file_types.includes(attachmentURL.split(".")[thesplit])){
-        return `<br><img src='${attachmentURL}' width='400' loading="lazy">` + downloadButton(attachmentURL);
+        return `<br><img src='${attachmentURL}' width='400'>` + downloadButton(attachmentURL);
     }else if(video_file_types.includes(attachmentURL.split(".")[thesplit])){
         return `<br><video controls width="250"><source src='${attachmentURL}' type='video/${attachmentURL.split(".")[thesplit]}'></video>` + downloadButton(attachmentURL);
     }else if(audio_file_types.includes(attachmentURL.split(".")[thesplit])){
@@ -1222,7 +1222,7 @@ async function loadEmoji(quark) {
     document.querySelector("#watchedmojos").innerHTML = "";
     if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> Nyo emoji... 3:`;
     emojis.forEach(function(emoji) {
-        document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}"  loading="lazy" alt="${emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b><br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}</center>">`;
+        document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b><br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}</center>">`;
     })
 
     document.querySelector("#watchingmojo select").disabled = false;
