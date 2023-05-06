@@ -66,6 +66,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 // Stores if the user is running Quarky locally, this is used in the UA
 window.isLocal = document.location.host === "127.0.0.1:2009";
 
+// Stores if the user is using Quarky TestDrive, this is used in the UA
+window.isTestdrive = document.location.host === "testdrive.quarky.vukky.net"
+
 // Stores if jumping to the bottom automatically is allowed
 window.jumpToBottom = true;
 
@@ -440,8 +443,8 @@ async function quarkFetch() {
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
-            "User-Agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
-            "lq-agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
+            "User-Agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : window.isTestdrive ? " TestDrive" : ""}`,
+            "lq-agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : window.isTestdrive ? " TestDrive" :  ""}`,
             ...headers
         }
     }
@@ -1268,5 +1271,16 @@ function uploadEmoji() {
 function showSplash() {
     document.querySelector("#loadingsplash").innerHTML = splashes[Math.floor(Math.random() * splashes.length)]
 }
+
+// https://stackoverflow.com/a/48777893
+if(isLocal || isTestdrive) {
+    let KONAMI_CODE_CURSOR = 0;
+    const KONAMI_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    document.addEventListener('keydown', (e) => {
+        KONAMI_CODE_CURSOR = (e.key === KONAMI_CODE[KONAMI_CODE_CURSOR]) ? KONAMI_CODE_CURSOR + 1 : 0;
+        if (KONAMI_CODE_CURSOR === KONAMI_CODE.length) document.querySelector("#debug").classList.remove("hidden");
+    });
+}
+
 
 welcome();

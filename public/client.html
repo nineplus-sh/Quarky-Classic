@@ -616,6 +616,15 @@
             #loadingsplash {
                 font-size: 10px;
             }
+
+            #debug {
+                background-color: #191919;
+                color: green;
+                padding: 1em;
+            }
+            #debug h1, #debug h2 {
+                color: gold;
+            }
         </style>
     </head>
     <body>
@@ -796,6 +805,21 @@
                 <h1>Welcome to Quarky!</h1>
                 <img src="/assets/img/welcome/hewoo.png" class="welcomehero">
             </div>
+        </div>
+        <div id="debug" class="fullmodal hidden">
+            <h1 style="margin-top: 0; margin-bottom: 0;">Quarky Debug</h1>
+            <p style="margin-top: 0;">This screen is used to test some features in case of laziness.<br>If you don't know what this is, please <button onclick="document.querySelector('#debug').classList.add('hidden')">exit Quarky Debug</button>.</p>
+            <h2>Server communication</h2>
+            <details>
+                <summary>API call</summary>
+                <p>Why the mail carrier or the SMTPie when the Quarky Debug API Call? Useful simply easy use fast.</p>
+                <input placeholder="endpoint"> <select><option value="v1">v1</option><option value="v2">v2</option></select> <button onclick="apiCall(this.parentNode.querySelector('input').value, 'GET', '', this.parentNode.querySelector('select').value).then(thingie => console.log(thingie))">Sounds Great !!</button>
+            </details>
+            <h2>Client options</h2>
+            <details>
+                <summary>The scary button</summary>
+                <p>The scary button is hungry. <button onclick="localStorage.clear();document.location.reload();">Scary button</button></p>
+            </details>
         </div>
 
         <script src="/assets/linkify-it.js"></script>
