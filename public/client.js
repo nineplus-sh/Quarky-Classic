@@ -1,6 +1,5 @@
 let splashes = [
     "Did you know? \"Quarky\" is a combination of the words quark and quirky.",
-    "Did you know? There is no development version of Quarky. Everything is production.",
     "Did you know? Splash texts were added 5 months into Quarky's development.",
     "Did you know? When accessing a quark you can't access, you will see a no entry sign... with cat ears.",
     "Did you know? The R74moji option in the emoji picker is actually a quark.",
