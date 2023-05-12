@@ -13,6 +13,7 @@
             "general.authentication",
             "general.gateway",
             "general.notifications",
+            "general.networks",
             "quarks.list",
             "quarks.view",
             "quarks.join",
