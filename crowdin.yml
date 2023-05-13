@@ -1,0 +1,3 @@
+files:
+  - source: /public/assets/lang/en.json
+    translation: /public/assets/lang/%locale%.json
