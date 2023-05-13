@@ -34,7 +34,7 @@
   "NOTIFICATIONS_DENIED": "You have denied Quarky's request to send you notifications, so no notifications can be sent...",
   "LOADING_EMOJI": "Loading emoji...",
   "NO_EMOJI": "That quark has no emoji.",
-  "SETTING_NOTIFICATIONS": "Notifications for all new messages",
+  "SETTING_NOTIFICATIONS": "Show notifications for all new messages",
   "SAVING_SETTINGS": "Please wait, your settings are being saved...",
   "FETCHING_NETWORK": "Getting network information...",
   "FETCHING_USER_DATA": "Getting user information...",
