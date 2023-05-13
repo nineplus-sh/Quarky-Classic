@@ -144,6 +144,18 @@
                 opacity: 0;
                 display: none;
             }
+
+            .ate8by31 {
+                width: 88px;
+                height: 31px;
+                image-rendering: pixelated;
+            }
+            .ate8by31:hover {
+                transform: translateY(-2px);
+            }
+            .ate8by31:active {
+                transform: translateY(0px);
+            }
         </style>
     </head>
     <body>
@@ -160,9 +172,11 @@
                 <input placeholder="Email" id="email" name="email" type="email" required>
                 <input placeholder="Password" id="password" name="password" type="password" required>
                 <br><small><i class="fa-solid fa-network-wired"></i> signing into <span id="networkName"></span> - <a href="#" onclick="switchView('networks')">switch network</a></small>
-                <br><br><button type="submit" form="credentials" >Done :)</button>
+                <br><br><button type="submit" form="credentials" >Sign in</button>
             </form>
-            <small>some sounds are from <a href="https://github.com/ppy/osu-resources">osu!resources</a></small>
+            <hr style="width: 20em;">
+            <h3 style="margin:0;">Credits</h3>
+            <small>some sounds are from <a href="https://github.com/ppy/osu-resources">osu!resources</a><br><br><a href="https://auth.litdevs.org"><img src="/assets/img/litauth.gif" class="ate8by31"></a> <a href="https://lq.litdevs.org"><img src="/assets/img/lightquark.png" class="ate8by31"></a></small>
         </div>
         <div id="networks" class="center view hidden">
             <p>Please enter the domain name of your preferred Lightquark network.</p>
