@@ -41,5 +41,7 @@
   "FETCHING_SETTINGS": "Getting settings...",
   "RESTORING_OLD_SESSION": "Restoring old session...",
   "FETCHING_QUARK_LIST": "Getting quark list...",
-  "LETTING_YOU_IN": "Letting you in..."
+  "LETTING_YOU_IN": "Letting you in...",
+  "BY_VUKKY": "by Vukky",
+  "CREDITS_WACKYMODER": "WackyModer for the fancier message sender and attachment support"
 }
