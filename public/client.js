@@ -1,22 +1,3 @@
-let splashes = [
-    "Did you know? \"Quarky\" is a combination of the words quark and quirky.",
-    "Did you know? Splash texts were added 5 months into Quarky's development.",
-    "Did you know? When accessing a quark you can't access, you will see a no entry sign... with cat ears.",
-    "Did you know? The R74moji option in the emoji picker is actually a quark.",
-    "Did you know? <i class=\"fa-duotone fa-socks\" style=\"--fa-primary-color: #ffffff; --fa-secondary-color: #f7819c; --fa-secondary-opacity: 1;\" title='\"programmer socks\"'></i>",
-    "Did you know? Quarky assumes you use a modern browser.",
-    "Did uu knyow? Da stowen UwUspeak options in da settings can myake youw messages unweadabwe :3",
-    "Did you know? Quarky is just a client, the backend is <a href='https://github.com/LITdevs/Lightquark'>separate and not owned by me</a>.",
-    "Nya~ :3",
-    "huohhh, i'm hungy. 3:<br>do you have any food? :3",
-    "zzz -w-",
-    "Ah! Hewwo!",
-    "Did you know?",
-    "Please don't refresh the page a lot to see the different messages.",
-    "Purr... >w<",
-    "Did you know? Quarky has lots of bugs."
-]
-
 /**
  * Handles critical errors that don't have handlers (although this is a handler, and is used rarely, because im wazy)
  * @param {Object} error - the error (wow)
@@ -246,16 +227,16 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
-    showSplash();
     if(isLocal) {
         document.querySelector("#planet").style.filter = "invert(1)";
         document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
     }
 
     await loadStrings();
-    changeLoading("Getting network information...");
+    showSplash();
+    changeLoading(strings["FETCHING_NETWORK"]);
     await fetchNetwork();
-    changeLoading("Fetching user data...");
+    changeLoading(strings["FETCHING_USER_DATA"]);
     await fetchAviebox();
 
     // create tippies, don't ask me why this doesn't work otherwise
@@ -350,20 +331,20 @@ async function loadStrings(lang = settingGet("language")) {
  * @returns {void}
  */
 async function welcomeGateway() {
-    changeLoading("Getting settings...");
+    changeLoading(strings["GETTING_SETTINGS"]);
     await settingsLoad();
     reloadMsgDeps(false);
-    changeLoading("Restoring old session...");
+    changeLoading(strings["RESTORING_OLD_SESSION"]);
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
     let previousChannelMissing = !previousChannel;
     if(previousQuark) await switchQuark(previousQuark, previousChannelMissing, false, false, false);
     if(previousChannel) await switchChannel(previousChannel, false);
-    changeLoading("Fetching quark list...");
+    changeLoading(strings["FETCHING_QUARK_LIST"]);
     quarks = await quarkFetch();
     subscribeBomb(quarks);
     quarkRender(quarks);
-    changeLoading("Letting you in...");
+    changeLoading(strings["LETTING_YOU_IN"]);
     document.querySelector("#loader").classList.add("bye");
     document.querySelector("#wb").play();
     welcomeHasFinishedOnce = true;
@@ -1269,7 +1250,7 @@ function uploadEmoji() {
  * @returns {void}
  */
 function showSplash() {
-    document.querySelector("#loadingsplash").innerHTML = splashes[Math.floor(Math.random() * splashes.length)]
+    document.querySelector("#loadingsplash").innerHTML = strings["SPLASHES"][Math.floor(Math.random() * strings["SPLASHES"].length)]
 }
 
 // https://stackoverflow.com/a/48777893
