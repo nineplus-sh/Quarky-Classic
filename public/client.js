@@ -268,7 +268,7 @@ async function welcome() {
         inertia: true,
     })
     tippy("#userdata .settings", {
-        content: "Settings",
+        content: strings["SETTINGS"],
         appendTo: document.querySelector("#userdata"),
         theme: "black",
         hideOnClick: false,
@@ -493,7 +493,7 @@ function logOut() {
  */
 async function joinQuark() {
     new Audio('/assets/sfx/osu-dialog-pop-in.wav').play();
-    let quarkCode = prompt("Enter the invite code for the quark you want to join.");
+    let quarkCode = prompt(strings["ENTER_INVITE_CODE"]);
     if (!quarkCode) return new Audio('/assets/sfx/osu-dialog-cancel-select.wav').play();
     let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
     if (!joinResponse) return alert(`Failed to join quark :(\n${joinResponse.response.message}`)
@@ -746,7 +746,7 @@ function scrollingDetected() {
  * @returns {void}
  */
 async function sendMessage(message) {
-    if(message == "") return displayError('You need to enter a message to send! :D');
+    if(message == "") return displayError(strings["MESSAGE_REQUIRED"]);
     let specialAttributes = []; // TODO: in case i need to hack in more later
     let clientAttributes = {}
 
@@ -845,15 +845,15 @@ async function notifyRequest() {
         return;
     }
 
-    document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = false;
     await Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = true;
           settingSet("notify", true)
           subscribeBomb()
-          sendNotification("Notifications enabled.", "Please enjoy them!")
+          sendNotification(strings["NOTIFICATIONS_ENABLED_TITLE"], strings["NOTIFICATIONS_ENABLED_BODY"])
         } else {
-            displayError("You have denied Quarky's request to send you notifications, so no notifications can be sent...")
+            document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = false;
+            settingSet("notify", false)
+            displayError(strings["NOTIFICATIONS_DENIED"]);
         }
     });
 }
@@ -1102,7 +1102,7 @@ async function leaveQuark() {
  * @returns {void}
  */
 function goToTheVoid(replaceState = true) {
-    document.querySelector("#namewrap").innerText = "Select a Quark";
+    document.querySelector("#namewrap").innerText = strings["SELECT_A_QUARK"];
     document.querySelector("#channels").innerHTML = "";
     document.querySelector("#messagestuff").classList.add("hidden");
     document.querySelector(".leavequark").classList.add("hidden");
@@ -1219,10 +1219,10 @@ async function switchTab(tab) {
 async function loadEmoji(quark) {
     document.querySelector("#watchingmojo select").disabled = true;
 
-    document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-fade"></i> Loading emoji... :3`;
+    document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-fade"></i> ${strings["LOADING_EMOJI"]}`;
     const emojis = (await apiCall(`/quark/${quark}/emotes`, "GET", "", "v2")).response.emotes;
     document.querySelector("#watchedmojos").innerHTML = "";
-    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> Nyo emoji... 3:`;
+    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> ${strings["NO_EMOJI"]}`;
     emojis.forEach(function(emoji) {
         document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b><br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}</center>">`;
     })

@@ -703,9 +703,9 @@
                             <option disabled selected value="">Select...</option>
                             <option value="en">English</option>
                             <option value="en-UWU">Cute Engwish</option>
-                            <option value="no-NO">Cute Engwish</option>
+                            <option value="no-NO">Norsk (Norwegian)</option>
                         </select></p>
-                        <p>Notifications for all new messages <vukky-toggle setting="notify" onclick="notifyRequest()"></vukky-toggle></p>
+                        <p><quarky-string string="SETTING_NOTIFICATIONS"></quarky-string> <vukky-toggle setting="notify" onclick="notifyRequest()"></vukky-toggle></p>
                     </div>
                     <div tab="appearance" class="settingspage hidden">
                         <hr>
@@ -747,7 +747,7 @@
                         <button onclick="credits()">Credits</button>
                     </div>
                     <div tab="exit" class="settingspage hidden">
-                        <p><i class="fa-solid fa-gear fa-spin"></i> Please wait, your settings are being saved...</p>
+                        <p><i class="fa-solid fa-gear fa-spin"></i> <quarky-string string="SAVING_SETTINGS"></quarky-string></p>
                     </div>
                 </div>
             </div>

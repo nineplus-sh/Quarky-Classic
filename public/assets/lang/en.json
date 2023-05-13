@@ -8,5 +8,14 @@
   "SETTINGS_APPEARANCE": "Appearance",
   "SETTINGS_ABOUT": "About",
   "SETTINGS_EXIT": "Exit",
-  "SETTING_LANGUAGE": "Language (requires reload)"
+  "SETTING_LANGUAGE": "Language (requires reload)",
+  "ENTER_INVITE_CODE": "Enter the invite code for the quark you want to join.",
+  "MESSAGE_REQUIRED": "You need to enter a message to send! :D",
+  "NOTIFICATIONS_ENABLED_TITLE": "Notifications enabled.",
+  "NOTIFICATIONS_ENABLED_BODY": "Please enjoy them!",
+  "NOTIFICATIONS_DENIED": "You have denied Quarky's request to send you notifications, so no notifications can be sent...",
+  "LOADING_EMOJI": "Loading emoji...",
+  "NO_EMOJI": "That quark has no emoji.",
+  "SETTING_NOTIFICATIONS": "Notifications for all new messages",
+  "SAVING_SETTINGS": "Please wait, your settings are being saved..."
 }
