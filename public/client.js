@@ -1,22 +1,3 @@
-let splashes = [
-    "Did you know? \"Quarky\" is a combination of the words quark and quirky.",
-    "Did you know? Splash texts were added 5 months into Quarky's development.",
-    "Did you know? When accessing a quark you can't access, you will see a no entry sign... with cat ears.",
-    "Did you know? The R74moji option in the emoji picker is actually a quark.",
-    "Did you know? <i class=\"fa-duotone fa-socks\" style=\"--fa-primary-color: #ffffff; --fa-secondary-color: #f7819c; --fa-secondary-opacity: 1;\" title='\"programmer socks\"'></i>",
-    "Did you know? Quarky assumes you use a modern browser.",
-    "Did uu knyow? Da stowen UwUspeak options in da settings can myake youw messages unweadabwe :3",
-    "Did you know? Quarky is just a client, the backend is <a href='https://github.com/LITdevs/Lightquark'>separate and not owned by me</a>.",
-    "Nya~ :3",
-    "huohhh, i'm hungy. 3:<br>do you have any food? :3",
-    "zzz -w-",
-    "Ah! Hewwo!",
-    "Did you know?",
-    "Please don't refresh the page a lot to see the different messages.",
-    "Purr... >w<",
-    "Did you know? Quarky has lots of bugs."
-]
-
 /**
  * Handles critical errors that don't have handlers (although this is a handler, and is used rarely, because im wazy)
  * @param {Object} error - the error (wow)
@@ -246,16 +227,16 @@ let heartbeat;
  * @returns {void}
  */
 async function welcome() {
-    showSplash();
     if(isLocal) {
         document.querySelector("#planet").style.filter = "invert(1)";
         document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
     }
 
     await loadStrings();
-    changeLoading("Getting network information...");
+    showSplash();
+    changeLoading(strings["FETCHING_NETWORK"]);
     await fetchNetwork();
-    changeLoading("Fetching user data...");
+    changeLoading(strings["FETCHING_USER_DATA"]);
     await fetchAviebox();
 
     // create tippies, don't ask me why this doesn't work otherwise
@@ -268,7 +249,7 @@ async function welcome() {
         inertia: true,
     })
     tippy("#userdata .settings", {
-        content: "Settings",
+        content: strings["SETTINGS"],
         appendTo: document.querySelector("#userdata"),
         theme: "black",
         hideOnClick: false,
@@ -350,20 +331,20 @@ async function loadStrings(lang = settingGet("language")) {
  * @returns {void}
  */
 async function welcomeGateway() {
-    changeLoading("Getting settings...");
+    changeLoading(strings["GETTING_SETTINGS"]);
     await settingsLoad();
     reloadMsgDeps(false);
-    changeLoading("Restoring old session...");
+    changeLoading(strings["RESTORING_OLD_SESSION"]);
     let previousQuark = new URLSearchParams(window.location.search).get("quark");
     let previousChannel = new URLSearchParams(window.location.search).get("channel");
     let previousChannelMissing = !previousChannel;
     if(previousQuark) await switchQuark(previousQuark, previousChannelMissing, false, false, false);
     if(previousChannel) await switchChannel(previousChannel, false);
-    changeLoading("Fetching quark list...");
+    changeLoading(strings["FETCHING_QUARK_LIST"]);
     quarks = await quarkFetch();
     subscribeBomb(quarks);
     quarkRender(quarks);
-    changeLoading("Letting you in...");
+    changeLoading(strings["LETTING_YOU_IN"]);
     document.querySelector("#loader").classList.add("bye");
     //document.querySelector("#wb").play();
     welcomeHasFinishedOnce = true;
@@ -493,7 +474,7 @@ function logOut() {
  */
 async function joinQuark() {
     new Audio('/assets/sfx/osu-dialog-pop-in.wav').play();
-    let quarkCode = prompt("Enter the invite code for the quark you want to join.");
+    let quarkCode = prompt(strings["ENTER_INVITE_CODE"]);
     if (!quarkCode) return new Audio('/assets/sfx/osu-dialog-cancel-select.wav').play();
     let joinResponse = await apiCall(`/quark/invite/${quarkCode}`, "POST");
     if (!joinResponse) return alert(`Failed to join quark :(\n${joinResponse.response.message}`)
@@ -746,7 +727,7 @@ function scrollingDetected() {
  * @returns {void}
  */
 async function sendMessage(message) {
-    if(message == "") return displayError('You need to enter a message to send! :D');
+    if(message == "") return displayError(strings["MESSAGE_REQUIRED"]);
     let specialAttributes = []; // TODO: in case i need to hack in more later
     let clientAttributes = {}
 
@@ -845,15 +826,15 @@ async function notifyRequest() {
         return;
     }
 
-    document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = false;
     await Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = true;
           settingSet("notify", true)
           subscribeBomb()
-          sendNotification("Notifications enabled.", "Please enjoy them!")
+          sendNotification(strings["NOTIFICATIONS_ENABLED_TITLE"], strings["NOTIFICATIONS_ENABLED_BODY"])
         } else {
-            displayError("You have denied Quarky's request to send you notifications, so no notifications can be sent...")
+            document.querySelector("#settingssettings vukky-toggle[setting='notify']").checked = false;
+            settingSet("notify", false)
+            displayError(strings["NOTIFICATIONS_DENIED"]);
         }
     });
 }
@@ -1052,7 +1033,7 @@ async function leaveQuark() {
  * @returns {void}
  */
 function goToTheVoid(replaceState = true) {
-    document.querySelector("#namewrap").innerText = "Select a Quark";
+    document.querySelector("#namewrap").innerText = strings["SELECT_A_QUARK"];
     document.querySelector("#channels").innerHTML = "";
     document.querySelector("#messagestuff").classList.add("hidden");
     document.querySelector(".leavequark").classList.add("hidden");
@@ -1169,10 +1150,10 @@ async function switchTab(tab) {
 async function loadEmoji(quark) {
     document.querySelector("#watchingmojo select").disabled = true;
 
-    document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-fade"></i> Loading emoji... :3`;
+    document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-fade"></i> ${strings["LOADING_EMOJI"]}`;
     const emojis = (await apiCall(`/quark/${quark}/emotes`, "GET", "", "v2")).response.emotes;
     document.querySelector("#watchedmojos").innerHTML = "";
-    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> Nyo emoji... 3:`;
+    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> ${strings["NO_EMOJI"]}`;
     emojis.forEach(function(emoji) {
         document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b><br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}</center>">`;
     })
@@ -1219,7 +1200,7 @@ function uploadEmoji() {
  * @returns {void}
  */
 function showSplash() {
-    document.querySelector("#loadingsplash").innerHTML = splashes[Math.floor(Math.random() * splashes.length)]
+    document.querySelector("#loadingsplash").innerHTML = strings["SPLASHES"][Math.floor(Math.random() * strings["SPLASHES"].length)]
 }
 
 // https://stackoverflow.com/a/48777893
