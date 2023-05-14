@@ -11,7 +11,7 @@ function fatalError(error) {
             <h1>Nyowope!</h1>
             <p>
                 W-what are you doing, ${window.currentUsername}-san?
-                <br>You know you're not in that quark, right?
+                <br>You know you're not in that quark, right? Are you a heckin neko baka derp?
                 <br>Maybe if you say "pwetty pwease", they'll give you the invite code...
             </p>
             ` : `
