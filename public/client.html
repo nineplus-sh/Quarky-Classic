@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
         <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro-v6@44659d9/css/all.min.css" rel="stylesheet" type="text/css" />
-        <link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />
+        <!--<link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />-->
         <link rel="preload" href="/assets/sfx/osu-button-select.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-default-hover.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-now-playing-pop-in.wav" as="audio" />
@@ -264,52 +264,6 @@
             #settingscontainer {
                 position: relative;
                 left: 1rem;
-            }
-
-            #credits #snikosnake {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-            #credits #snikosnaketext {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, 350%);
-            }
-            .onespeech {
-                border-style: solid;
-                border-image-source: url("/assets/img/border.png");
-                border-image-slice: 10;
-                border-image-width: 10px;
-                background-color: rgb(20, 10, 25);
-                border-radius: 10px 10px 10px 10px;
-                padding: 10px 15px 10px 15px;
-            }
-            #creditscontainer {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 20em;
-            }
-            .creditssection {
-                background-color: rgb(20, 10, 25);
-                z-index: 1;
-                filter: drop-shadow(0 0 0.75rem black);
-            }
-
-            :root {
-                --creditscontainer-height: 0px;
-            }
-            @keyframes scroll {
-                from {
-                    top: calc(100% + var(--creditscontainer-height));
-                }
-                to {
-                    top: calc(0% - var(--creditscontainer-height))
-                }
             }
 
             .message.roleplay {
@@ -628,7 +582,7 @@
         </style>
     </head>
     <body>
-        <audio src="/assets/sfx/wb.mp3" id="wb"></audio>
+        <!--<audio src="/assets/sfx/wb.mp3" id="wb"></audio>-->
 
         <div id="loader">
             <img src="/assets/img/vukkyplanetdark.svg" id="planet">
@@ -726,7 +680,7 @@
                         <div class="message fake noroleplay roleplaycfg">
                             <span class="avie">
                                 <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
-                                <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                                <img src="/assets/img/loading.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                             </span>
                             <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
                             <span class="messagecontent">is excited</span>
@@ -743,61 +697,11 @@
                     </div>
                     <div tab="about" class="settingspage hidden">
                         <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
-                        <button onclick="credits()">Credits</button>
                     </div>
                     <div tab="exit" class="settingspage hidden">
                         <p><i class="fa-solid fa-gear fa-spin"></i> Please wait, your settings are being saved...</p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div id="credits" class="fullmodal hidden">
-            <audio src="/assets/sfx/xscape-credits.mp3" preload="none"></audio>
-            <canvas id="butterchurn"></canvas>
-            <span id="creditscontainer" class="hidden">
-                <div class="creditssection onespeech">
-                    <img id="creditsplanet" src="/assets/img/vukkyplanetdark.svg" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Quarky</h1>
-                    <h2 style="margin-top: 0;">by Vukky</h2>
-                </div>
-                <div class="creditssection onespeech">
-                    <img class="creditsdoodle" src="/assets/img/credits/sound.gif" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Sounds</h1>
-                    <h4 style="margin-top: 0;">Stolen but good</h4>
-                    <br><br><br><hr>
-                    <p>Login music: <a href="https://youtu.be/fNidzkdF_ic" target="_blank">Startup Theme (Wii U) - Miiverse</a></p>
-                    <p>Login jingle: <a href="https://youtu.be/bFR-4BO_OvA" target="_blank">Nintendo Video - Startup</a></p>
-                    <p>Startup jingle: <a href="https://youtu.be/AFvLNB2oFNk" target="_blank">Main Theme (Wii U) - Miiverse</a></p>
-                    <p>Credits music: <a href="https://youtu.be/IOT4gBGI4QY" target="_blank">Credits - X-Returns</a></p>
-                    <p>Purring sound: <a href="https://freesound.org/people/xoiziox/sounds/553375/">Kitty Purr - xoiziox</a></p>
-                    <p>Everything else: <a href="https://github.com/ppy/osu-resources" target="_blank">osu!resources</a></p>
-                </div>
-                <div class="creditssection onespeech">
-                    <img class="creditsdoodle" src="/assets/img/credits/code.gif" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Code</h1>
-                    <h4 style="margin-top: 0;">Stack Overflow snippets are <a href="https://meta.stackexchange.com/q/12527">actually licensed under CC BY-SA</a>, but I don't think anyone knows!</h4>
-                    <hr>
-                    <p><small>*modified for Quarky use</small></p>
-                    <p>Linkifier*: <a href="https://github.com/markdown-it/linkify-it" target="_blank">https://github.com/markdown-it/linkify-it</a></p>
-                    <p>TLD list: <a href="https://data.iana.org/TLD/tlds-alpha-by-domain.txt" target="_blank">https://data.iana.org/TLD/tlds-alpha-by-domain.txt</a></p>
-                    <p>Dynamic JS loader: <a href="https://stackoverflow.com/a/31374433" target="_blank">https://stackoverflow.com/a/31374433</a></p>
-                    <p>UwUspeak*: <a href="https://github.com/zuzak/owo" target="_blank">https://github.com/zuzak/owo</a></p>
-                    <p>Credits visualizer: <a href="https://github.com/jberg/butterchurn" target="_blank">https://github.com/jberg/butterchurn</a></p>
-                    <p>Pick random item with seed: <a href="https://stackoverflow.com/a/7493982" target="_blank">https://stackoverflow.com/a/7493982</a></p>
-                </div>
-                <div class="creditssection onespeech">
-                    <img class="creditsdoodle" src="/assets/img/credits/other.gif" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Other</h1>
-                    <h4 style="margin-top: 0;">They shouldn't have their own section, but I won't leave them uncredited</h4>
-                    <hr>
-                    <p>Lightquark<br>uhh well thats what the client is for</p> <!-- provided by amy -->
-                    <p>Static web hosting provided by <a href="https://vercel.com" target="_blank">Vercel</a></p>
-                    <p>WackyModer for the fancier message sender</p>
-                </div>
-            </span>
-            <div id="snikocontainer">
-                <img src="/assets/img/loading.webp" id="snikosnake">
-                <p id="snikosnaketext">Loading additional resources.</p>
             </div>
         </div>
         <div id="welcome" class="fullmodal hidden">
