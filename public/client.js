@@ -90,53 +90,29 @@ window.defaults = {
 
 // The user icons to randomly select from
 window.usericons = [
-    "person",
-    "person-walking-luggage",
-    "person-walking",
-    "person-to-portal",
-    "person-to-door",
-    "person-through-window",
-    "person-swimming",
-    "person-snowboarding",
-    "person-sledding",
-    "person-skiing-nordic",
-    "person-skiing",
-    "person-ski-lift",
-    "person-ski-jumping",
-    "person-skating",
-    "person-simple",
-    "person-shelter",
-    "person-seat-reclined",
-    "person-seat",
-    "person-running",
-    "person-rays",
-    "person-pinball",
-    "person-from-portal",
-    "person-drowning",
-    "person-digging",
-    "person-chalkboard",
-    "person-carry-box",
-    "person-biking-mountain",
-    "person-biking",
+    "walking",
+    "portal-enter",
+    "snowboarding",
+    "sledding",
+    "skiing-nordic",
+    "skiing",
+    "ski-lift",
+    "skating",
+    "running",
+    "portal-exit",
+    "digging",
+    "biking-mountain",
+    "biking",
     "user-secret",
-    "user-bounty-hunter",
     "user-tie",
-    "user-vneck",
     "user-visor",
     "user-ninja",
     "user-headset",
     "user-cowboy",
-    "user-chef",
     "user-astronaut",
-    "user-alien",
-    "images-user",
-    "image-user",
     "house-user",
-    "folder-user",
     "file-user",
-    "book-user",
-    "image-polaroid-user",
-    "house-chimney-user"
+    "book-user"
 ]
 
 //list of image formats for attachments
@@ -254,8 +230,7 @@ async function welcome() {
         theme: "black",
         hideOnClick: false,
         animation: "scale",
-        inertia: true,
-        offset: [0, 25]
+        inertia: true
     })
     tippy(".leavequark", {
         content: strings["LEAVE_QUARK"],
@@ -381,10 +356,10 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
     // Add join and log out buttons
     quarkList.innerHTML += `${quarks.length > 0 ? "<hr>" : ""}
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
-            <i class="fa-solid fa-people-roof quarkicon"></i>
+            <i class="fas fa-people-carry quarkicon"></i>
             </div>
             <div class="quark logout" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="logOut();" data-tippy-content="Log Out :(">
-                <i class="fa-solid fa-person-through-window quarkicon"></i>
+                <i class="fas fa-sign-out quarkicon"></i>
             </div>`
     // Create a tippy tooltip if it doesnt already exist
     if (quarkTip) quarkTip.forEach(tip => tip.destroy());
@@ -589,7 +564,7 @@ function prettySize(bytes){
  * @returns {string}
  */
 function downloadButton(attachmentURL){
-    return `<a style="padding-left: 1rem;" href='${attachmentURL}' target="_blank" rel="noreferrer noopener"><i class="fa-solid fa-download"></i></a>`;
+    return `<a style="padding-left: 1rem;" href='${attachmentURL}' target="_blank" rel="noreferrer noopener"><i class="fas fa-download"></i></a>`;
 }
 
 /**
@@ -608,7 +583,7 @@ function checkFileTypes(attachmentURL){
         return `<br><audio controls src='${attachmentURL}'>` + downloadButton(attachmentURL);
     }else{
         let fileMetadata = getFileMetadata(attachmentURL)
-        return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attachmentURL}'>${fileMetadata.name} (${fileMetadata.size})<i class="fa-solid fa-download"></i></a>`
+        return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attachmentURL}'>${fileMetadata.name} (${fileMetadata.size})<i class="fas fa-download"></i></a>`
     }
 }
 
@@ -648,21 +623,21 @@ async function messageRender(message) {
     if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
         messageDiv.classList.add("roleplay");
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
+            ${isReply ? `<div class="reply"><i class="fas fa-comment-alt-dots"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''}</span>
             <span class="messagecontent">${doUwU ? `*${linkify(uwutils.substitute(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>`;
     } else {
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fa-solid fa-thought-bubble"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
+            ${isReply ? `<div class="reply"><i class="fas fa-comment-alt-dots"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
                 ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
-            <span class="lusername">${settingGet("usericons") ? `<i class="usericon fa-solid fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+            <span class="lusername">${settingGet("usericons") ? `<i class="usericon fas fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
             <span class="messagecontent">${doUwU ? dismoteToImg(linkify(uwu(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>
             <br>
@@ -695,7 +670,7 @@ async function switchChannel(id, audioOn = true) {
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
     document.querySelector("#messagestuff").classList.add("hidden");
-    document.querySelector("#channelname").innerHTML = "<i class=\"fa-solid fa-messages fa-fade\"></i> Fetching messages...";
+    document.querySelector("#channelname").innerHTML = "<i class=\"fas fa-comments-alt fa-pulse\"></i> Fetching messages...";
     document.querySelector("#channeltopic").innerText = "";
         let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
     document.querySelector("#messages").innerHTML = "";
@@ -1052,7 +1027,7 @@ function previewUsername(username) {
         fakename.value = username;
         fakename.style.width = `${username.length + 1}ch`;
     })
-    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.className = "usericon fa-solid")
+    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.className = "usericon fas")
     if(username.length == 0) {
         document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add("fa-person-circle-question"))
     } else {
@@ -1112,21 +1087,21 @@ async function killMessage(message) {
  */
 async function fetchContext(message, replyMessage) {
     if(!document.querySelector(`#m_${message}`)) return;
-    document.querySelector(`#m_${message} i`).classList.add("fa-fade");
+    document.querySelector(`#m_${message} i`).classList.add("fa-pulse");
     document.querySelector(`#m_${message} .rusername`).innerText = "Fetching context...";
     document.querySelector(`#m_${message} .rusercontent`).innerText = "";
     let result = await apiCall(`/channel/${currentChannel}/messages/${replyMessage}`, "GET", "", "v2");
     if (result.request.status_code === 404) {
         document.querySelector(`#m_${message} .rusername`).innerText = "";
         document.querySelector(`#m_${message} .rusercontent`).innerText = "This message has been deleted";
-        document.querySelector(`#m_${message} i`).classList.remove("fa-fade");
+        document.querySelector(`#m_${message} i`).classList.remove("fa-pulse");
         return;
     }
     let botMetadata = result.response.data.message.specialAttributes.find(attr => attr.type === "botMessage");
     messageBox[replyMessage] = result.response.data;
     document.querySelector(`#m_${message} .rusername`).innerText = botMetadata?.username || result.response.data.author.username;
     document.querySelector(`#m_${message} .rusercontent`).innerText = result.response.data.message.content;
-    document.querySelector(`#m_${message} i`).classList.remove("fa-fade");
+    document.querySelector(`#m_${message} i`).classList.remove("fa-pulse");
 }
 
 /**
@@ -1150,10 +1125,10 @@ async function switchTab(tab) {
 async function loadEmoji(quark) {
     document.querySelector("#watchingmojo select").disabled = true;
 
-    document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-fade"></i> ${strings["LOADING_EMOJI"]}`;
+    document.querySelector("#watchedmojos").innerHTML = `<i class="fas fa-cat fa-pulse"></i> ${strings["LOADING_EMOJI"]}`;
     const emojis = (await apiCall(`/quark/${quark}/emotes`, "GET", "", "v2")).response.emotes;
     document.querySelector("#watchedmojos").innerHTML = "";
-    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fa-solid fa-cat fa-shake"></i> ${strings["NO_EMOJI"]}`;
+    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fas fa-cat"></i> ${strings["NO_EMOJI"]}`;
     emojis.forEach(function(emoji) {
         document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b><br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}</center>">`;
     })

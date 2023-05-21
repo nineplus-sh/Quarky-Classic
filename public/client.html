@@ -3,7 +3,7 @@
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
-        <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro-v6@44659d9/css/all.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.min.css" rel="stylesheet" type="text/css" />
         <!--<link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />-->
         <link rel="preload" href="/assets/sfx/osu-button-select.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-default-hover.wav" as="audio" />
@@ -431,7 +431,7 @@
             .leavequark {
                 float: right;
                 margin-right: 0.5em;
-                --fa-secondary-color: #00a2ff;
+                --fa-secondary-color: #00a8f3;
                 --fa-secondary-opacity: 1;
                 cursor: pointer;
             }
@@ -599,7 +599,7 @@
                 <span id="namewrap">
                     <quarky-string string="SELECT_A_QUARK"></quarky-string>
                 </span>
-                <i class="fa-duotone fa-person-to-portal leavequark hidden" onclick="leaveQuark()"></i>
+                <i class="fad fa-portal-enter leavequark hidden" onclick="leaveQuark()"></i>
             </div>
             <div id="channels">
 
@@ -607,7 +607,7 @@
             <div id="userdata">
                 <img class="avie loading" src="https://cdn.discordapp.com/emojis/851468740263542814.png" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 <span class="lusername"><quarky-string string="DEFAULT_USERNAME"></quarky-string></span>
-                <i class="fa-solid fa-gear fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
+                <i class="fas fa-cog fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
         <div id="channeldata">
@@ -622,14 +622,14 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Better message sender :3" id="sendmsg">
-                    <button type="button" onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><i class="fa-solid fa-face-awesome"></i></button>
+                    <button type="button" onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><i class="fas fa-laugh-squint"></i></button>
                     <button type="submit" onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
                 </form>
             </div>
             <div id="watchingmojo" class="hidden">
                 <select style="width: 90%;" onchange="loadEmoji(this.value)">
                     <option disabled selected value="">Select quark...</option>
-                </select><i class="fa-solid fa-face-smile-plus" style="float: right;" onclick="uploadEmoji()"></i><br><br>
+                </select><i class="fas fa-file-upload" style="float: right;" onclick="uploadEmoji()"></i><br><br>
                 <div id="watchedmojos">
 
                 </div>
@@ -663,10 +663,10 @@
                         <hr>
                         <div class="message fake cozy">
                             <span class="avie">
-                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fas fa-upload"></i></span>
                                 <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                             </span>
-                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="lusername"><i class="usericon fas fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
                             <span class="messagecontent">I'm a Quarky user!</span>
                             <br>
                         </div>
@@ -678,10 +678,10 @@
                         </div>
                         <div class="message fake noroleplay roleplaycfg">
                             <span class="avie">
-                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fas fa-upload"></i></span>
                                 <img src="/assets/img/loading.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                             </span>
-                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="lusername"><i class="usericon fas fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
                             <span class="messagecontent">is excited</span>
                             <br>
                         </div>
@@ -699,7 +699,7 @@
                         <p><a href="/license.html" target="_blank">Quarky is free software.</a> You can <a href="https://github.com/vukkysoft/quarky" target="_blank">contribute code</a>, <a href="https://crowdin.com/project/quarky" target="_blank">translate</a>, or <a href="https://youtrack.litdevs.org/newIssue?project=QUARKY" target="_blank">suggest new features and report bugs</a>.</p>
                     </div>
                     <div tab="exit" class="settingspage hidden">
-                        <p><i class="fa-solid fa-gear fa-spin"></i> <quarky-string string="SAVING_SETTINGS"></quarky-string></p>
+                        <p><i class="fas fa-cog fa-spin"></i> <quarky-string string="SAVING_SETTINGS"></quarky-string></p>
                     </div>
                 </div>
             </div>
