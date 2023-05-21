@@ -3,8 +3,8 @@
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
-        <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro-v6@44659d9/css/all.min.css" rel="stylesheet" type="text/css" />
-        <link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />
+        <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.min.css" rel="stylesheet" type="text/css" />
+        <!--<link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />-->
         <link rel="preload" href="/assets/sfx/osu-button-select.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-default-hover.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-now-playing-pop-in.wav" as="audio" />
@@ -266,52 +266,6 @@
                 left: 1rem;
             }
 
-            #credits #snikosnake {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-            #credits #snikosnaketext {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, 350%);
-            }
-            .onespeech {
-                border-style: solid;
-                border-image-source: url("/assets/img/border.png");
-                border-image-slice: 10;
-                border-image-width: 10px;
-                background-color: rgb(20, 10, 25);
-                border-radius: 10px 10px 10px 10px;
-                padding: 10px 15px 10px 15px;
-            }
-            #creditscontainer {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 20em;
-            }
-            .creditssection {
-                background-color: rgb(20, 10, 25);
-                z-index: 1;
-                filter: drop-shadow(0 0 0.75rem black);
-            }
-
-            :root {
-                --creditscontainer-height: 0px;
-            }
-            @keyframes scroll {
-                from {
-                    top: calc(100% + var(--creditscontainer-height));
-                }
-                to {
-                    top: calc(0% - var(--creditscontainer-height))
-                }
-            }
-
             .message.roleplay {
                 font-style: italic;
             }
@@ -477,7 +431,7 @@
             .leavequark {
                 float: right;
                 margin-right: 0.5em;
-                --fa-secondary-color: #00a2ff;
+                --fa-secondary-color: #00a8f3;
                 --fa-secondary-opacity: 1;
                 cursor: pointer;
             }
@@ -628,7 +582,7 @@
         </style>
     </head>
     <body>
-        <audio src="/assets/sfx/wb.mp3" id="wb"></audio>
+        <!--<audio src="/assets/sfx/wb.mp3" id="wb"></audio>-->
 
         <div id="loader">
             <img src="/assets/img/vukkyplanetdark.svg" id="planet">
@@ -645,7 +599,7 @@
                 <span id="namewrap">
                     <quarky-string string="SELECT_A_QUARK"></quarky-string>
                 </span>
-                <i class="fa-duotone fa-person-to-portal leavequark hidden" onclick="leaveQuark()"></i>
+                <i class="fad fa-portal-enter leavequark hidden" onclick="leaveQuark()"></i>
             </div>
             <div id="channels">
 
@@ -653,7 +607,7 @@
             <div id="userdata">
                 <img class="avie loading" src="https://cdn.discordapp.com/emojis/851468740263542814.png" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                 <span class="lusername"><quarky-string string="DEFAULT_USERNAME"></quarky-string></span>
-                <i class="fa-solid fa-gear fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
+                <i class="fas fa-cog fa-lg settings" onclick="new Audio('/assets/sfx/osu-overlay-pop-in.wav').play();document.querySelector('#settings').classList.remove('hidden')"></i>
             </div>
         </div>
         <div id="channeldata">
@@ -668,14 +622,14 @@
             <div id="sendmsgs">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Better message sender :3" id="sendmsg">
-                    <button type="button" onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><i class="fa-solid fa-face-awesome"></i></button>
+                    <button type="button" onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><i class="fas fa-laugh-squint"></i></button>
                     <button type="submit" onclick="sendMessage(document.querySelector('#sendmsg').value)" id="sendmsggo">Ok</button>
                 </form>
             </div>
             <div id="watchingmojo" class="hidden">
                 <select style="width: 90%;" onchange="loadEmoji(this.value)">
                     <option disabled selected value="">Select quark...</option>
-                </select><i class="fa-solid fa-face-smile-plus" style="float: right;" onclick="uploadEmoji()"></i><br><br>
+                </select><i class="fas fa-file-upload" style="float: right;" onclick="uploadEmoji()"></i><br><br>
                 <div id="watchedmojos">
 
                 </div>
@@ -709,10 +663,10 @@
                         <hr>
                         <div class="message fake cozy">
                             <span class="avie">
-                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fas fa-upload"></i></span>
                                 <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                             </span>
-                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="lusername"><i class="usericon fas fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
                             <span class="messagecontent">I'm a Quarky user!</span>
                             <br>
                         </div>
@@ -724,10 +678,10 @@
                         </div>
                         <div class="message fake noroleplay roleplaycfg">
                             <span class="avie">
-                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fa-solid fa-upload"></i></span>
-                                <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
+                                <span class="avieupload" onclick="uploadAvie(this)"><i class="fas fa-upload"></i></span>
+                                <img src="/assets/img/loading.png" class="" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                             </span>
-                            <span class="lusername"><i class="usericon fa-solid fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="lusername"><i class="usericon fas fa-cat"></i> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
                             <span class="messagecontent">is excited</span>
                             <br>
                         </div>
@@ -741,61 +695,13 @@
                         <p>Suffixes <vukky-toggle setting="uwusuffix" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
                     </div>
                     <div tab="about" class="settingspage hidden">
-                        <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky</h1></div>
-                        <button onclick="credits()">Credits</button>
+                        <div id="logo"><img id="logoimg" src="/assets/img/quarky.svg" width="128"> <h1 id="logotext">Quarky<br><quarky-string string="BY_VUKKY">by Vukky</quarky-string></h1></div>
+                        <p><a href="/license.html" target="_blank">Quarky is free software.</a> You can <a href="https://github.com/vukkysoft/quarky" target="_blank">contribute code</a>, <a href="https://crowdin.com/project/quarky" target="_blank">translate</a>, or <a href="https://youtrack.litdevs.org/newIssue?project=QUARKY" target="_blank">suggest new features and report bugs</a>.</p>
                     </div>
                     <div tab="exit" class="settingspage hidden">
-                        <p><i class="fa-solid fa-gear fa-spin"></i> <quarky-string string="SAVING_SETTINGS"></quarky-string></p>
+                        <p><i class="fas fa-cog fa-spin"></i> <quarky-string string="SAVING_SETTINGS"></quarky-string></p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div id="credits" class="fullmodal hidden">
-            <audio src="/assets/sfx/xscape-credits.mp3" preload="none"></audio>
-            <canvas id="butterchurn"></canvas>
-            <span id="creditscontainer" class="hidden">
-                <div class="creditssection onespeech">
-                    <img id="creditsplanet" src="/assets/img/vukkyplanetdark.svg" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Quarky</h1>
-                    <h2 style="margin-top: 0;"><quarky-string string="BY_VUKKY"></quarky-string></h2>
-                </div>
-                <div class="creditssection onespeech">
-                    <img class="creditsdoodle" src="/assets/img/credits/sound.gif" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Sounds</h1>
-                    <h4 style="margin-top: 0;">Stolen but good</h4>
-                    <br><br><br><hr>
-                    <p>Login music: <a href="https://youtu.be/fNidzkdF_ic" target="_blank">Startup Theme (Wii U) - Miiverse</a></p>
-                    <p>Login jingle: <a href="https://youtu.be/bFR-4BO_OvA" target="_blank">Nintendo Video - Startup</a></p>
-                    <p>Startup jingle: <a href="https://youtu.be/AFvLNB2oFNk" target="_blank">Main Theme (Wii U) - Miiverse</a></p>
-                    <p>Credits music: <a href="https://youtu.be/IOT4gBGI4QY" target="_blank">Credits - X-Returns</a></p>
-                    <p>Purring sound: <a href="https://freesound.org/people/xoiziox/sounds/553375/">Kitty Purr - xoiziox</a></p>
-                    <p>Everything else: <a href="https://github.com/ppy/osu-resources" target="_blank">osu!resources</a></p>
-                </div>
-                <div class="creditssection onespeech">
-                    <img class="creditsdoodle" src="/assets/img/credits/code.gif" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Code</h1>
-                    <h4 style="margin-top: 0;">Stack Overflow snippets are <a href="https://meta.stackexchange.com/q/12527">actually licensed under CC BY-SA</a>, but I don't think anyone knows!</h4>
-                    <hr>
-                    <p><small>*modified for Quarky use</small></p>
-                    <p>Linkifier*: <a href="https://github.com/markdown-it/linkify-it" target="_blank">https://github.com/markdown-it/linkify-it</a></p>
-                    <p>TLD list: <a href="https://data.iana.org/TLD/tlds-alpha-by-domain.txt" target="_blank">https://data.iana.org/TLD/tlds-alpha-by-domain.txt</a></p>
-                    <p>Dynamic JS loader: <a href="https://stackoverflow.com/a/31374433" target="_blank">https://stackoverflow.com/a/31374433</a></p>
-                    <p>UwUspeak*: <a href="https://github.com/zuzak/owo" target="_blank">https://github.com/zuzak/owo</a></p>
-                    <p>Credits visualizer: <a href="https://github.com/jberg/butterchurn" target="_blank">https://github.com/jberg/butterchurn</a></p>
-                    <p>Pick random item with seed: <a href="https://stackoverflow.com/a/7493982" target="_blank">https://stackoverflow.com/a/7493982</a></p>
-                </div>
-                <div class="creditssection onespeech">
-                    <img class="creditsdoodle" src="/assets/img/credits/other.gif" width="150" height="150">
-                    <h1 style="margin-bottom: 0;">Other</h1>
-                    <h4 style="margin-top: 0;">They shouldn't have their own section, but I won't leave them uncredited</h4>
-                    <hr>
-                    <p>Static web hosting provided by <a href="https://vercel.com" target="_blank">Vercel</a></p>
-                    <p><quarky-string string="CREDITS_WACKYMODER"></quarky-string></p>
-                </div>
-            </span>
-            <div id="snikocontainer">
-                <img src="/assets/img/loading.webp" id="snikosnake">
-                <p id="snikosnaketext">Loading additional resources.</p>
             </div>
         </div>
         <div id="welcome" class="fullmodal hidden">
