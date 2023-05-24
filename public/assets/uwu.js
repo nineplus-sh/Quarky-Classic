@@ -125,6 +125,11 @@ const wordsubstitutions = {
     'you': 'uu'
 }
 
+const baduwurds = [
+    "rawr",
+    /log.*/
+]
+
 const randomItem = (array) => array[Math.floor(Math.random()    *array.length)]
 const getEmotisuffix = () => randomItem(emotisuffixes);
 const substitute = (str) => {
@@ -132,6 +137,7 @@ const substitute = (str) => {
     const splitString = str.split(" ");
     for (const blockNumber in splitString) {
         if(linkutils.test(splitString[blockNumber])) continue;
+        if(baduwurds.find(uwurd => uwurd === splitString[blockNumber] || uwurd instanceof RegExp && uwurd.test(splitString[blockNumber]))) continue;
         if(wordsubstitutions[splitString[blockNumber]]) splitString[blockNumber] = wordsubstitutions[splitString[blockNumber]];
         for (const replacement of replacements) {
             splitString[blockNumber] = splitString[blockNumber].replaceAll(replacement[0], replacement[1]);
