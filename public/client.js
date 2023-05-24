@@ -44,12 +44,6 @@ function fatalError(error) {
  */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// Stores if the user is running Quarky locally, this is used in the UA
-window.isLocal = document.location.host === "127.0.0.1:2009";
-
-// Stores if the user is using Quarky TestDrive, this is used in the UA
-window.isTestdrive = document.location.host === "testdrive.quarky.vukky.net"
-
 // Stores if jumping to the bottom automatically is allowed
 window.jumpToBottom = true;
 
@@ -377,7 +371,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
  * @returns {object} - quark array
  */
 async function quarkFetch() {
-    let quarkResponse = await apiCall("/quark/me");
+    let quarkResponse = await apiCall("/quark/me", "GET", {}, "v2");
     if (quarkResponse) return quarkResponse.response.quarks;
 }
 
@@ -399,8 +393,8 @@ async function quarkFetch() {
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
-            "User-Agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : window.isTestdrive ? " TestDrive" : ""}`,
-            "lq-agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : window.isTestdrive ? " TestDrive" :  ""}`,
+            "User-Agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
+            "lq-agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
             ...headers
         }
     }
@@ -739,6 +733,7 @@ async function sendMessage(message) {
 async function fetchAviebox() {
     let userData = (await apiCall("/user/me")).response.jwtData;
     window.userID = userData._id;
+    featureGacha.setContextField('userId', window.userID);
     window.userAvatar = userData.avatar;
     window.currentUsername = (await apiCall(`/user/me/nick/global`, "GET", {}, "v2")).response.nickname;
     if(currentQuark) window.currentNickname = (await apiCall(`/user/me/nick/${currentQuark}`, "GET", {}, "v2")).response.nickname;
@@ -836,11 +831,10 @@ async function subscribeBomb(quarks = undefined) {
     if(!quarks) quarks = await quarkFetch();
     quarks.forEach(function(quark) {
         quark.channels.forEach(async function(channel) {
-            let channelData = (await apiCall(`/channel/${channel}`)).response.channel;
-            channelData.quarkId = channelData.quark;
-            channelData.quark = quark.name;
-            channelBox[channel] = channelData;
-            wss.send(JSON.stringify({event: "subscribe", message: `channel_${channel}`}))
+            channel.quarkId = channel.quark;
+            channel.quark = quark.name;
+            channelBox[channel._id] = channel;
+            wss.send(JSON.stringify({event: "subscribe", message: `channel_${channel._id}`}))
         })
     })
 }
@@ -1179,7 +1173,7 @@ function showSplash() {
 }
 
 // https://stackoverflow.com/a/48777893
-if(isLocal || isTestdrive) {
+if(isLocal) {
     let KONAMI_CODE_CURSOR = 0;
     const KONAMI_CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
     document.addEventListener('keydown', (e) => {

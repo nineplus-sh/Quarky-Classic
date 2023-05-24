@@ -726,6 +726,13 @@
             </details>
         </div>
 
+        <script src="https://unpkg.com/unleash-proxy-client@latest/build/main.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            const isLocal = document.location.host === "127.0.0.1:2009";
+            var unleashConfig = {url: 'https://feature-gacha.litdevs.org/api/frontend', clientKey: isLocal ? "default:development.418f11c8910fe9af470dc2f8133811f69c1845730eb66bec4940fc62" : "default:production.7875fe65e9271e342d4f9144165be01d0e96b17722378ca0277935ac", appName: 'quarky'};
+            var featureGacha = new unleash.UnleashClient(unleashConfig);
+            featureGacha.start();
+        </script>
         <script src="/assets/linkify-it.js"></script>
         <script src="/assets/uwu.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
