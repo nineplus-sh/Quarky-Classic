@@ -138,7 +138,9 @@ const wordsubstitutions = {
     "blanket": "blankie",
     "mom": "mom",
     "dad": "daddy",
-    "sleepy": "eepy"
+    "sleepy": "eepy",
+    "cute": "kawaii",
+    "cutely": "kawaiily"
 }
 
 const baduwurds = [
