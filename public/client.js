@@ -968,13 +968,13 @@ function dismoteToImg(string) {
     let lightquarkEmoteIds = [...string.matchAll(lightquarkEmote)]
 
     normalEmoteIds.forEach(function(id) {
-        string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.png" width="28">`)
+        string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.png" height="28">`)
     })
     animatedEmoteIds.forEach(function(id) {
-        string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.gif" width="28">`)
+        string = string.replace(id[0], `<img src="https://cdn.discordapp.com/emojis/${id[2]}.gif" height="28">`)
     })
     lightquarkEmoteIds.forEach(function(id) {
-        string = string.replace(id[0], `<img src="${networkData.baseUrl}/v2/quark/emotes/${id[2]}/image" width="28">`)
+        string = string.replace(id[0], `<img src="${networkData.baseUrl}/v2/quark/emotes/${id[2]}/image" height="28">`)
     })
     return string;
 }
