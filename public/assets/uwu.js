@@ -122,8 +122,31 @@ const wordsubstitutions = {
     'says': 'sez',
     'has': 'haz',
     'have': 'haz',
-    'you': 'uu'
+    'you': 'uu',
+    "happy": "happeh",
+    "cat": "kitteh",
+    "kitty": "kitteh",
+    "oops": "oopsie woopsie",
+    "idiot": "baka",
+    "eaten": "ated",
+    "ate": "ated",
+    "fuzzy": "fuzzy-wuzzy",
+    "snake": "snek",
+    "tasty": "yummy",
+    "hungry": "hungy",
+    "sigh": "huohh",
+    "blanket": "blankie",
+    "mom": "mom",
+    "dad": "daddy",
+    "sleepy": "eepy",
+    "cute": "kawaii",
+    "cutely": "kawaiily"
 }
+
+const baduwurds = [
+    "rawr",
+    /log.*/
+]
 
 const randomItem = (array) => array[Math.floor(Math.random()    *array.length)]
 const getEmotisuffix = () => randomItem(emotisuffixes);
@@ -132,6 +155,8 @@ const substitute = (str) => {
     const splitString = str.split(" ");
     for (const blockNumber in splitString) {
         if(linkutils.test(splitString[blockNumber])) continue;
+        splitString[blockNumber] = splitString[blockNumber].toLowerCase();
+        if(baduwurds.find(uwurd => uwurd === splitString[blockNumber] || uwurd instanceof RegExp && uwurd.test(splitString[blockNumber]))) continue;
         if(wordsubstitutions[splitString[blockNumber]]) splitString[blockNumber] = wordsubstitutions[splitString[blockNumber]];
         for (const replacement of replacements) {
             splitString[blockNumber] = splitString[blockNumber].replaceAll(replacement[0], replacement[1]);
