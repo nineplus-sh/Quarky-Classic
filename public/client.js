@@ -352,7 +352,7 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
 </div>`
         quarkEmojiList.innerHTML += `<option value="${quark._id}">${quark.name}</option>`
     })
-    quarkEmojiList.innerHTML += `<option disabled value="">Defaults...</option><option value="645216ca1e77b8a8b9e30093">R74moji</option>`;
+    quarkEmojiList.innerHTML += `<option disabled value="">Defaults...</option><option value="645216ca1e77b8a8b9e30093">R74moji</option><option value="646f9cecfa0e1c6207a3e6ff">Menhera-chan</option>`;
     // Add join and log out buttons
     quarkList.innerHTML += `${quarks.length > 0 ? "<hr>" : ""}
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
