@@ -463,7 +463,7 @@ async function joinQuark() {
  * @returns {void}
  */
 async function switchQuark(id, forceChannel = true, sfx = true, anim = true, replaceState = true) {
-    if(sfx)new Audio("/assets/sfx/osu-button-select.wav").play();
+    if(sfx) new Audio("/assets/sfx/osu-button-select.wav").play();
 
     document.querySelector("#messagestuff").classList.add("hidden");
     if(anim) document.querySelector(`#q_${id}`).classList.remove("stretch");
@@ -1126,7 +1126,7 @@ async function loadEmoji(quark) {
 
     let output = ""
     emojis.sort((a,b) => a.name.localeCompare(b.name)).forEach(function(emoji) {
-        output += `<img src="${emoji.imageUri}" alt="Emoji, ${emoji.altText || emoji.name}" style="max-width: 3em;" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b>${!emoji.description && !emoji.altText ? "" : `<br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}`}</center>">`;
+        output += `<img src="${emoji.imageUri}" alt="Emoji, ${emoji.altText || emoji.name}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b>${!emoji.description && !emoji.altText ? "" : `<br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}`}</center>" style="max-width: 3em; cursor: pointer; user-select: none;" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" draggable="false">`;
     })
     document.querySelector("#watchedmojos").innerHTML = output;
 
@@ -1140,6 +1140,7 @@ async function loadEmoji(quark) {
  * @returns {void}
  */
 function insertEmoji(emojiName, emojID) {
+    new Audio("/assets/sfx/osu-button-select.wav").play();
     document.querySelector("#sendmsg").value += `<${emojiName}:${emojID}>`;
 }
 
