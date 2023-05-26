@@ -1128,7 +1128,7 @@ async function loadEmoji(quark) {
     emojis.sort((a,b) => a.name.localeCompare(b.name)).forEach(function(emoji) {
         output += `<img src="${emoji.imageUri}" alt="Emoji, ${emoji.altText || emoji.name}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b>${!emoji.description && !emoji.altText ? "" : `<br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}`}</center>" style="max-width: 3em; cursor: pointer; user-select: none;" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" draggable="false">`;
     })
-    document.querySelector("#watchedmojos").innerHTML = output;
+    if(output) document.querySelector("#watchedmojos").innerHTML = output;
 
     document.querySelector("#watchingmojo select").disabled = false;
 }
