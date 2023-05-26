@@ -1123,9 +1123,12 @@ async function loadEmoji(quark) {
     const emojis = (await apiCall(`/quark/${quark}/emotes`, "GET", "", "v2")).response.emotes;
     document.querySelector("#watchedmojos").innerHTML = "";
     if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fas fa-cat"></i> ${strings["NO_EMOJI"]}`;
-    emojis.forEach(function(emoji) {
-        document.querySelector("#watchedmojos").innerHTML += `<img src="${emoji.imageUri}" alt="${emoji.altText}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b><br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}</center>">`;
+
+    let output = ""
+    emojis.sort((a,b) => a.name.localeCompare(b.name)).forEach(function(emoji) {
+        output += `<img src="${emoji.imageUri}" alt="Emoji, ${emoji.altText || emoji.name}" style="max-width: 3em;" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b>${!emoji.description && !emoji.altText ? "" : `<br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}`}</center>">`;
     })
+    document.querySelector("#watchedmojos").innerHTML = output;
 
     document.querySelector("#watchingmojo select").disabled = false;
 }
@@ -1150,12 +1153,12 @@ function uploadEmoji() {
     input.type = 'file';
     input.accept = "image/*";
     input.onchange = async e => {
-        document.querySelector("#watchingmojo .fa-face-smile-plus").style.animation = "stretchcenter 0.2s infinite linear";
+        document.querySelector("#watchingmojo .emojiupload").style.animation = "stretchcenter 0.2s infinite linear";
         let file = e.target.files[0]
         const reader = new FileReader();
         reader.onload = function() {
             apiCall(`/quark/${document.querySelector("#watchingmojo select").value}/emotes`, "POST", {"name": file.name.replace(/\.[^/.]+$/, ""), "image": reader.result.replace('data:', '').replace(/^.+,/, '')}, "v2").then(function(result) {
-                document.querySelector("#watchingmojo .fa-face-smile-plus").style.animation = "";
+                document.querySelector("#watchingmojo .emojiupload").style.animation = "";
                     loadEmoji(document.querySelector("#watchingmojo select").value)
             })
         }
