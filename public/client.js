@@ -176,7 +176,7 @@ function getCookie(key) {
 function escapeHTML(unsafeText) {
     let div = document.createElement('div');
     div.innerText = unsafeText;
-    return div.innerHTML;
+    return div.innerHTML.replaceAll("<br>", "\n");
 }
 
 // Redirect to login screen if no token is presemt
