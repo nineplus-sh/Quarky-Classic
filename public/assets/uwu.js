@@ -140,7 +140,9 @@ const wordsubstitutions = {
     "dad": "daddy",
     "sleepy": "eepy",
     "cute": "kawaii",
-    "cutely": "kawaiily"
+    "cutely": "kawaiily",
+    "that": "dat",
+    "that's": "dat's"
 }
 
 const baduwurds = [
