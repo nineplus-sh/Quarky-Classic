@@ -136,7 +136,7 @@ const wordsubstitutions = {
     "hungry": "hungy",
     "sigh": "huohh",
     "blanket": "blankie",
-    "mom": "mom",
+    "mom": "mommy",
     "dad": "daddy",
     "sleepy": "eepy",
     "cute": "kawaii",
@@ -169,7 +169,7 @@ const substitute = (str) => {
 const allowed = () => settingGet("uwuprefix") || settingGet("uwusubst")  || settingGet("uwusuffix")
 
 window.uwu = (str) => {
-    if(settingGet("uwuprefix"))str = randomItem(prefixes) + str;
+    if(settingGet("uwuprefix")) str = randomItem(prefixes) + str;
     if(settingGet("uwusubst")) str = substitute(str);
     if(settingGet("uwusuffix") && !suffixes.some(suffix => str.endsWith(suffix)))str = str + randomItem(suffixes);
     return str;
