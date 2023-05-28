@@ -39,17 +39,17 @@
                 new Audio("/assets/sfx/osu-submit-select.wav").play();
                 document.querySelector("#email").classList.remove("fail");
                 document.querySelector("#password").classList.remove("fail");
-                document.querySelector("#text").innerHTML = "Logging in...";
+                document.querySelector("#text").innerHTML = "Signing in...";
                 fetch(`${networkData.baseUrl}/v1/auth/token`, {method: 'POST', body: JSON.stringify({"email": document.querySelector("#email").value, "password": document.querySelector("#password").value}), headers: {'Content-Type': 'application/json'}})
                     .then(response => response.json())
                     .then(response => {
                         if(!response.request.success) {
-                            if(response.response.message == "Incorrect password/email address combination") response.response.message = "Wrong password";
-                            if(response.response.message == "No such user") response.response.message = "That account doesn't exist";
+                            if(response.response.message === "Incorrect password/email address combination") response.response.message = "Wrong password";
+                            if(response.response.message === "No such user") response.response.message = "That account doesn't exist";
                             document.querySelector("#text").innerText = `${response.response.message}!`
                             new Audio("/assets/sfx/osu-error-notification-pop-in.wav").play();
-                            if(response.response.message == "That account doesn't exist") document.querySelector("#email").classList.add("fail");
-                            if(response.response.message == "Wrong password") document.querySelector("#password").classList.add("fail");
+                            if(response.response.message === "That account doesn't exist") document.querySelector("#email").classList.add("fail");
+                            if(response.response.message === "Wrong password") document.querySelector("#password").classList.add("fail");
                         } else {
                             setCookie("authToken", response.response.access_token, 365);
                             /*document.querySelector("#bgm").pause();
@@ -61,7 +61,11 @@
                             /*}, 7000);*/
                         }
                     })
-                    .catch(error => console.log('error', error));
+                    .catch(function(error) {
+                        document.querySelector("#text").innerText = "Failed to sign in. Please try again later.";
+                        new Audio("/assets/sfx/osu-error-notification-pop-in.wav").play();
+                        console.log("error", error)
+                    });
             }
             function switchView(view) {
                 if(view === "networks") document.querySelector("#networkSelect").value = "";
