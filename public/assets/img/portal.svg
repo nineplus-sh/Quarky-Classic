@@ -150,6 +150,7 @@
        rx="9.3904133"
        ry="18.570997"
        inkscape:label="portal" /><image
+        class="loadpfp"
        width="45.363628"
        height="114.09789"
        preserveAspectRatio="none"
@@ -157,6 +158,5 @@
        id="image23128"
        x="63.957611"
        y="19.463772"
-       clip-path="inset(0% round 100%)"
        transform="matrix(0.34156563,-0.93985793,0.04905189,0.99879623,0,0)"
        inkscape:label="pfp" /></g></svg>
