@@ -176,7 +176,7 @@ function getCookie(key) {
 function escapeHTML(unsafeText) {
     let div = document.createElement('div');
     div.innerText = unsafeText;
-    return div.innerHTML;
+    return div.innerHTML.replaceAll("<br>", "\n");
 }
 
 // Redirect to login screen if no token is presemt
@@ -627,7 +627,7 @@ async function messageRender(message) {
             ${isReply ? `<div class="reply"><i class="fas fa-comment-alt-dots"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
-                <img src="${message.author.avatarUri}" class="loading trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.classList.remove('petting');purr.pause()">
+                <img src="${message.author.avatarUri}" class="loading trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.parentNode.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.parentNode.classList.remove('petting');purr.pause()">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
                 ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
