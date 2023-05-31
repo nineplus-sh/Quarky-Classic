@@ -43,5 +43,7 @@
   "FETCHING_QUARK_LIST": "Getting quark list...",
   "LETTING_YOU_IN": "Letting you in...",
   "BY_VUKKY": "b-by Vukky UwU",
-  "CREDITS_WACKYMODER": "WackyModer for the fancier message sender and attachment support"
+  "CREDITS_WACKYMODER": "WackyModer for the fancier message sender and attachment support",
+  "AVATAR_UPDATED_TITLE": "Your avatar's been updated.",
+  "AVATAR_UPDATED_BODY": "Enjoy your new look!"
 }
