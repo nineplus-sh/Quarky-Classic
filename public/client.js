@@ -946,8 +946,12 @@ function uploadAvie(uploadWrap) {
         let arrayBuffer = await file.arrayBuffer()
         apiCall("/user/me/avatar", "PUT", arrayBuffer, "v2", {"Content-Type": file.type}, false).then(function(result) {
             if(result.request.success) {
-                alert("I think your avatar change was successful! :D\nTo finish the process, please log in again.\nDon't worry, I'll take you there...");
-                logOut();
+                if(featureGacha.isEnabled("V_DontAvieReload")) {
+                    vukkybox(strings["AVATAR_UPDATED_BODY"], "updatepfp", strings["AVATAR_UPDATED_TITLE"])
+                } else {
+                    alert("Avatar successfully changed!\nPlease sign in again to apply it.")
+                    logOut();
+                }
             }
         })
     }     
