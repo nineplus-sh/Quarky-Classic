@@ -350,10 +350,10 @@ async function quarkRender(quarks) { // i mean.. that only happens once? yeah tr
     // Add join and log out buttons
     quarkList.innerHTML += `${quarks.length > 0 ? "<hr>" : ""}
             <div class="quark joiner" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="joinQuark();" data-tippy-content="Join a Quark">
-            <i class="fas fa-people-carry quarkicon"></i>
+                <iconify-icon class="quarkicon" icon="material-symbols:apartment"></iconify-icon>
             </div>
             <div class="quark logout" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" onclick="logOut();" data-tippy-content="Log Out :(">
-                <i class="fas fa-sign-out quarkicon"></i>
+                <iconify-icon class="quarkicon" style="font-size: 2em;" icon="fa6-solid:person-through-window"></iconify-icon>
             </div>`
     // Create a tippy tooltip if it doesnt already exist
     if (quarkTip) quarkTip.forEach(tip => tip.destroy());
@@ -558,7 +558,7 @@ function prettySize(bytes){
  * @returns {string}
  */
 function downloadButton(attachmentURL){
-    return `<a style="padding-left: 1rem;" href='${attachmentURL}' target="_blank" rel="noreferrer noopener"><i class="fas fa-download"></i></a>`;
+    return `<a style="padding-left: 1rem;" href='${attachmentURL}' target="_blank" rel="noreferrer noopener"><iconify-icon icon="material-symbols:download" style="font-size: 1.5em;"></iconify-icon></a>`;
 }
 
 /**
@@ -577,7 +577,7 @@ function checkFileTypes(attachmentURL){
         return `<br><audio controls src='${attachmentURL}'>` + downloadButton(attachmentURL);
     }else{
         let fileMetadata = getFileMetadata(attachmentURL)
-        return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attachmentURL}'>${fileMetadata.name} (${fileMetadata.size})<i class="fas fa-download"></i></a>`
+        return `<div class="downloadable_file_div"><a class="downloadable_file" target='_blank' href='${attachmentURL}'>${fileMetadata.name} (${fileMetadata.size})<iconify-icon icon="material-symbols:download"></iconify-icon></a>`
     }
 }
 
