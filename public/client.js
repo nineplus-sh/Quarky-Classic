@@ -84,29 +84,7 @@ window.defaults = {
 
 // The user icons to randomly select from
 window.usericons = [
-    "walking",
-    "portal-enter",
-    "snowboarding",
-    "sledding",
-    "skiing-nordic",
-    "skiing",
-    "ski-lift",
-    "skating",
-    "running",
-    "portal-exit",
-    "digging",
-    "biking-mountain",
-    "biking",
-    "user-secret",
-    "user-tie",
-    "user-visor",
-    "user-ninja",
-    "user-headset",
-    "user-cowboy",
-    "user-astronaut",
-    "house-user",
-    "file-user",
-    "book-user"
+    "fa6-solid:cat"
 ]
 
 //list of image formats for attachments
@@ -617,21 +595,21 @@ async function messageRender(message) {
     if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
         messageDiv.classList.add("roleplay");
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fas fa-comment-alt-dots"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
+            ${isReply ? `<div class="reply"><iconify-icon icon="mdi:thinking"> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''}</span>
             <span class="messagecontent">${doUwU ? `*${linkify(uwutils.substitute(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>`;
     } else {
         messageDiv.innerHTML = `
-            ${isReply ? `<div class="reply"><i class="fas fa-comment-alt-dots"></i> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
+            ${isReply ? `<div class="reply"><iconify-icon icon="mdi:thinking"> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
             ${message.author._id == window.userID ? `<span class="actions"><button onclick="this.disabled=true;deleteMessage('${message._id}')">Delete</button></span>` : ""}
             <span class="avie">
                 <img src="${message.author.avatarUri}" class="loading trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'" onmouseover="this.parentNode.classList.add('petting');purr.currentTime=0;purr.play()"  onmouseout="this.parentNode.classList.remove('petting');purr.pause()">
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
                 ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
-            <span class="lusername">${settingGet("usericons") ? `<i class="usericon fas fa-${rarrayseed(window.usericons, message.author.username)}"></i> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+            <span class="lusername">${settingGet("usericons") ? `<iconify-icon class="usericon" icon="${rarrayseed(window.usericons, message.author.username)}"></iconify-icon> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
             <span class="messagecontent">${doUwU ? dismoteToImg(linkify(uwu(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>
             <br>
@@ -664,7 +642,7 @@ async function switchChannel(id, audioOn = true) {
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
     document.querySelector("#messagestuff").classList.add("hidden");
-    document.querySelector("#channelname").innerHTML = "<i class=\"fas fa-comments-alt fa-pulse\"></i> Fetching messages...";
+    document.querySelector("#channelname").innerHTML = "<iconify-icon icon=\"mdi:comments\"></iconify-icon> Fetching messages...";
     document.querySelector("#channeltopic").innerText = "";
         let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
     document.querySelector("#messages").innerHTML = "";
@@ -1025,11 +1003,10 @@ function previewUsername(username) {
         fakename.value = username;
         fakename.style.width = `${username.length + 1}ch`;
     })
-    document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.className = "usericon fas")
-    if(username.length == 0) {
-        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add("fa-person-circle-question"))
+    if(username.length === 0) {
+        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.setAttribute("icon", "fa6-solid:person-circle-question"))
     } else {
-        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.classList.add(`fa-${rarrayseed(window.usericons, username)}`))
+        document.querySelectorAll("#settings .message.fake .usericon").forEach(usericon => usericon.setAttribute("icon", rarrayseed(window.usericons, username)))
     }
 } 
 
@@ -1085,21 +1062,18 @@ async function killMessage(message) {
  */
 async function fetchContext(message, replyMessage) {
     if(!document.querySelector(`#m_${message}`)) return;
-    document.querySelector(`#m_${message} i`).classList.add("fa-pulse");
     document.querySelector(`#m_${message} .rusername`).innerText = "Fetching context...";
     document.querySelector(`#m_${message} .rusercontent`).innerText = "";
     let result = await apiCall(`/channel/${currentChannel}/messages/${replyMessage}`, "GET", "", "v2");
     if (result.request.status_code === 404) {
         document.querySelector(`#m_${message} .rusername`).innerText = "";
         document.querySelector(`#m_${message} .rusercontent`).innerText = "This message has been deleted";
-        document.querySelector(`#m_${message} i`).classList.remove("fa-pulse");
         return;
     }
     let botMetadata = result.response.data.message.specialAttributes.find(attr => attr.type === "botMessage");
     messageBox[replyMessage] = result.response.data;
     document.querySelector(`#m_${message} .rusername`).innerText = botMetadata?.username || result.response.data.author.username;
     document.querySelector(`#m_${message} .rusercontent`).innerText = result.response.data.message.content;
-    document.querySelector(`#m_${message} i`).classList.remove("fa-pulse");
 }
 
 /**

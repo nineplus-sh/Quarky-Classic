@@ -1,0 +1,53 @@
+body {
+    background-image: url("https://litdevs.org/img/vukkybg.png");
+    margin: 0;
+}
+header {
+    background-image: url("/assets/img/stars.gif");
+    background-color: black;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding-top: 2.5em;
+    padding-bottom: 1em;
+}
+header h1 {
+    margin: 0;
+}
+main {
+    padding: 1em;
+    margin: 0 auto;
+    max-width: 950px;
+    background-color: white;
+}
+
+dl.explore dd {
+    display: list-item;
+    list-style-type: "➢";
+    padding-inline-start: 1ch;
+}
+.terminal {
+    background-color: black;
+    color: lime;
+}
+pre.terminal {
+    padding: 1em;
+}
+code.terminal {
+    padding: 0.2em;
+}
+#planet {
+    position: absolute;
+    top: -7em;
+    margin-left: -4.5em;
+    animation: rotate 15s infinite linear;
+}
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
