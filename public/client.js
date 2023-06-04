@@ -912,7 +912,7 @@ function rarrayseed(arr, seed) {
  * @returns {void}
  */
 function uploadAvie(uploadWrap) {
-    let uploadIcon = uploadWrap.querySelector("i");
+    let uploadIcon = uploadWrap.querySelector("iconify-icon");
     
     // https://stackoverflow.com/a/40971885
     var input = document.createElement('input');
