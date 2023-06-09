@@ -1,8 +1,10 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Quarky</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-away.css"/>
         <!--<link rel="preload" href="/assets/sfx/wb.mp3" as="audio" />-->
         <link rel="preload" href="/assets/sfx/osu-button-select.wav" as="audio" />
         <link rel="preload" href="/assets/sfx/osu-default-hover.wav" as="audio" />
@@ -583,6 +585,14 @@
             #debug h1, #debug h2 {
                 color: gold;
             }
+            #annoyance {
+                position: fixed;
+                width: 150px;
+                height: 150px;
+                image-rendering: pixelated;
+                bottom: 3.5em;
+                right: 0;
+            }
         </style>
         <script src="/assets/vukkybox.js"></script>
     </head>
@@ -618,13 +628,14 @@
         <div id="channeldata">
             <b id="channelname"><quarky-string string="SELECT_A_CHANNEL"></quarky-string></b> <span id="channeltopic"></span>
         </div>
-        <span id="messagestuff" class="hidden">
+        <span id="messagestuff">
             <div id="messagesbox" onscroll="scrollingDetected()">
                 <div id="messages">
 
                 </div>
             </div>
             <div id="sendmsgs">
+                <img id="annoyance" class="hidden" src="/assets/img/companion/headempty.png">
                 <form onsubmit="return false;" autocomplete="off">
                     <input placeholder="Better message sender :3" id="sendmsg">
                     <button type="button" onclick="document.querySelector('#watchingmojo').classList.toggle('hidden')" id="watchmojo"><iconify-icon icon="mdi:emoji-cat"></iconify-icon></button>
@@ -694,6 +705,7 @@
 
                         <p>Special rendering for /me messages <vukky-toggle setting="mespecial" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
                         <p>User icons <vukky-toggle setting="usericons" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
+                        <p>Annoying companion <vukky-toggle setting="companion" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
                         <h3>UwUspeak stolen from <a href="https://twitter.com/BBCBweaking" target="_blank">Bweaking NuwuS</a></h3>
                         <p>Prefixes <vukky-toggle setting="uwuprefix" ontoggle="reloadMsgDeps()"></vukky-toggle></p>
                         <p>Substitution <vukky-toggle setting="uwusubst" ontoggle="reloadMsgDeps()"></vukky-toggle></p>

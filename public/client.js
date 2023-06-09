@@ -179,6 +179,7 @@ async function welcome() {
         document.querySelector("#planet").style.filter = "invert(1)";
         document.querySelector("#planet").src = "/assets/img/vukkyplanet.svg";
     }
+    if(featureGacha.isEnabled("V_Companion")) document.querySelector("#annoyance").classList.remove("hidden");
 
     await loadStrings();
     showSplash();
@@ -443,7 +444,6 @@ async function joinQuark() {
 async function switchQuark(id, forceChannel = true, sfx = true, anim = true, replaceState = true) {
     if(sfx) new Audio("/assets/sfx/osu-button-select.wav").play();
 
-    document.querySelector("#messagestuff").classList.add("hidden");
     if(anim) document.querySelector(`#q_${id}`).classList.remove("stretch");
     if(anim) void document.querySelector(`#q_${id}`).offsetWidth;
     if(anim) document.querySelector(`#q_${id}`).classList.add("stretch");
@@ -641,7 +641,6 @@ async function switchChannel(id, audioOn = true) {
     currentChannel = id;
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
-    document.querySelector("#messagestuff").classList.add("hidden");
     document.querySelector("#channelname").innerHTML = "<iconify-icon icon=\"mdi:comments\"></iconify-icon> Fetching messages...";
     document.querySelector("#channeltopic").innerText = "";
         let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
@@ -656,7 +655,6 @@ async function switchChannel(id, audioOn = true) {
     let channelInfo = (await apiCall(`/channel/${id}`)).response.channel;
     document.querySelector("#channelname").innerText = channelInfo.name;
     document.querySelector("#channeltopic").innerText = channelInfo.description;
-    document.querySelector("#messagestuff").classList.remove("hidden");
     document.querySelector("#messagesbox").scrollTop = document.querySelector("#messagesbox").scrollHeight;
 }
 
@@ -986,7 +984,6 @@ async function leaveQuark() {
 function goToTheVoid(replaceState = true) {
     document.querySelector("#namewrap").innerText = strings["SELECT_A_QUARK"];
     document.querySelector("#channels").innerHTML = "";
-    document.querySelector("#messagestuff").classList.add("hidden");
     document.querySelector(".leavequark").classList.add("hidden");
     window.currentQuark = null;
     window.currentChannel = null;
@@ -1162,6 +1159,21 @@ if(isLocal) {
         KONAMI_CODE_CURSOR = (e.key === KONAMI_CODE[KONAMI_CODE_CURSOR]) ? KONAMI_CODE_CURSOR + 1 : 0;
         if (KONAMI_CODE_CURSOR === KONAMI_CODE.length) document.querySelector("#debug").classList.remove("hidden");
     });
+}
+
+// The tippy used by the companion.
+const companionTippy = tippy("#annoyance", {
+    "theme": "black",
+    "offset": [0, -20],
+    "animation": "shift-away",
+    "placement": "top-end",
+    "inertia": true,
+    "trigger": "manual"
+})[0]
+
+function companionSpeech(text) {
+    companionTippy.setContent(text);
+    companionTippy.show();
 }
 
 
