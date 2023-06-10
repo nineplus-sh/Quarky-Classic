@@ -1170,10 +1170,17 @@ const companionTippy = tippy("#annoyance", {
     "inertia": true,
     "trigger": "manual"
 })[0]
+// Companion speech hider.
+let companionTimeout = null;
 
 function companionSpeech(text) {
     companionTippy.setContent(text);
     companionTippy.show();
+
+    if(companionTimeout) clearTimeout(companionTimeout)
+    companionTimeout = setTimeout(function() {
+        companionTippy.hide();
+    }, 5000)
 }
 
 
