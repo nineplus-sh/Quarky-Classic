@@ -296,6 +296,7 @@ async function welcomeGateway() {
     document.querySelector("#loader").classList.add("bye");
     //document.querySelector("#wb").play();
     welcomeHasFinishedOnce = true;
+    companionSpeech("GREETING");
 }
 
 /**
@@ -1173,8 +1174,9 @@ const companionTippy = tippy("#annoyance", {
 // Companion speech hider.
 let companionTimeout = null;
 
-function companionSpeech(text) {
-    companionTippy.setContent(text);
+function companionSpeech(string) {
+    string = strings["COMPANION"][string];
+    companionTippy.setContent(string instanceof Array ? string[Math.floor(Math.random() * string.length)] : string);
     companionTippy.show();
 
     if(companionTimeout) clearTimeout(companionTimeout)
