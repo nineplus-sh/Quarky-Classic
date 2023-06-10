@@ -16,6 +16,12 @@
     "Mjau... >w<",
     "Visste du? Quarky har mange programfeil."
   ],
+  "COMPANION": {
+    "GREETING": [
+      "Hello!",
+      "Hi!"
+    ]
+  },
   "SETTINGS": "Innstillinger",
   "SELECT_A_QUARK": "Velg en quark",
   "LEAVE_QUARK": "Forlat quark",
