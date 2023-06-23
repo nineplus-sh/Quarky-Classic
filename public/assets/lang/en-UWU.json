@@ -16,6 +16,12 @@
     "Puww... >w<",
     "Did you know? Quarky has lots of bugs."
   ],
+  "COMPANION": {
+    "GREETING": [
+      "Hello!",
+      "Hi!"
+    ]
+  },
   "SETTINGS": "Settings, fwendo",
   "SELECT_A_QUARK": "Sewect a quawk >w<",
   "LEAVE_QUARK": "Weave quawk 3:",

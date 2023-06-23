@@ -6,16 +6,22 @@
     "Did you know? The R74moji option in the emoji picker is actually a quark.",
     "Visste du? Quarky antar at du bruker en moderne nettleser.",
     "Did uu knyow? Da stowen UwUspeak options in da settings can myake youw messages unweadabwe :3",
-    "Did you know? Quarky is just a client, the backend is <a href='https://github.com/LITdevs/Lightquark'>separate and not owned by me</a>.",
+    "Visste du? Quarky er bare en klient, serveren er <a href='https://github.com/LITdevs/Lightquark'>separat og er ikke eid av meg</a>.",
     "Nya~ :3",
     "åååhhhh, jeg er sulten. 3:<br>har du noe å spise? :3",
     "zzz -w-",
-    "Ah! Hewwo!",
+    "Åh! Hallo!",
     "Visste du?",
     "Vennligst ikke oppdater siden hele tiden bare for å se de ulike meldingene.",
     "Mjau... >w<",
     "Visste du? Quarky har mange programfeil."
   ],
+  "COMPANION": {
+    "GREETING": [
+      "Hello!",
+      "Hi!"
+    ]
+  },
   "SETTINGS": "Innstillinger",
   "SELECT_A_QUARK": "Velg en quark",
   "LEAVE_QUARK": "Forlat quark",
@@ -28,12 +34,12 @@
   "SETTING_LANGUAGE": "Language (requires reload)",
   "ENTER_INVITE_CODE": "Enter the invite code for the quark you want to join.",
   "MESSAGE_REQUIRED": "Du kan ikke sende tomme meldinger! :D",
-  "NOTIFICATIONS_ENABLED_TITLE": "Notifications enabled.",
+  "NOTIFICATIONS_ENABLED_TITLE": "Varsler er aktivert.",
   "NOTIFICATIONS_ENABLED_BODY": "Håper du liker dem!",
   "NOTIFICATIONS_DENIED": "Du har avslått Quarky sin forespørsel om å sende deg varsler, så ingen varsler kan sendes...",
   "LOADING_EMOJI": "Laster emoji...",
   "NO_EMOJI": "That quark has no emoji.",
-  "SETTING_NOTIFICATIONS": "Show notifications for all new messages",
+  "SETTING_NOTIFICATIONS": "Vis varsler for alle nye meldinger",
   "SAVING_SETTINGS": "Vennligst vent, innstillingene lagres...",
   "FETCHING_NETWORK": "Henter nettverksinformasjon...",
   "FETCHING_USER_DATA": "Henter brukerinformasjon...",
@@ -43,6 +49,6 @@
   "LETTING_YOU_IN": "Slipper deg inn...",
   "BY_VUKKY": "av Vukky",
   "CREDITS_WACKYMODER": "WackyModer for the fancier message sender and attachment support",
-  "AVATAR_UPDATED_TITLE": "Your avatar's been updated.",
-  "AVATAR_UPDATED_BODY": "Enjoy your new look!"
+  "AVATAR_UPDATED_TITLE": "Avataren din er oppdatert.",
+  "AVATAR_UPDATED_BODY": "Håper du liker det nye utseendet!"
 }
