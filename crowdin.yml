@@ -1,3 +1,7 @@
 files:
   - source: /public/assets/lang/en.json
     translation: /public/assets/lang/%locale%.json
+  - source: /public/docs/*.html
+    ignore:
+      - /public/docs/license.html
+    translation: /public/docs/%locale%/%original_file_name%
