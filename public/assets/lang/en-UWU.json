@@ -18,8 +18,8 @@
   ],
   "COMPANION": {
     "GREETING": [
-      "Hello!",
-      "Hi!"
+      "Hewwo!",
+      "Hoi!"
     ]
   },
   "SETTINGS": "Settings, fwendo",
@@ -30,11 +30,11 @@
   "SETTINGS_GENERAL": "Genewaw",
   "SETTINGS_APPEARANCE": "Appeawance",
   "SETTINGS_ABOUT": "About~",
-  "SETTINGS_EXIT": "Exit 3:",
+  "SETTINGS_EXIT": "See you next time 3:",
   "SETTING_LANGUAGE": "Wanguage (wequiwes wewoad)",
   "ENTER_INVITE_CODE": "Enter the invite code for the quark you want to join.",
-  "MESSAGE_REQUIRED": "You need to enter a message to send! :D",
-  "NOTIFICATIONS_ENABLED_TITLE": "Notifications enabled.",
+  "MESSAGE_REQUIRED": "Ermm... you need to enter something first, silly... >w>",
+  "NOTIFICATIONS_ENABLED_TITLE": "Pwingy noises enyabwed!",
   "NOTIFICATIONS_ENABLED_BODY": "Please enjoy them!",
   "NOTIFICATIONS_DENIED": "You have denied Quarky's request to send you notifications, so no notifications can be sent...",
   "LOADING_EMOJI": "Woading emoji... :3",
