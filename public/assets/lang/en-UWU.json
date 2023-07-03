@@ -18,8 +18,8 @@
   ],
   "COMPANION": {
     "GREETING": [
-      "Hello!",
-      "Hi!"
+      "Hewwo!",
+      "Hoi!"
     ]
   },
   "SETTINGS": "Settings, fwendo",
@@ -33,10 +33,10 @@
   "SETTINGS_EXIT": "Exit 3:",
   "SETTING_LANGUAGE": "Wanguage (wequiwes wewoad)",
   "ENTER_INVITE_CODE": "Enter the invite code for the quark you want to join.",
-  "MESSAGE_REQUIRED": "You need to enter a message to send! :D",
-  "NOTIFICATIONS_ENABLED_TITLE": "Notifications enabled.",
-  "NOTIFICATIONS_ENABLED_BODY": "Please enjoy them!",
-  "NOTIFICATIONS_DENIED": "You have denied Quarky's request to send you notifications, so no notifications can be sent...",
+  "MESSAGE_REQUIRED": "Bwehh... uu need to type stuff fiwst, siwwy... >w>",
+  "NOTIFICATIONS_ENABLED_TITLE": "Pwingy noises enyabwed!",
+  "NOTIFICATIONS_ENABLED_BODY": "Nyow I'm going to p-poke uu FOWEVEW!!!",
+  "NOTIFICATIONS_DENIED": "oh nyoo! uu didn't wet me send you pwingy noises! can't send you any nyow, siwwy! 3:",
   "LOADING_EMOJI": "Woading emoji... :3",
   "NO_EMOJI": "Nyo emoji... 3:",
   "SETTING_NOTIFICATIONS": "Show notifications for all new messages",
@@ -49,6 +49,6 @@
   "LETTING_YOU_IN": "Letting you in...",
   "BY_VUKKY": "b-by Vukky UwU",
   "CREDITS_WACKYMODER": "WackyModer for the fancier message sender and attachment support",
-  "AVATAR_UPDATED_TITLE": "Your avatar's been updated.",
-  "AVATAR_UPDATED_BODY": "Enjoy your new look!"
+  "AVATAR_UPDATED_TITLE": "Oooh, nyew pictuwe...",
+  "AVATAR_UPDATED_BODY": "So pwetty! Hope uu wike it!!"
 }
