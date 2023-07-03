@@ -588,17 +588,20 @@ async function messageRender(message) {
         message.author.botUsername = message.author.username;
         message.author.username = botMetadata.username;
         message.author.avatarUri = botMetadata.avatarUri;
+
+        if(message.authorId === "63eb7b8630d172b639647de1") message.discordBridge = true;
     }
 
     let messageDiv = document.createElement('div');
     messageDiv.classList.add("message");
     messageDiv.id = `m_${message._id}`;
     if(message.specialAttributes.some(attr => attr.type === "/me") && settingGet("mespecial")) {
+        console.log()
         messageDiv.classList.add("roleplay");
         messageDiv.innerHTML = `
             ${isReply ? `<div class="reply"><iconify-icon icon="mdi:thinking"> <b><span class="rusername">${repliedMessage?.message.specialAttributes.find(attr => attr.type === "botMessage")?.username || repliedMessage?.author.username || "Unknown user"}</b></span> <span class="rusercontent">${repliedMessage?.message.content.replaceAll("<br>", " ") || "Unknown message"}</span></div>` : ""}
-            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''}</span>
-            <span class="messagecontent">${doUwU ? `*${linkify(uwutils.substitute(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</span>
+            <span class="lusername">${escapeHTML(message.author.username)} ${botMetadata ? `<span class="bot ${message.discordBridge ? "discord" : ""}" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">${message.discordBridge ? "Discord" : "Bot"}</span>` : ''}</span>
+            <div class="messagecontent">${doUwU ? `*${linkify(uwutils.substitute(escapeHTML(message.content)))}* ${uwutils.getEmotisuffix()}` : linkify(escapeHTML(message.content))}</div>
             <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small>
             <br><span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>`;
     } else {
@@ -610,8 +613,8 @@ async function messageRender(message) {
                 ${message.author.admin ? "<img src='/assets/img/adminmark.svg' class='adminmark' width='32' data-tippy-content='I&apos;m a Lightquark developer!'>" : ""}
                 ${isCuteKitty ? "<img src='/assets/img/catears.png' class='catears'>" : ""}
             </span>
-            <span class="lusername">${settingGet("usericons") ? `<iconify-icon class="usericon" icon="${rarrayseed(window.usericons, message.author.username)}"></iconify-icon> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">Bot</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
-            <span class="messagecontent">${doUwU ? dismoteToImg(linkify(uwu(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</span>
+            <span class="lusername">${settingGet("usericons") ? `<iconify-icon class="usericon" icon="${rarrayseed(window.usericons, message.author.username)}"></iconify-icon> ` : ""}<span class="realname">${escapeHTML(message.author.username)}</span> ${botMetadata ? `<span class="bot ${message.discordBridge ? "discord" : ""}" data-tippy-content="This message was sent by <b>${escapeHTML(message.author.botUsername)}</b>.">${message.discordBridge ? "Discord" : "Bot"}</span>` : ''} <small class="timestamp">${new Date(message.timestamp).toLocaleString()} via ${escapeHTML(message.ua)}</small></span>
+            <div class="messagecontent">${doUwU ? dismoteToImg(linkify(uwu(escapeHTML(message.content)))) : dismoteToImg(linkify(escapeHTML(message.content)))}</div>
             <span class="attachments">${message.attachments && message.attachments.length > 0 ? attachmentTextifier(message.attachments) : linkify("")}</span>
             <br>
         `;
