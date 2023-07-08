@@ -5,7 +5,7 @@ It's a Lightquark client. A terrible one, but it has some personality, or so I'v
 ## Features
 - Joining quarks
 - Reading messages
-- Sending messages (including /me, /shrug, and \*purrs\* stowen uwuspeak fow chwonicawwy onwine Wightquawk usews... oh nyo :P)
+- Sending messages (including /me, /shrug, and \*purrs\* stowen uwuspeak fow chwonicawwy onwine Wightquawk usews... oh nyo :3)
 - You don't get to edit them though
 - And the client doesn't adapt well to screen resolutions other than my own
 
