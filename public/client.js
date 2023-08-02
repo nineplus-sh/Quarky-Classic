@@ -1098,18 +1098,40 @@ async function switchTab(tab) {
 async function loadEmoji(quark) {
     document.querySelector("#watchingmojo select").disabled = true;
 
-    document.querySelector("#watchedmojos").innerHTML = `<i class="fas fa-cat fa-pulse"></i> ${strings["LOADING_EMOJI"]}`;
+    document.querySelector("#watchingmojo .vukkyload").classList.remove("hidden");
+    document.querySelector("#watchedmojos").classList.add("hidden");
     const emojis = (await apiCall(`/quark/${quark}/emotes`, "GET", "", "v2")).response.emotes;
     document.querySelector("#watchedmojos").innerHTML = "";
-    if(!emojis || emojis.length === 0) document.querySelector("#watchedmojos").innerHTML = `<i class="fas fa-cat"></i> ${strings["NO_EMOJI"]}`;
+    if(!emojis || emojis.length === 0) {
+        document.querySelector("#watchingmojo select").disabled = false;
+        document.querySelector("#watchedmojos").classList.remove("hidden");
+        document.querySelector("#watchingmojo .vukkyload").classList.add("hidden");
+        document.querySelector("#watchedmojos").innerHTML = `<i class="fas fa-cat"></i> ${strings["NO_EMOJI"]}`;
+        return;
+    }
 
+    let selectedOption = document.querySelector(`#watchingmojo select option[value="${quark}"]`);
+    let quarkName = selectedOption.innerText
+    selectedOption.innerText = `${quarkName} (loaded 0/${emojis.length})`;
     let output = ""
     emojis.sort((a,b) => a.name.localeCompare(b.name)).forEach(function(emoji) {
         output += `<img src="${emoji.imageUri}" alt="Emoji, ${emoji.altText || emoji.name}" onclick="insertEmoji('${emoji.name}', '${emoji._id}')" data-tippy-content="<center><b>${escapeHTML(emoji.name)}</b>${!emoji.description && !emoji.altText ? "" : `<br>${escapeHTML(emoji.description) || escapeHTML(emoji.altText)}`}</center>" style="max-width: 3em; cursor: pointer; user-select: none;" onmouseenter="new Audio('/assets/sfx/osu-default-hover.wav').play();" draggable="false">`;
     })
     if(output) document.querySelector("#watchedmojos").innerHTML = output;
 
-    document.querySelector("#watchingmojo select").disabled = false;
+    let loaded = 0;
+    document.querySelectorAll("#watchedmojos img").forEach(function(emojiImg) {
+        emojiImg.onload = function() {
+            loaded++;
+            selectedOption.innerText = `${quarkName} (loaded ${loaded}/${emojis.length})`;
+            if(loaded === emojis.length) {
+                selectedOption.innerText = quarkName;
+                document.querySelector("#watchingmojo select").disabled = false;
+                document.querySelector("#watchedmojos").classList.remove("hidden");
+                document.querySelector("#watchingmojo .vukkyload").classList.add("hidden");
+            }
+        }
+    })
 }
 
 /**
