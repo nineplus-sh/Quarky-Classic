@@ -142,7 +142,11 @@ const wordsubstitutions = {
     "cute": "kawaii",
     "cutely": "kawaiily",
     "that": "dat",
-    "that's": "dat's"
+    "that's": "dat's",
+    "thanks": "arigato",
+    "thankful": "arigatoful",
+    "stomach": "tummy",
+    "angry": "angy"
 }
 
 const baduwurds = [
