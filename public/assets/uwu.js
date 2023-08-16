@@ -113,7 +113,8 @@ const substitutions = {
     'what': 'wat',
     'na': 'nya',
     'ma': 'mya',
-    'button': 'bouton'
+    'button': 'bouton',
+    "fuck": "fuwk"
 }
 
 const wordsubstitutions = {
