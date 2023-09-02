@@ -50,5 +50,7 @@
   "BY_VUKKY": "av Vukky",
   "CREDITS_WACKYMODER": "WackyModer for the fancier message sender and attachment support",
   "AVATAR_UPDATED_TITLE": "Avataren din er oppdatert.",
-  "AVATAR_UPDATED_BODY": "Håper du liker det nye utseendet!"
+  "AVATAR_UPDATED_BODY": "Håper du liker det nye utseendet!",
+  "NO_CHANNELS": "This quark has no channels.",
+  "RECONNECTING_SPLASH": "Vukkies are now sleeping... Please wait quietly."
 }
