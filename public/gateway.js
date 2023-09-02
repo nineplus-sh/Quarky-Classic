@@ -16,6 +16,7 @@ function gatewaySuddenDeath() {
         document.querySelector("#loader").classList.remove("bye");
         if(welcomeHasFinishedOnce) {
             changeLoading("Connection lost<br>Please wait - attempting to reestablish...");
+            document.querySelector("#loadingsplash").innerHTML = strings["RECONNECTING_SPLASH"];
         } else {
             changeLoading("But no one responded!<br>Attempting to contact again...");
         }

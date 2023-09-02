@@ -460,8 +460,13 @@ async function switchQuark(id, forceChannel = true, sfx = true, anim = true, rep
     } else {
         document.querySelector(".leavequark").classList.remove("hidden");
     }
-    if(quark.channels[0] && forceChannel) switchChannel(quark.channels[0]._id, false)
     channelListRender(quark.channels);
+    if(forceChannel) {
+        if(quark.channels[0]) return switchChannel(quark.channels[0]._id, false);
+        document.querySelector("#messages").innerHTML = "";
+        document.querySelector("#channeltopic").innerHTML = `<iconify-icon icon="clarity:warning-solid"></iconify-icon> ${strings["NO_CHANNELS"]}`;
+        document.querySelector("#channelname").innerText = "";
+    }
 }
 
 /**
@@ -644,8 +649,8 @@ async function switchChannel(id, audioOn = true) {
     currentChannel = id;
     history.replaceState(id, "", `/client.html?quark=${currentQuark}&channel=${id}`)
 
-    document.querySelector("#channelname").innerHTML = "<iconify-icon icon=\"mdi:comments\"></iconify-icon> Fetching messages...";
-    document.querySelector("#channeltopic").innerText = "";
+    document.querySelector("#channeltopic").innerHTML = "<iconify-icon icon=\"mdi:comments\"></iconify-icon> Fetching messages...";
+    document.querySelector("#channelname").innerText = "";
         let messages = (await apiCall(`/channel/${id}/messages`, "GET", {}, "v2")).response.messages;
     document.querySelector("#messages").innerHTML = "";
     messages = messages.sort(function(x,y) {
