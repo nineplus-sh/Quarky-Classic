@@ -191,7 +191,7 @@
                 <option value="lq.litdevs.org">Lightquark</option>
                 <option value="equinox.litdevs.org">Equinox</option>
             </select><br><br>
-            <input type="text" placeholder="lq.litdevs.org" id="networkSelection"> <button onclick="localStorage.setItem('preferredServer', document.querySelector('#networkSelection').value);fetchNetwork()">Save</button>
+            <input type="text" placeholder="lq.litdevs.org" id="networkSelection"> <button onclick="localStorage.setItem('preferredServer', document.querySelector('#networkSelection').value);fetchNetwork();history.replaceState(null, '', '/');">Save</button>
         </div>
         <div id="eepynetwork" class="center view hidden">
             <p><iconify-icon icon="iconamoon:cloud-error"></iconify-icon> An error occurred while requesting data for your preferred network.<br>You can <button onclick="fetchNetwork()">try again</button> or <button onclick="switchView('networks')">switch networks</button>.</p>
