@@ -571,7 +571,6 @@ function attachmentTextifier(attachments) {
         return output;
 }
 
-let adminTip;
 /**
  * Renders a message.
  * @param {array} message - The message to render.
