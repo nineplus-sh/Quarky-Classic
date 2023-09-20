@@ -1,6 +1,6 @@
 {
   "name": "quarky",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A web client for Lightquark",
   "scripts": {
     "test": "jest",
@@ -8,17 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vukkyy/quarky.git"
+    "url": "git+https://github.com/meower-holdings/quarky.git"
   },
   "keywords": [
     "lightquark"
   ],
-  "author": "Vukky",
-  "license": "UNLICENSED",
+  "author": "Hakase",
+  "license": "GPLv3",
   "bugs": {
-    "url": "https://github.com/vukkyy/quarky/issues"
+    "url": "https://github.com/meower-holdings/quarky/issues"
   },
-  "homepage": "https://github.com/vukkyy/quarky#readme",
+  "homepage": "https://github.com/meower-holdings/quarky#readme",
   "devDependencies": {
     "browserify": "^17.0.0",
     "dotenv": "^16.0.3",

@@ -3,7 +3,7 @@ MIT License
 
 Original substitutions:  Copyright (c) 2018 Eva (Nepeta)
 JavaScript library:      Copyright (c) 2019 Douglas Gardner <douglas@chippy.ch>
-Rewriting for Quarky:  Copyright (c) 2023 Vukky <vukky@litdevs.org>
+Rewriting for Quarky:  Copyright (c) 2023 Hakase <hakase@litdevs.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ const prefixes = [
     'OwO ',
     'UwU ',
     'wat\'s dis? ', // unmerged https://github.com/zuzak/owo/pull/16
-    '*purrs* ' // from vukky
+    '*purrs* ' // from hakase
 ]
 const emotisuffixes = [
     ' ._.',
@@ -63,11 +63,11 @@ const emotisuffixes = [
     ' >.<', // unmerged https://github.com/zuzak/owo/pull/39
     ' >.>', // unmerged https://github.com/zuzak/owo/pull/39
     ' ^~^', // from amy
-    ' ^w^', // from vukky
-    ' >w>', // from vukky
-    ' >w<', // from vukky
-    ' -w-', // from vukky
-    ' 3:', // from vukky
+    ' ^w^', // from hakase
+    ' >w>', // from hakase
+    ' >w<', // from hakase
+    ' -w-', // from hakase
+    ' 3:', // from hakase
 ]
 const suffixes = [
     ' ( ´•̥̥̥ω•̥̥̥` )',
@@ -98,7 +98,7 @@ const suffixes = [
     ' nya~', // unmerged https://github.com/zuzak/owo/pull/19
     '~', // unmerged https://github.com/zuzak/owo/pull/36
     ' *nuzzles u*', // unmerged https://github.com/zuzak/owo/pull/33
-    ' *purrs*', // from vukky
+    ' *purrs*', // from hakase
     '..' // https://github.com/zuzak/owo/commit/9d3d3f560ec13b394779215cc1a62c96348300bf
 ]
 suffixes.push(...emotisuffixes);

@@ -698,7 +698,7 @@ async function sendMessage(message) {
     if(uwutils.allowed()) {
         clientAttributes.plaintext = message;
         clientAttributes.isCat = "yeeees i am indeed a cute kitty nya~"
-        if(specialAttributes.some(atrb => atrb.type == "/me")) { // Vukky *fowmats uuw /me cutewy* >w>
+        if(specialAttributes.some(atrb => atrb.type == "/me")) { // Hakase *fowmats uuw /me cutewy* >w>
             message = `*${uwutils.substitute(message)}* ${uwutils.getEmotisuffix()}`
         } else {
             message = uwu(message);

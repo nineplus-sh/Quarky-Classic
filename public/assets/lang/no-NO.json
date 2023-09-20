@@ -25,7 +25,7 @@
   "SETTINGS": "Innstillinger",
   "SELECT_A_QUARK": "Velg en quark",
   "LEAVE_QUARK": "Forlat quark",
-  "DEFAULT_USERNAME": "Niko",
+  "DEFAULT_USERNAME": "Hakase",
   "SELECT_A_CHANNEL": "Velg en kanal",
   "SETTINGS_GENERAL": "Generelt",
   "SETTINGS_APPEARANCE": "Utseende",
@@ -47,7 +47,6 @@
   "RESTORING_OLD_SESSION": "Gjenoppretter forrige økt...",
   "FETCHING_QUARK_LIST": "Getting quark list...",
   "LETTING_YOU_IN": "Slipper deg inn...",
-  "BY_VUKKY": "av Vukky",
   "CREDITS_WACKYMODER": "WackyModer for the fancier message sender and attachment support",
   "AVATAR_UPDATED_TITLE": "Avataren din er oppdatert.",
   "AVATAR_UPDATED_BODY": "Håper du liker det nye utseendet!"
