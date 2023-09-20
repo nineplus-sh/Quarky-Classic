@@ -28,7 +28,7 @@ function fatalError(error) {
         <b>${error.name || "Error"}: ${error.message || "Unknown error"}</b><br>${error.error?.message ? `${error.error.message}<br>` : ""}${error.apiEndpoint ? `(while attempting to ${error.apiMethod} /${error.apiEndpoint})<br>` : ""}<br>
         ${escapeHTML(Error().stack)}
         </div>
-        <p>${error.disableReport ? "" : `<button onclick="window.open('https://youtrack.litdevs.org/newIssue?project=QUARKY&summary=Quarky%20crash%20report&description=**PLEASE%20REPLACE%20THIS%20TEXT%20WITH%20WHAT%20YOU%20WERE%20DOING%20BEFORE%20QUARKY%20CRASHED%2C%20AND%20THE%20ERROR%20MESSAGE.%20OTHERWISE%20YOUR%20ISSUE%20WILL%20BE%20CLOSED!**&c=Type%20Bug', '_blank')">Report bug</button>`} <button onclick="logOut()">Log out</button> <button onclick="document.location.reload();">Reload</button></p>
+        <p><button onclick="logOut()">Log out</button> <button onclick="document.location.reload();">Reload</button></p>
     `
     document.body.innerHTML = "";
     document.body.appendChild(crashDisease);
