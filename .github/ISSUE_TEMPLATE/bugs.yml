@@ -1,5 +1,5 @@
 name: Bugs
-description: Report any creepy insects you spotted crawling in Quarky
+description: Report any creepy insects you spotted crawling in Quarky Classic
 labels: [bug]
 body:
 - type: textarea

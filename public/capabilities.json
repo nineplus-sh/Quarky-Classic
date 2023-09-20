@@ -1,9 +1,9 @@
 {
     "$schema": "https://lq.litdevs.org/capability.schema.json",
     "client": {
-        "name": "Quarky",
-        "author": "Vukky",
-        "repository": "https://github.com/Vukkyy/Quarky",
+        "name": "Quarky Classic",
+        "author": "Hakase",
+        "repository": "https://github.com/meower-holdings/Quarky-Classic",
         "version": "1.0.0",
         "url": "https://quarky.vukky.net"
     },

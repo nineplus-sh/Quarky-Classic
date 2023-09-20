@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Quarky</title>
+        <title>Quarky Classic</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-away.css"/>
@@ -703,14 +703,14 @@
                                 <span class="avieupload" onclick="uploadAvie(this)"><iconify-icon icon="ic:baseline-upload"></iconify-icon></span>
                                 <img src="https://cdn.discordapp.com/emojis/851468740263542814.png" class="trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                             </span>
-                            <span class="lusername"><iconify-icon class="usericon" icon="fa6-solid:cat"></iconify-icon> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
-                            <span class="messagecontent">I'm a Quarky user!</span>
+                            <span class="lusername"><iconify-icon class="usericon" icon="fa6-solid:cat"></iconify-icon> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky Classic</small></span>
+                            <span class="messagecontent">I'm a Quarky Classic user!</span>
                             <br>
                         </div>
                         <div class="message fake roleplay roleplaycfg">
                                 <span class="lusername"><input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"></span>
                                 <span class="messagecontent">is excited</span>
-                                <small class="timestamp">right now via Quarky</small>
+                                <small class="timestamp">right now via Quarky Classic</small>
                                 <br>
                         </div>
                         <div class="message fake noroleplay roleplaycfg">
@@ -718,7 +718,7 @@
                                 <span class="avieupload" onclick="uploadAvie(this)"><iconify-icon icon="ic:baseline-upload"></iconify-icon></span>
                                 <img src="/assets/img/loading.png" class="trueavie" onload="this.classList.remove('loading');" onerror="this.classList.remove('loading');this.onload='';this.src='/assets/img/fail.png'">
                             </span>
-                            <span class="lusername"><iconify-icon class="usericon" icon="fa6-solid:cat"></iconify-icon> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky</small></span>
+                            <span class="lusername"><iconify-icon class="usericon" icon="fa6-solid:cat"></iconify-icon> <input type="text" class="fakename" maxlength="32" placeholder="Niko" style="width: 5ch;" oninput="previewUsername(this.value);"> <small class="timestamp">right now via Quarky Classic</small></span>
                             <span class="messagecontent">is excited</span>
                             <br>
                         </div>
@@ -735,9 +735,9 @@
                     <div tab="about" class="settingspage hidden">
                         <div id="logo">
                             <img id="logoimg" src="/assets/img/quarky.svg" width="128">
-                            <h1 id="logotext">Quarky<sup style="font-size: 0.5em; color:red; padding-left: 0.25em;">BETA</sup></h1>
+                            <h1 id="logotext">Quarky Classic</h1>
                         </div>
-                        <p><a href="/docs/license.html" target="_blank">Quarky is free software.</a> You can <a href="https://github.com/vukkysoft/quarky" target="_blank">contribute code</a>, <a href="https://crowdin.com/project/quarky" target="_blank">translate</a>, or <a href="https://youtrack.litdevs.org/newIssue?project=QUARKY" target="_blank">suggest new features and report bugs</a>.</p>
+                        <p><a href="/docs/license.html" target="_blank">Quarky Classic is unsupported free software</a> created by Hakase.</p>
                     </div>
                     <div tab="exit" class="settingspage hidden">
                         <p><iconify-icon icon="material-symbols:settings"></iconify-icon> <quarky-string string="SAVING_SETTINGS"></quarky-string></p>
@@ -747,17 +747,17 @@
         </div>
         <div id="welcome" class="fullmodal hidden">
             <div id="welcomewrap">
-                <h1>Welcome to Quarky!</h1>
+                <h1>Welcome to Quarky Classic!</h1>
                 <img src="/assets/img/welcome/hewoo.png" class="welcomehero">
             </div>
         </div>
         <div id="debug" class="fullmodal hidden">
-            <h1 style="margin-top: 0; margin-bottom: 0;">Quarky Debug</h1>
-            <p style="margin-top: 0;">This screen is used to test some features in case of laziness.<br>If you don't know what this is, please <button onclick="document.querySelector('#debug').classList.add('hidden')">exit Quarky Debug</button>.</p>
+            <h1 style="margin-top: 0; margin-bottom: 0;">Quarky Classic Debug</h1>
+            <p style="margin-top: 0;">This screen is used to test some features in case of laziness.<br>If you don't know what this is, please <button onclick="document.querySelector('#debug').classList.add('hidden')">exit Quarky Classic Debug</button>.</p>
             <h2>Server communication</h2>
             <details>
                 <summary>API call</summary>
-                <p>Why the mail carrier or the SMTPie when the Quarky Debug API Call? Useful simply easy use fast.</p>
+                <p>Why the mail carrier or the SMTPie when the Quarky Classic Debug API Call? Useless simply annoying use fast.</p>
                 <input placeholder="endpoint"> <select><option value="v1">v1</option><option value="v2">v2</option></select> <button onclick="apiCall(this.parentNode.querySelector('input').value, 'GET', '', this.parentNode.querySelector('select').value).then(thingie => console.log(thingie))">Sounds Great !!</button>
             </details>
             <h2>Client options</h2>

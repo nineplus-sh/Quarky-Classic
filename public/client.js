@@ -19,8 +19,8 @@ function fatalError(error) {
             <h1>Fatal error!</h1>
             <p>
                 Something terrible happened.
-                <br>${error.disableReport ? "Please do not report this issue, it is probably not Quarky's fault." : "Quarky doesn't know how to handle it, so Quarky is dead."}
-                <br>Sowwy! ${error.disableReport ? "I hope you can figure it out." : "Consider reporting this error if you get it often :3"}
+                <br>Quarky Classic doesn't know how to handle it, so it crashed.
+                <br>Sowwy! I hope you can figure it out.
             </p>
             `}
         </div>
@@ -171,7 +171,7 @@ let welcomeHasFinishedOnce = false; // Keep track of if the welcome flow has fin
 let heartbeat;
 
 /**
- * Initialize Quarky
+ * Initialize Quarky Classic
  * @returns {void}
  */
 async function welcome() {
@@ -274,7 +274,7 @@ async function loadStrings(lang = settingGet("language")) {
 }
 
 /**
- * Continue initializing Quarky after the gateway has opened.
+ * Continue initializing Quarky Classic after the gateway has opened.
  * Say "Hewwo :3" to the gateway!
  * @returns {void}
  */
@@ -878,7 +878,7 @@ async function reloadMsgDeps(rch = true) {
     }
     // handle uwuspeak
     if(uwutils.allowed()) {
-        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = uwu("I'm a Quarky user!");
+        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = uwu("I'm a Quarky Classic user!");
         document.querySelector("#settings .message.fake.roleplaycfg .messagecontent").innerText = `*${uwutils.substitute("is excited")}* ${uwutils.getEmotisuffix()}`
         document.querySelector("#settings .message.fake.noroleplay .messagecontent").innerText = uwu("is excited")
         document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quawky")
