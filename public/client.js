@@ -373,8 +373,8 @@ async function quarkFetch() {
         headers: {
             "Authorization": `Bearer ${authToken}`,
             "Content-Type": "application/json",
-            "User-Agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
-            "lq-agent": `Qua${uwutils.allowed() ? "w" : "r"}ky${window.isLocal ? " (local ^~^)" : ""}`,
+            "User-Agent": `Qua${uwutils.allowed() ? "w" : "r"}ky C${uwutils.allowed() ? "w" : "l"}assic${window.isLocal ? " (local ^~^)" : ""}`,
+            "lq-agent": `Qua${uwutils.allowed() ? "w" : "r"}ky C${uwutils.allowed() ? "w" : "l"}assic${window.isLocal ? " (local ^~^)" : ""}`,
             ...headers
         }
     }
@@ -881,11 +881,11 @@ async function reloadMsgDeps(rch = true) {
         document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = uwu("I'm a Quarky Classic user!");
         document.querySelector("#settings .message.fake.roleplaycfg .messagecontent").innerText = `*${uwutils.substitute("is excited")}* ${uwutils.getEmotisuffix()}`
         document.querySelector("#settings .message.fake.noroleplay .messagecontent").innerText = uwu("is excited")
-        document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quawky")
+        document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quawky Cwassic")
     } else {
-        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = "I'm a Quarky user!";
+        document.querySelector("#settings .message.fake.cozy .messagecontent").innerText = "I'm a Quarky Classic user!";
         document.querySelectorAll("#settings .message.fake.roleplaycfg .messagecontent").forEach(msgtxt => msgtxt.innerText = "is excited")
-        document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quarky")
+        document.querySelectorAll("#settings .message.fake .timestamp").forEach(timestamp => timestamp.innerText = "right now via Quarky Classic")
     }
     // handle /me rendering
     if(settingGet("mespecial")) {
